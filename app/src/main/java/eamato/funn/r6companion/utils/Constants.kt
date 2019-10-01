@@ -1,0 +1,17 @@
+package eamato.funn.r6companion.utils
+
+const val SIMPLE_OPERATOR_IMAGE_WIDTH = 100
+const val SIMPLE_OPERATOR_IMAGE_HEIGHT = 100
+
+const val ROULETTE_OPERATOR_IMAGE_WIDTH = 300
+const val ROULETTE_OPERATOR_IMAGE_HEIGHT = 300
+
+const val WINNER_OPERATOR_IMAGE_WIDTH = 600
+const val WINNER_OPERATOR_IMAGE_HEIGHT = 600
+
+const val ROULETTE_OPERATOR_ICON_WIDTH = 75
+const val ROULETTE_OPERATOR_ICON_HEIGHT = 75
+
+const val UN_EXISTENT_HOST = "https://unexisting.host.mne/"
+
+const val ROULETTE_SEARCH_QUERY_KEY = "searchViewQuery"

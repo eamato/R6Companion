@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.HomeFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/rouletteFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.RouletteFragment"
+        android:label="@string/roulette_fragment_label"
+        tools:layout="@layout/fragment_roulette" >
+
+        <action
+            android:id="@+id/action_rouletteFragment_to_rouletteResultFragment"
+            app:destination="@id/rouletteResultFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/operatorsFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.OperatorsFragment"
+        android:label="@string/operators_fragment_label"
+        tools:layout="@layout/fragment_operators" />
+
+    <fragment
+        android:id="@+id/weaponsFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.WeaponsFragment"
+        android:label="@string/weapons_fragment_label"
+        tools:layout="@layout/fragment_weapons" />
+
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.MapsFragment"
+        android:label="@string/maps_fragment_label"
+        tools:layout="@layout/fragment_maps" />
+
+    <fragment
+        android:id="@+id/rouletteResultFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.RouletteResultFragment"
+        android:label="@string/roulette_result_fragment_label"
+        tools:layout="@layout/fragment_roulette_result">
+
+        <argument
+            android:name="rolling_winner"
+            app:argType="eamato.funn.r6companion.entities.RouletteOperator" />
+
+        <argument
+            android:name="rolling_operators"
+            app:argType="eamato.funn.r6companion.utils.ParcelableListOfRouletteOperators" />
+
+    </fragment>
+
+</navigation>

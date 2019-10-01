@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home_24dp"
+        android:title="@string/home_fragment_label" />
+
+    <item
+        android:id="@+id/rouletteFragment"
+        android:icon="@drawable/ic_roulette_24dp"
+        android:title="@string/roulette_fragment_label" />
+
+    <item
+        android:id="@+id/operatorsFragment"
+        android:icon="@drawable/ic_operators_24dp"
+        android:title="@string/operators_fragment_label" />
+
+    <item
+        android:id="@+id/weaponsFragment"
+        android:icon="@drawable/ic_weapons_24dp"
+        android:title="@string/weapons_fragment_label" />
+
+    <item
+        android:id="@+id/mapsFragment"
+        android:icon="@drawable/ic_map_24dp"
+        android:title="@string/maps_fragment_label" />
+
+</menu>

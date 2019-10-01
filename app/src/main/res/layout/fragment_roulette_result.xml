@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorOperatorsCellBackground">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_winner_candidates"
+        style="@style/AppTheme.TitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_4_dp"
+        android:text="@string/winner_candidates"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toStartOf="@id/gl_right_margin"
+        app:layout_constraintStart_toEndOf="@id/gl_left_margin"
+        app:layout_constraintTop_toBottomOf="@+id/gl_top_margin" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_rolling_operators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_4_dp"
+        app:layout_constraintEnd_toStartOf="@id/gl_right_margin"
+        app:layout_constraintStart_toEndOf="@id/gl_left_margin"
+        app:layout_constraintTop_toBottomOf="@+id/tv_winner_candidates" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <fragment
+        android:id="@+id/fragment_packet_opening"
+        android:name="eamato.funn.r6companion.ui.fragments.PacketOpeningFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/gl_bottom_margin"
+        app:layout_constraintEnd_toEndOf="@id/gl_right_margin"
+        app:layout_constraintStart_toStartOf="@id/gl_left_margin"
+        app:layout_constraintTop_toBottomOf="@+id/rv_rolling_operators" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_winner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_4_dp"
+        app:layout_constraintBottom_toBottomOf="@id/gl_bottom_margin"
+        app:layout_constraintEnd_toEndOf="@id/gl_right_margin"
+        app:layout_constraintStart_toStartOf="@id/gl_left_margin"
+        app:layout_constraintTop_toBottomOf="@+id/rv_rolling_operators">
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/pb_waiting"
+            style="?android:progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateOnly="true"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_winner_image"
+            app:layout_constraintEnd_toEndOf="@+id/iv_winner_image"
+            app:layout_constraintStart_toStartOf="@+id/iv_winner_image"
+            app:layout_constraintTop_toTopOf="@+id/iv_winner_image" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_winner"
+            style="@style/AppTheme.TitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_4_dp"
+            android:text="@string/winner"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_winner_name"
+            style="@style/AppTheme.TitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_4_dp"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Operator's name" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_winner_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_4_dp"
+            android:background="@drawable/winner_border_background"
+            android:padding="@dimen/margin_2_dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/tv_winner_name"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_winner" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_top_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="@dimen/margin_16_dp"
+        android:orientation="horizontal" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_bottom_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/margin_16_dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_left_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="@dimen/margin_16_dp"
+        android:orientation="vertical" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_right_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_16_dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

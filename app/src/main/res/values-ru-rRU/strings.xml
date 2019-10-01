@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">R6Companion</string>
+
+    <string name="home_fragment_label">Домашняя</string>
+    <string name="roulette_fragment_label">Рулетка</string>
+    <string name="operators_fragment_label">Опративники</string>
+    <string name="weapons_fragment_label">Оружия</string>
+    <string name="maps_fragment_label">Карты</string>
+    <string name="roulette_result_fragment_label">Результат рулетки</string>
+
+    <string name="operator_img_description">Картинка оператора</string>
+    <string name="operator_icon_description">Иконка оператора</string>
+
+    <string name="coming_soon">Скоро</string>
+    <string name="roll">Крутить</string>
+
+    <string name="search">Поиск</string>
+    <string name="sort">Сортировка</string>
+    <string name="alphabetic_sort_ascending">Сортировка имени по возвростанию</string>
+    <string name="alphabetic_sort_descending">Сортировка имени по убыванию</string>
+    <string name="select_all">Выбрать всё</string>
+    <string name="clear_selections">Очистить выбранное</string>
+    <string name="save_selected">Сохранить выбранное</string>
+    <string name="delete_saved">Удалить сохранённое</string>
+    <string name="restore_saved">Восстановить сохранённое</string>
+    <string name="winner">Победитель</string>
+    <string name="winner_candidates">Кандидаты на победу</string>
+    <string name="winner_">Победитель:</string>
+
+    <string name="screen_and_share">Поделиться скриншотом</string>
+    <string name="share_with">Поделиться</string>
+</resources>

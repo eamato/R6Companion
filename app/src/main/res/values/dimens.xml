@@ -1,0 +1,13 @@
+<resources>
+    <dimen name="margin_16_dp">16dp</dimen>
+    <dimen name="margin_8_dp">8dp</dimen>
+    <dimen name="margin_4_dp">4dp</dimen>
+    <dimen name="margin_2_dp">2dp</dimen>
+    <dimen name="margin_1_dp">1dp</dimen>
+
+    <dimen name="simple_operator_image_size">100dp</dimen>
+
+    <dimen name="text_size_title">20sp</dimen>
+    <dimen name="text_size_subtitle">15sp</dimen>
+    <dimen name="text_size_default">12sp</dimen>
+</resources>
