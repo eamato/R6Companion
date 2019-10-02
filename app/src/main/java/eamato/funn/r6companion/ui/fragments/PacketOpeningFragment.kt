@@ -5,6 +5,8 @@ import android.content.res.Resources
 import android.graphics.*
 import android.os.*
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BitmapCompat
 import androidx.lifecycle.Observer
@@ -29,6 +31,10 @@ class PacketOpeningFragment : BaseFragment() {
 
     private val res: Resources by lazy {
         resources
+    }
+
+    private val idlePacketAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.idle_packet_animation)
     }
 
     private var shouldDispatchTouchEvent = true
@@ -71,9 +77,16 @@ class PacketOpeningFragment : BaseFragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        sv_canvas.startAnimation(idlePacketAnimation)
+    }
+
     override fun onPause() {
         super.onPause()
         compositeDisposable.clear()
+
+        sv_canvas.clearAnimation()
     }
 
     private fun onSurfaceReady(surfaceHolder: SurfaceHolder) {
@@ -130,20 +143,28 @@ class PacketOpeningFragment : BaseFragment() {
                     PlaybackStatus.PLAYING -> {
                         shouldDispatchTouchEvent = false
                         player2.topPlayRoadPlayer.isFrameVisible.set(false)
+
+                        sv_canvas.clearAnimation()
                     }
                     PlaybackStatus.PAUSED -> {
                         player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
                         shouldDispatchTouchEvent = true
                         player2.topPlayRoadPlayer.isFrameVisible.set(true)
+
+                        sv_canvas.startAnimation(idlePacketAnimation)
                     }
                     PlaybackStatus.STOPPED -> {
                         player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
                         shouldDispatchTouchEvent = true
                         player2.topPlayRoadPlayer.isFrameVisible.set(true)
+
+                        sv_canvas.startAnimation(idlePacketAnimation)
                     }
                     PlaybackStatus.PLAYINGFBF -> {
                         shouldDispatchTouchEvent = true
                         player2.topPlayRoadPlayer.isFrameVisible.set(false)
+
+                        sv_canvas.clearAnimation()
                     }
                     else -> {
 
@@ -449,14 +470,12 @@ class PacketOpeningFragment : BaseFragment() {
                         null
                     )
 
-                if (middleLayer != null) {
+                if (middleLayer != null)
                     nonNullCanvas.drawBitmap(
                         middleLayer,
                         middleLayer.createMatrix(canvasSize),
                         null
                     )
-
-                }
 
                 if (topLayer != null)
                     nonNullCanvas.drawBitmap(

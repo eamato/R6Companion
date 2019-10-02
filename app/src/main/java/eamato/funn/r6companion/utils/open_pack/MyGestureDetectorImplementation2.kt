@@ -1,5 +1,7 @@
 package eamato.funn.r6companion.utils.open_pack
 
+import kotlin.math.min
+
 class MyGestureDetectorImplementation2(
     private val player2: Player2,
     private val detectingViewSize: MySize
@@ -16,7 +18,7 @@ class MyGestureDetectorImplementation2(
         isScrollDetected = true
         getCalculations(startingX)?.let { nonNullCalculations ->
             val frameCount = distanceX / nonNullCalculations.pixelsPerFrame
-            val currentFrame = Math.min(frameCount.toInt(), nonNullCalculations.frameCount - 1)
+            val currentFrame = min(frameCount.toInt(), nonNullCalculations.frameCount - 1)
             if (distanceX >= (nonNullCalculations.autoPlayThreshold - startingX)) {
                 player2.middlePlayRoadPlayer.lastGivenFrameIndex.set(currentFrame)
                 player2.middlePlayRoadPlayer.playRoad.playbackStatus.value = PlaybackStatus.PLAYING

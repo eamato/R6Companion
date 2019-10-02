@@ -2,6 +2,7 @@ package eamato.funn.r6companion.utils.open_pack
 
 import android.view.GestureDetector
 import android.view.MotionEvent
+import kotlin.math.abs
 
 interface MyGestureDetector : GestureDetector.OnGestureListener {
 
@@ -22,9 +23,9 @@ interface MyGestureDetector : GestureDetector.OnGestureListener {
         if (e1 != null && e2 != null) {
             val deltaX = e2.x - e1.x
             if (distanceX < 0)
-                myOnScrollForXAxis(Math.abs(deltaX), e1.x)
+                myOnScrollForXAxis(abs(deltaX), e1.x)
             else
-                myOnScrollForXAxis(Math.abs(deltaX), e1.x)
+                myOnScrollForXAxis(abs(deltaX), e1.x)
         }
         return true
     }

@@ -4,11 +4,8 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
-import android.view.animation.AnimationUtils
-import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -23,6 +20,7 @@ import eamato.funn.r6companion.utils.glide.ImageResizeTransformation
 import eamato.funn.r6companion.utils.recyclerview.*
 import eamato.funn.r6companion.viewmodels.RouletteResultPacketOpeningCommonViewModel
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_roulette_result.pb_waiting
 import java.io.File
 
 class RouletteResultFragment : BaseFragment() {
@@ -159,17 +157,12 @@ class RouletteResultFragment : BaseFragment() {
             }
 
         } ?: pb_waiting.hide()
-    }
 
-    override fun onResume() {
-        super.onResume()
-
-        AnimationUtils.loadAnimation(context, R.anim.idle_packet_animation).also { cl_winner.startAnimation(it) }
+        cl_winner.visibility = View.GONE
     }
 
     override fun onPause() {
         autoScroller?.stopAutoScroll()
-        cl_winner.clearAnimation()
 
         super.onPause()
     }
