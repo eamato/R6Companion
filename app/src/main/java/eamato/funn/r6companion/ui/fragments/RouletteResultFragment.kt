@@ -199,8 +199,11 @@ class RouletteResultFragment : BaseFragment() {
                         ?.defaultDisplay
                         ?.getMetrics(displayMetrics)
 
+                    val window = activity?.window
+                    val view = window?.decorView ?: cl_root
+
                     compositeDisposable.add(
-                        createScreenshotAndGetItsUri(cl_root, activity?.window, screen, displayMetrics)
+                        createScreenshotAndGetItsUri(view, window, screen, displayMetrics)
                             .subscribeOn(AndroidSchedulers.from(backgroundLooper))
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate {
