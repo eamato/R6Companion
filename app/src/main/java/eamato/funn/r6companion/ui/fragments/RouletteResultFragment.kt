@@ -3,8 +3,11 @@ package eamato.funn.r6companion.ui.fragments
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.HandlerThread
+import android.util.DisplayMetrics
 import android.view.*
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.*
@@ -19,10 +22,12 @@ import eamato.funn.r6companion.utils.glide.GlideApp
 import eamato.funn.r6companion.utils.glide.ImageResizeTransformation
 import eamato.funn.r6companion.utils.recyclerview.*
 import eamato.funn.r6companion.viewmodels.RouletteResultPacketOpeningCommonViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_roulette_result.pb_waiting
 import java.io.File
 
+// TODO enable disable screenshoting on result ready
 class RouletteResultFragment : BaseFragment() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -180,9 +185,28 @@ class RouletteResultFragment : BaseFragment() {
         return when (item.itemId) {
             R.id.screen_and_share -> {
                 context?.let { nonNullContext ->
+                    item.isEnabled = false
+
                     val screen = File(nonNullContext.filesDir, "winner_screen.jpeg")
+
+                    val handlerThread = HandlerThread("Background looper")
+                    if (!handlerThread.isAlive)
+                        handlerThread.start()
+                    val backgroundLooper = handlerThread.looper
+
+                    val displayMetrics = DisplayMetrics()
+                    ContextCompat.getSystemService(nonNullContext, WindowManager::class.java)
+                        ?.defaultDisplay
+                        ?.getMetrics(displayMetrics)
+
                     compositeDisposable.add(
-                        createScreenshotAndGetItsUri(cl_root, activity?.window, screen)
+                        createScreenshotAndGetItsUri(cl_root, activity?.window, screen, displayMetrics)
+                            .subscribeOn(AndroidSchedulers.from(backgroundLooper))
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doAfterTerminate {
+                                handlerThread.quit()
+                                item.isEnabled = true
+                            }
                             .subscribe({
                                 try {
                                     val screenUri = FileProvider.getUriForFile(

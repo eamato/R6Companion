@@ -1,5 +1,6 @@
 package eamato.funn.r6companion.utils
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -7,7 +8,9 @@ import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
+import android.util.DisplayMetrics
 import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +25,7 @@ import io.reactivex.Single
 import kotlinx.android.parcel.Parcelize
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.math.round
 
 const val saveSelectionsPreferencesKey = "save_selections"
 
@@ -163,40 +167,45 @@ open class SingletonHolder<out T, in A>(creator: (A) -> T) {
     }
 }
 
-fun View.createScreenshot(window: Window?): Single<Bitmap> {
-    if (window == null)
-        return Single.error(Throwable("Window is null"))
-    else
-        return Single.create<Bitmap> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                PixelCopy.request(window, bitmap,
-                    { copyResult ->
-                        if (copyResult == PixelCopy.SUCCESS) {
-                            it.onSuccess(bitmap)
-                        } else {
-                            it.tryOnError(Throwable("Screenshot wasn't made"))
-                        }
-                    }, Handler())
-            } else {
-                this.isDrawingCacheEnabled = true
-                val bitmap = Bitmap.createBitmap(this.drawingCache)
-                this.isDrawingCacheEnabled = false
-                it.onSuccess(bitmap)
-            }
-        }
+@TargetApi(Build.VERSION_CODES.O)
+fun Window.createScreenshot(displayMetrics: DisplayMetrics): Single<Bitmap> {
+    return Single.create<Bitmap> {
+        val bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888)
+        PixelCopy.request(this, bitmap,
+            { copyResult ->
+                if (copyResult == PixelCopy.SUCCESS)
+                    it.onSuccess(bitmap)
+                else
+                    it.tryOnError(Throwable("Screenshot wasn't made"))
+            }, Handler())
+    }
+}
+
+fun View.createScreenshot(): Single<Bitmap> {
+    this.isDrawingCacheEnabled = true
+    val bitmap = Bitmap.createBitmap(this.drawingCache)
+    this.isDrawingCacheEnabled = false
+    return Single.just(bitmap)
 }
 
 fun Bitmap.toFileInInternalStorage(file: File): Single<File> {
     return Single.create<File> {
         val fileOutputStream = FileOutputStream(file)
-        compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+        compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.flush()
         fileOutputStream.close()
         it.onSuccess(file)
     }
 }
 
-fun createScreenshotAndGetItsUri(view: View, window: Window?, file: File): Single<File> {
-    return view.createScreenshot(window).flatMap { it.toFileInInternalStorage(file) }
+fun createScreenshotAndGetItsUri(view: View, window: Window?, file: File, displayMetrics: DisplayMetrics): Single<File> {
+    return if (window != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        window.createScreenshot(displayMetrics).flatMap { it.toFileInInternalStorage(file) }
+    } else {
+        view.createScreenshot().flatMap { it.toFileInInternalStorage(file) }
+    }
+}
+
+fun Int.pixelToDensityPixel(density: Float): Int {
+    return round(this / density).toInt()
 }
