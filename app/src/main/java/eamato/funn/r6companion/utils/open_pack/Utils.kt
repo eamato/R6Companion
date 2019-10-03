@@ -44,9 +44,12 @@ fun Canvas.getMySize(): MySize {
 
 fun SurfaceHolder.getCanvasMySize(): MySize {
     val canvas = this.lockCanvas()
-    val mySize = canvas.getMySize()
-    this.unlockCanvasAndPost(canvas)
-    return mySize
+    canvas?.let { nonNullCanvas ->
+        val mySize = nonNullCanvas.getMySize()
+        this.unlockCanvasAndPost(nonNullCanvas)
+        return mySize
+    }
+    return MySize(0, 0)
 }
 
 fun BitmapFactory.Options.getFullOptimizedOptionsForMultipleImages(

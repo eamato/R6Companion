@@ -7,6 +7,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -441,6 +442,42 @@ class ExampleUnitTest {
         }
 
 
+    }
+
+    val akaMainThread = Schedulers.from(Executors.newSingleThreadExecutor { Thread(it, "MainThread") })
+
+    // should work in worker thread
+    private fun createPlayer(): Flowable<String> {
+        return Flowable.fromCallable {
+            println("create playlist on: ${Thread.currentThread().name}")
+            TimeUnit.SECONDS.sleep(5)
+            "Player"
+        }
+    }
+
+    @Test
+    fun threadControl() {
+        val countDownLatch = CountDownLatch(1)
+
+        createPlayer()
+            .subscribeOn(Schedulers.single())
+            .observeOn(akaMainThread)
+            .flatMap {  player ->
+                println("flat map on: ${Thread.currentThread().name}")
+                Flowable.interval(1, TimeUnit.SECONDS, Schedulers.single())
+                    .onBackpressureDrop()
+                    .map {
+                        println("map on: ${Thread.currentThread().name}")
+                        player
+                    }
+            }
+            .subscribe({
+                println("On next on: ${Thread.currentThread().name}: $it")
+            }, {
+                println("Error on: ${Thread.currentThread().name}: $it")
+            })
+
+        countDownLatch.await()
     }
 
 }

@@ -7,6 +7,8 @@ import android.os.*
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BitmapCompat
 import androidx.lifecycle.Observer
@@ -14,12 +16,13 @@ import androidx.lifecycle.ViewModelProviders
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.utils.open_pack.*
 import eamato.funn.r6companion.viewmodels.RouletteResultPacketOpeningCommonViewModel
-import io.reactivex.Single
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_packet_opening.*
 
-class PacketOpeningFragment : BaseFragment() {
+class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -51,45 +54,104 @@ class PacketOpeningFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_packet_opening, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        sv_canvas.holder.addCallback(object : SurfaceHolder.Callback {
-            override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-                pb_waiting.hide()
-            }
+    override fun onStop() {
+        super.onStop()
 
-            override fun surfaceDestroyed(holder: SurfaceHolder?) {
-                compositeDisposable.clear()
-            }
+        compositeDisposable.clear()
 
-            override fun surfaceCreated(holder: SurfaceHolder?) {
-                pb_waiting.show()
-                compositeDisposable.add(
-                    Single.fromCallable {
-                        holder?.let { nonNullHolder ->
-                            onSurfaceReady(nonNullHolder)
-                        }
-                    }.subscribeOn(Schedulers.io()).subscribe(
-                        {},
-                        { it.printStackTrace() }
-                    )
-                )
-            }
-        })
+        sv_canvas.holder.removeCallback(this)
+        sv_canvas.clearAnimation()
+        sv_canvas.setOnTouchListener(null)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
+
+        sv_canvas.holder.addCallback(this)
         sv_canvas.startAnimation(idlePacketAnimation)
     }
 
-    override fun onPause() {
-        super.onPause()
-        compositeDisposable.clear()
+    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {}
 
-        sv_canvas.clearAnimation()
+    override fun surfaceDestroyed(holder: SurfaceHolder?) {
+        compositeDisposable.clear()
     }
 
-    private fun onSurfaceReady(surfaceHolder: SurfaceHolder) {
+    override fun surfaceCreated(holder: SurfaceHolder?) {
+        holder?.let { nonNullHolder ->
+            val f = Flowable.fromCallable {
+                preparePlayer(nonNullHolder)
+            }
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap { player2 ->
+                    player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this, Observer {
+                        when (it) {
+                            PlaybackStatus.PLAYING -> {
+                                shouldDispatchTouchEvent = false
+                                player2.topPlayRoadPlayer.isFrameVisible.set(false)
+
+                                sv_canvas.clearAnimation()
+                            }
+                            PlaybackStatus.PAUSED -> {
+                                player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
+                                shouldDispatchTouchEvent = true
+                                player2.topPlayRoadPlayer.isFrameVisible.set(true)
+
+                                sv_canvas.startAnimation(idlePacketAnimation)
+                            }
+                            PlaybackStatus.STOPPED -> {
+                                player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
+                                shouldDispatchTouchEvent = true
+                                player2.topPlayRoadPlayer.isFrameVisible.set(true)
+
+                                sv_canvas.startAnimation(idlePacketAnimation)
+                            }
+                            PlaybackStatus.PLAYINGFBF -> {
+                                shouldDispatchTouchEvent = true
+                                player2.topPlayRoadPlayer.isFrameVisible.set(false)
+
+                                sv_canvas.clearAnimation()
+                            }
+                            else -> {
+
+                            }
+                        }
+                    })
+
+                    pb_waiting.hide()
+
+                    val myGestureDetectorImplementation2 =
+                        MyGestureDetectorImplementation2(player2, canvasSize)
+                    val gestureDetector =
+                        GestureDetector(context, myGestureDetectorImplementation2)
+
+                    sv_canvas.setOnTouchListener { _, event ->
+                        if (shouldDispatchTouchEvent) {
+                            gestureDetector.onTouchEvent(event)
+                            if (event.action == MotionEvent.ACTION_UP && myGestureDetectorImplementation2.isScrollDetected) {
+                                myGestureDetectorImplementation2.isScrollDetected = false
+                                player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.REVERSED)
+                                player2.middlePlayRoadPlayer.playRoad.playbackStatus.value =
+                                    PlaybackStatus.PLAYING
+                            }
+                        }
+                        true
+                    }
+
+                    player2.playback
+                }
+                .subscribe({
+                    draw(nonNullHolder, it.bottomLayer, it.centerLayer, it.topLayer, backgroundColor)
+                }, {
+                    it.printStackTrace()
+                })
+            compositeDisposable.add(f)
+        }
+    }
+
+    private fun preparePlayer(surfaceHolder: SurfaceHolder): Player2? {
+        runOnUiThread { pb_waiting.show() }
         canvasSize = surfaceHolder.getCanvasMySize()
         draw(
             surfaceHolder,
@@ -98,82 +160,14 @@ class PacketOpeningFragment : BaseFragment() {
             null,
             backgroundColor
         )
-        runOnUiThread { pb_waiting?.show() }
         val playlist = initPacketData()
-        runOnUiThread { pb_waiting?.hide() }
-
-        val player2 = Player2(playlist) {
-            // TODO add on done acton here
-        }
-        compositeDisposable.add(
-            player2
-                .playback
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    draw(
-                        surfaceHolder,
-                        it.bottomLayer,
-                        it.centerLayer,
-                        it.topLayer,
-                        backgroundColor
-                    )
-                }, {
-                    it.printStackTrace()
-                })
-        )
-
-        runOnUiThread {
-            val myGestureDetectorImplementation2 = MyGestureDetectorImplementation2(player2, canvasSize)
-            val gestureDetector = GestureDetector(context, myGestureDetectorImplementation2)
-
-            sv_canvas?.setOnTouchListener { _, event ->
-                if (shouldDispatchTouchEvent) {
-                    gestureDetector.onTouchEvent(event)
-                    if (event.action == MotionEvent.ACTION_UP && myGestureDetectorImplementation2.isScrollDetected) {
-                        myGestureDetectorImplementation2.isScrollDetected = false
-                        player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.REVERSED)
-                        player2.middlePlayRoadPlayer.playRoad.playbackStatus.value = PlaybackStatus.PLAYING
-                    }
-                }
-                true
+        return Player2(playlist) {
+            runOnUiThread {
+                sv_canvas.setOnTouchListener(null)
+                compositeDisposable.clear()
+                Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show()
             }
-
-            player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this, Observer {
-                when (it) {
-                    PlaybackStatus.PLAYING -> {
-                        shouldDispatchTouchEvent = false
-                        player2.topPlayRoadPlayer.isFrameVisible.set(false)
-
-                        sv_canvas.clearAnimation()
-                    }
-                    PlaybackStatus.PAUSED -> {
-                        player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
-                        shouldDispatchTouchEvent = true
-                        player2.topPlayRoadPlayer.isFrameVisible.set(true)
-
-                        sv_canvas.startAnimation(idlePacketAnimation)
-                    }
-                    PlaybackStatus.STOPPED -> {
-                        player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
-                        shouldDispatchTouchEvent = true
-                        player2.topPlayRoadPlayer.isFrameVisible.set(true)
-
-                        sv_canvas.startAnimation(idlePacketAnimation)
-                    }
-                    PlaybackStatus.PLAYINGFBF -> {
-                        shouldDispatchTouchEvent = true
-                        player2.topPlayRoadPlayer.isFrameVisible.set(false)
-
-                        sv_canvas.clearAnimation()
-                    }
-                    else -> {
-
-                    }
-                }
-            })
-
         }
-
     }
 
     private fun runOnUiThread(doWhat: () -> Unit) {
@@ -458,10 +452,17 @@ class PacketOpeningFragment : BaseFragment() {
         )
     }
 
-    private fun draw(surfaceHolder: SurfaceHolder, bottomLayer: Bitmap?, middleLayer: Bitmap?, topLayer: Bitmap?, backgroundColor: Int) {
-        synchronized(surfaceHolder) {
-            surfaceHolder.lockCanvas()?.let { nonNullCanvas ->
-                nonNullCanvas.drawColor(backgroundColor, PorterDuff.Mode.CLEAR)
+    private fun draw(surfaceHolder: SurfaceHolder, bottomLayer: Bitmap?, middleLayer: Bitmap?, topLayer: Bitmap?, @ColorInt backgroundColor: Int) {
+        surfaceHolder.lockCanvas()?.let { nonNullCanvas ->
+            synchronized(nonNullCanvas) {
+                nonNullCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+
+                nonNullCanvas.drawARGB(
+                    255,
+                    Color.red(backgroundColor),
+                    Color.green(backgroundColor),
+                    Color.blue(backgroundColor)
+                )
 
                 if (bottomLayer != null)
                     nonNullCanvas.drawBitmap(

@@ -2,6 +2,7 @@ package eamato.funn.r6companion.utils.open_pack
 
 import android.graphics.Bitmap
 import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -13,7 +14,7 @@ class Player2(playlist: Playlist, private val onPlaybackFinished: (() -> Unit)? 
     val middlePlayRoadPlayer = PlayRoadPlayer(playlist.middleLayerRoad)
     val topPlayRoadPlayer = PlayRoadPlayer(playlist.topLayerRoad)
 
-    val playback = Flowable.interval(playlist.duration, TimeUnit.MILLISECONDS)
+    val playback = Flowable.interval(playlist.duration, TimeUnit.MILLISECONDS, Schedulers.single())
         .onBackpressureDrop()
         .map {
             PlaybackIteration(
@@ -50,8 +51,10 @@ class Player2(playlist: Playlist, private val onPlaybackFinished: (() -> Unit)? 
                             if (last == playRoad.slides.lastIndex)
                                 if (playRoad.isLooped)
                                     lastGivenFrameIndex.set(0)
-                                else
+                                else {
                                     playRoad.playbackStatus.postValue(PlaybackStatus.PAUSED)
+                                    onPlaybackFinished?.invoke()
+                                }
                             else
                                 lastGivenFrameIndex.set(last + playbackMode.get().addition)
 
