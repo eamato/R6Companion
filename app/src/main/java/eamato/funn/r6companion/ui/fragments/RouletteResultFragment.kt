@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -27,7 +28,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_roulette_result.pb_waiting
 import java.io.File
 
-// TODO enable disable screenshoting on result ready
 class RouletteResultFragment : BaseFragment() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -36,17 +36,29 @@ class RouletteResultFragment : BaseFragment() {
         SimpleOperatorsAdapter()
     }
 
+    private val packetOpeningFragment = PacketOpeningFragment()
+
     private val rouletteResultPacketOpeningCommonViewModel: RouletteResultPacketOpeningCommonViewModel by lazy {
-        activity?.run {
-            ViewModelProviders.of(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
-        } ?: throw Exception("Invalid activity")
+        ViewModelProviders.of(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
     }
 
     private var autoScroller: AutoScroller<RecyclerView.LayoutManager, RouletteOperator, SimpleOperatorsAdapter.SimpleOperatorsViewHolder>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setHasOptionsMenu(true)
+
+        rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.observe(this, Observer {
+            it?.let {
+                activity?.invalidateOptionsMenu()
+                changePacketOpeningVisibility(!it)
+                if (it)
+                    cl_winner.visibility = View.VISIBLE
+                else
+                    cl_winner.visibility = View.GONE
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,8 +74,6 @@ class RouletteResultFragment : BaseFragment() {
             val arguments = RouletteResultFragmentArgs.fromBundle(nonNullArguments)
             val winnerCandidates = ArrayList(arguments.rollingOperators)
             val winner = arguments.rollingWinner
-
-            rouletteResultPacketOpeningCommonViewModel.winner.value = winner
 
             tv_winner_name.text = winner.name
 
@@ -162,8 +172,6 @@ class RouletteResultFragment : BaseFragment() {
             }
 
         } ?: pb_waiting.hide()
-
-        cl_winner.visibility = View.GONE
     }
 
     override fun onPause() {
@@ -181,11 +189,17 @@ class RouletteResultFragment : BaseFragment() {
         inflater.inflate(R.menu.fragment_roulette_result, menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        menu.findItem(R.id.screen_and_share).isVisible = rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value ?: false
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.screen_and_share -> {
                 context?.let { nonNullContext ->
-                    item.isEnabled = false
+                    item.isVisible = false
 
                     val screen = File(nonNullContext.filesDir, "winner_screen.jpeg")
 
@@ -208,7 +222,7 @@ class RouletteResultFragment : BaseFragment() {
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate {
                                 handlerThread.quit()
-                                item.isEnabled = true
+                                item.isVisible = true
                             }
                             .subscribe({
                                 try {
@@ -236,6 +250,15 @@ class RouletteResultFragment : BaseFragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun changePacketOpeningVisibility(isVisible: Boolean) {
+        val transaction = childFragmentManager.beginTransaction()
+        if (isVisible)
+            transaction.replace(R.id.fragment_packet_opening, packetOpeningFragment, PacketOpeningFragment.TAG)
+        else
+            transaction.remove(packetOpeningFragment)
+        transaction.commit()
     }
 
 }

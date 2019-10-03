@@ -7,7 +7,6 @@ import android.os.*
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BitmapCompat
@@ -23,6 +22,10 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_packet_opening.*
 
 class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
+
+    companion object {
+        const val TAG = "pack_opening_fragment"
+    }
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -43,9 +46,9 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
     private var shouldDispatchTouchEvent = true
 
     private val rouletteResultPacketOpeningCommonViewModel: RouletteResultPacketOpeningCommonViewModel by lazy {
-        activity?.run {
+        requireParentFragment().run {
             ViewModelProviders.of(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
-        } ?: throw Exception("Invalid activity")
+        }
     }
 
     private lateinit var canvasSize: MySize
@@ -165,7 +168,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
             runOnUiThread {
                 sv_canvas.setOnTouchListener(null)
                 compositeDisposable.clear()
-                Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show()
+                rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value = true
             }
         }
     }
