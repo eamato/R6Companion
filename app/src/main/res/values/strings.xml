@@ -29,6 +29,13 @@
 
     <string name="screen_and_share">Share screenshot</string>
     <string name="share_with">Share with</string>
+
+    <string name="attention">Attention</string>
+    
+    <string name="save_confirmation_message">Are you sure you want to save selected operators? This will delete previously saved if there was any.</string>
+    <string name="delete_saved_confirmation_message">Are you sure you want to delete previously saved selected operators?</string>
+
+    <string name="yes">Yes</string>
     
     <string name="test_text" translatable="false">
         Rainbow Six goes to the land Down Under for Operation Burnt Horizon. Protection specialists with the SASR Mobility Platoon, Gridlock and Mozzie are assigned protection detail for a high-value convoy across sunburnt country. An unscheduled pit stop at a lonely petrol station turns into a standoff when their convoy is unexpectedly pinned down. Discover the new Outback service station map, where the red desert brings plenty of heat. Find more details in the full Patch Notes below, as well as many gameplay fixes implemented this Season.

@@ -29,4 +29,11 @@
 
     <string name="screen_and_share">Поделиться скриншотом</string>
     <string name="share_with">Поделиться</string>
+
+    <string name="attention">Внимание</string>
+
+    <string name="save_confirmation_message">Вы уверены что хотите сохранить выбранных оперативников? Это удалит предыдушее сохранение если оно есть.</string>
+    <string name="delete_saved_confirmation_message">Вы уверены что хотите удалить ранее сохранённых выбранных оперативников?</string>
+
+    <string name="yes">Да</string>
 </resources>

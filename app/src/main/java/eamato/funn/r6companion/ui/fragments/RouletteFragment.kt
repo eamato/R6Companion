@@ -4,6 +4,7 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -135,6 +136,8 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
 
+        menu.findItem(R.id.save_selected)?.isVisible = rouletteViewModel.areThereAnySelectedOperators()
+
         val disposable = PreferenceManager.getDefaultSharedPreferences(context).areThereSavedSelectedOperators()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -174,18 +177,38 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                 true
             }
             R.id.save_selected -> {
-                rouletteViewModel.saveSelectedOperators(
-                    PreferenceManager.getDefaultSharedPreferences(context)
-                ) {
-                    activity?.invalidateOptionsMenu()
+                context?.let { nonNullContext ->
+                    AlertDialog.Builder(nonNullContext)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.attention)
+                        .setMessage(R.string.save_confirmation_message)
+                        .setPositiveButton(R.string.yes) { _, _ ->
+                            rouletteViewModel.saveSelectedOperators(
+                                PreferenceManager.getDefaultSharedPreferences(context)
+                            ) {
+                                activity?.invalidateOptionsMenu()
+                            }
+                        }
+                        .create()
+                        .show()
                 }
                 true
             }
             R.id.delete_saved -> {
-                rouletteViewModel.deleteSavedSelectedOperators(
-                    PreferenceManager.getDefaultSharedPreferences(context)
-                ) {
-                    activity?.invalidateOptionsMenu()
+                context?.let { nonNullContext ->
+                    AlertDialog.Builder(nonNullContext)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.attention)
+                        .setMessage(R.string.delete_saved_confirmation_message)
+                        .setPositiveButton(R.string.yes) { _, _ ->
+                            rouletteViewModel.deleteSavedSelectedOperators(
+                                PreferenceManager.getDefaultSharedPreferences(context)
+                            ) {
+                                activity?.invalidateOptionsMenu()
+                            }
+                        }
+                        .create()
+                        .show()
                 }
                 true
             }

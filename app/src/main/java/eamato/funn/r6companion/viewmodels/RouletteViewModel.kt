@@ -36,6 +36,11 @@ class RouletteViewModel : ViewModel() {
         pCanRoll.value = immutableOperators.any { it.isSelected }
     }
 
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
+    }
+
     fun getAllOperators(assetManager: AssetManager, preferences: SharedPreferences) {
         compositeDisposable.add(
             OperatorsRepository.getOperators(assetManager)
@@ -164,9 +169,8 @@ class RouletteViewModel : ViewModel() {
         )
     }
 
-    override fun onCleared() {
-        compositeDisposable.clear()
-        super.onCleared()
+    fun areThereAnySelectedOperators(): Boolean {
+        return immutableOperators.filter { it.isSelected }.isNullOrEmpty().not()
     }
 
 }
