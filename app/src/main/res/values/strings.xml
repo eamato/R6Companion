@@ -32,8 +32,8 @@
 
     <string name="attention">Attention</string>
     
-    <string name="save_confirmation_message">Are you sure you want to save selected operators? This will delete previously saved if there was any.</string>
-    <string name="delete_saved_confirmation_message">Are you sure you want to delete previously saved selected operators?</string>
+    <string name="save_confirmation_message">Saving the operators will result in erasing any previous saved data. Do you wish to proceed?</string>
+    <string name="delete_saved_confirmation_message">Are you sure you want to delete saved selection?</string>
 
     <string name="yes">Yes</string>
     
