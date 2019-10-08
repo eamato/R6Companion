@@ -36,4 +36,5 @@
     <string name="delete_saved_confirmation_message">Вы уверены что хотите удалить ранее сохранённых выбранных оперативников?</string>
 
     <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

@@ -189,6 +189,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                                 activity?.invalidateOptionsMenu()
                             }
                         }
+                        .setNegativeButton(R.string.no) { _, _ -> }
                         .create()
                         .show()
                 }
@@ -207,6 +208,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                                 activity?.invalidateOptionsMenu()
                             }
                         }
+                        .setNegativeButton(R.string.no) { _, _ -> }
                         .create()
                         .show()
                 }
