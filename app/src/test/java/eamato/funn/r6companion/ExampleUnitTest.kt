@@ -22,7 +22,7 @@ import kotlin.properties.Delegates
  */
 class ExampleUnitTest {
 
-// home
+// test master
 
     @Test
     fun addition_isCorrect() {
