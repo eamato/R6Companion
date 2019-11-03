@@ -31,7 +31,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     private val backgroundColor: Int by lazy {
         context?.let { nonNullContext ->
-            ContextCompat.getColor(nonNullContext, R.color.colorOperatorsCellBackground)
+            ContextCompat.getColor(nonNullContext, R.color.colorOpenPackBackground)
         } ?: throw Exception("Invalid context")
     }
 

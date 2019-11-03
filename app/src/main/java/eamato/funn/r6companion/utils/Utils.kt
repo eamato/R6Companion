@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Handler
 import android.os.Parcelable
@@ -108,9 +109,25 @@ fun List<RouletteOperator>.toParcelableList(): ParcelableListOfRouletteOperators
 fun Context?.isCurrentlyConnectedNetworkWIFI(): Boolean {
     if (this == null)
         return false
-    val activeNetworkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-        .activeNetworkInfo ?: return false
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    isCurrentConnectedNetworkWIFI(connectivityManager)
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        isCurrentConnectedNetworkWIFI(connectivityManager)
+    else
+        isCurrentConnectedNetworkWIFILegacy(connectivityManager)
+}
+
+@Suppress("DEPRECATION")
+private fun isCurrentConnectedNetworkWIFILegacy(connectivityManager: ConnectivityManager): Boolean {
+    val activeNetworkInfo = connectivityManager.activeNetworkInfo ?: return false
     return activeNetworkInfo.isConnected && activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI
+}
+
+@TargetApi(Build.VERSION_CODES.M)
+private fun isCurrentConnectedNetworkWIFI(connectivityManager: ConnectivityManager): Boolean {
+    val network = connectivityManager.activeNetwork
+    val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
 }
 
 @Parcelize

@@ -10,6 +10,7 @@
     <color name="colorWinnerBackground">#303030</color>
     <color name="colorCandidateBorder">#5F5F5F</color>
     <color name="colorRouletteBackground">#D0363636</color>
+    <color name="colorOpenPackBackground">#353535</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
