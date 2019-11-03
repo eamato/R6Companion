@@ -11,6 +11,8 @@
         <item name="alertDialogTheme">@style/MyDialogTheme</item>
     </style>
 
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
     <style name="AppTheme.Toolbar" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">@color/colorIconWhite</item>
     </style>
@@ -18,8 +20,6 @@
     <style name="AppTheme.BottomNavigationBar" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="itemIconTint">@drawable/bottom_nav_colors_selector</item>
     </style>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="AppTheme.TitleStyle">
         <item name="android:textSize">@dimen/text_size_title</item>
