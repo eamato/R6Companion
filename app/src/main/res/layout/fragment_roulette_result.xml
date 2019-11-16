@@ -6,7 +6,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorOperatorsCellBackground">
+    android:background="@color/colorBackground">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_winner_candidates"
@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_4_dp"
         android:text="@string/winner_candidates"
-        android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toStartOf="@id/gl_right_margin"
         app:layout_constraintStart_toEndOf="@id/gl_left_margin"
         app:layout_constraintTop_toBottomOf="@+id/gl_top_margin" />
@@ -68,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_4_dp"
             android:text="@string/winner"
-            android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +77,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_4_dp"
-            android:textColor="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

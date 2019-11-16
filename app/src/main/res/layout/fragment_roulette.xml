@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragments.RouletteFragment"
-        android:background="@color/colorRouletteBackground">
+        android:background="@color/colorBackground">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_all_roulette_operators"
