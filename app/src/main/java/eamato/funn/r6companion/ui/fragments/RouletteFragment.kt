@@ -4,8 +4,10 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -95,6 +97,10 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         rv_all_roulette_operators.setOnItemClickListener(allOperatorsRouletteClickListener)
 
         btn_roll.setOnClickListener {
+            context?.let { nonNullContext ->
+                val inputManager = ContextCompat.getSystemService(nonNullContext, InputMethodManager::class.java)
+                inputManager?.hideSoftInputFromWindow(it.windowToken, 0)
+            }
             rouletteViewModel.roll()
         }
     }
