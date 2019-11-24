@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "164570248480",
+    "firebase_url": "https://r6companion-c0540.firebaseio.com",
+    "project_id": "r6companion-c0540",
+    "storage_bucket": "r6companion-c0540.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164570248480:android:010e0a2c1d92a3ef605345",
+        "android_client_info": {
+          "package_name": "eamato.funn.r6companion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164570248480-9tns0qnnd6qsrvk7cgtprlnur3gcpsvd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eamato.funn.r6companion",
+            "certificate_hash": "9e7313d1532a00aa81763de9990bb34876fa884e"
+          }
+        },
+        {
+          "client_id": "164570248480-2uud4bn2ltnl5ll4rggrq7rqodf7blq5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGHzz4QhIQMU6YVrOPe8EUlfm9DHsNpjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164570248480-2uud4bn2ltnl5ll4rggrq7rqodf7blq5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
