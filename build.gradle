@@ -11,6 +11,7 @@ buildscript {
     ext.firebasecore_version = '17.2.1'
     ext.firebasecrashlytics_version = '2.10.1'
     ext.firebaseanalytics_version = "17.2.1"
+    ext.firebaseremoteconfig_version = "19.0.3"
 
     repositories {
         google()
