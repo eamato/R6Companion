@@ -9,8 +9,8 @@ buildscript {
     ext.retrofit_version = '2.6.1'
     ext.googleservices_version = '4.3.3'
     ext.firebasecore_version = '17.2.1'
-    ext.firebasecrashlitics_version = '2.10.1'
-    ext.firebaseanalitics_version = "17.2.1"
+    ext.firebasecrashlytics_version = '2.10.1'
+    ext.firebaseanalytics_version = "17.2.1"
 
     repositories {
         google()
