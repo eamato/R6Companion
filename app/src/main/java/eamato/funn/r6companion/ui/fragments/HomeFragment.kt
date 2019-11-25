@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 
 class HomeFragment : BaseFragment() {
 

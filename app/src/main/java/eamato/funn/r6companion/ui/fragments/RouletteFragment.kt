@@ -12,10 +12,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
+import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.viewmodels.RouletteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -68,7 +70,8 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                     val action = RouletteFragmentDirections.actionRouletteFragmentToRouletteResultFragment(
                         nonNullRollingOperatorsAndWinner.second, nonNullRollingOperatorsAndWinner.first.toParcelableList()
                     )
-                    findNavController(R.id.fragment).navigate(action)
+                    if (findNavController().currentDestination?.id == R.id.rouletteFragment)
+                        findNavController().navigate(action)
                 }
             }
         })

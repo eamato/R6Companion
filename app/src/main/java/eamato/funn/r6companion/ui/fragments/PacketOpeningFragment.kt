@@ -13,6 +13,7 @@ import androidx.core.graphics.BitmapCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.open_pack.*
 import eamato.funn.r6companion.viewmodels.RouletteResultPacketOpeningCommonViewModel
 import io.reactivex.Flowable
@@ -122,7 +123,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
                         }
                     })
 
-                    pb_waiting.hide()
+                    pb_waiting?.hide()
 
                     val myGestureDetectorImplementation2 =
                         MyGestureDetectorImplementation2(player2, canvasSize)
@@ -154,7 +155,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
     }
 
     private fun preparePlayer(surfaceHolder: SurfaceHolder): Player2? {
-        runOnUiThread { pb_waiting.show() }
+        runOnUiThread { pb_waiting?.show() }
         canvasSize = surfaceHolder.getCanvasMySize()
         draw(
             surfaceHolder,

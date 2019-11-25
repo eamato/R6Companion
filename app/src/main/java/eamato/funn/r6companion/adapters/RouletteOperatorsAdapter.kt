@@ -51,7 +51,7 @@ class RouletteOperatorsAdapter :
                 .transition(DrawableTransitionOptions.withCrossFade(500))
                 .listener(object : IDoAfterTerminateGlide {
                     override fun doAfterTerminate() {
-                        pb_waiting.hide()
+                        pb_waiting?.hide()
                     }
                 })
                 .dontAnimate()

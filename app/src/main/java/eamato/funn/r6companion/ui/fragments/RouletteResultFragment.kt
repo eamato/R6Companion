@@ -18,6 +18,7 @@ import eamato.funn.r6companion.adapters.SimpleOperatorsAdapter
 import kotlinx.android.synthetic.main.fragment_roulette_result.*
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.RouletteOperator
+import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.glide.GlideApp
 import eamato.funn.r6companion.utils.glide.ImageResizeTransformation
@@ -68,7 +69,7 @@ class RouletteResultFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pb_waiting.show()
+        pb_waiting?.show()
 
         arguments?.let { nonNullArguments ->
             val arguments = RouletteResultFragmentArgs.fromBundle(nonNullArguments)
@@ -88,7 +89,7 @@ class RouletteResultFragment : BaseFragment() {
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .listener(object : IDoAfterTerminateGlide {
                         override fun doAfterTerminate() {
-                            pb_waiting.hide()
+                            pb_waiting?.hide()
                         }
                     })
                     .dontAnimate()
@@ -171,7 +172,7 @@ class RouletteResultFragment : BaseFragment() {
                 }
             }
 
-        } ?: pb_waiting.hide()
+        } ?: pb_waiting?.hide()
     }
 
     override fun onPause() {
