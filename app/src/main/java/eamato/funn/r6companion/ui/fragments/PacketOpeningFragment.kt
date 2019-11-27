@@ -33,7 +33,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
     private val backgroundColor: Int by lazy {
         context?.let { nonNullContext ->
             ContextCompat.getColor(nonNullContext, R.color.colorBackground)
-        } ?: throw Exception("Invalid context")
+        } ?: Color.WHITE
     }
 
     private val res: Resources by lazy {
@@ -83,9 +83,8 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
         holder?.let { nonNullHolder ->
-            val f = Flowable.fromCallable {
-                preparePlayer(nonNullHolder)
-            }
+            val f = Flowable
+                .just(preparePlayer(nonNullHolder))
                 .subscribeOn(Schedulers.single())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap { player2 ->

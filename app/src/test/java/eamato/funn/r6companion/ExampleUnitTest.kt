@@ -6,6 +6,7 @@ import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.lang.NullPointerException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -480,6 +481,22 @@ class ExampleUnitTest {
             })
 
         countDownLatch.await()
+    }
+
+
+    private fun potentialErrorThrower(): String {
+        throw Exception("Ebati kopati")
+    }
+
+    @Test
+    fun flowableFromCallableTest() {
+        Flowable.fromCallable { potentialErrorThrower() }
+            .subscribe({
+                println("")
+                potentialErrorThrower()
+            }, {
+                it.message
+            })
     }
 
 }

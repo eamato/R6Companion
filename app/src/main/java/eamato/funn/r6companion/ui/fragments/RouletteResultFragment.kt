@@ -193,7 +193,7 @@ class RouletteResultFragment : BaseFragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
 
-        menu.findItem(R.id.screen_and_share).isVisible = rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value ?: false
+        menu.findItem(R.id.screen_and_share)?.isVisible = rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value ?: false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
