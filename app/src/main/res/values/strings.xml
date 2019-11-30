@@ -51,4 +51,5 @@
         \n\
         Explore this map in Australia’s Red Heart on our test server and submit your feedback on R6 Fix.
     </string>
+    <string name="default_notification_channel_id" translatable="false">default_notification_channel</string>
 </resources>

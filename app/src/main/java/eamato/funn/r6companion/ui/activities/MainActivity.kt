@@ -1,13 +1,16 @@
 package eamato.funn.r6companion.ui.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.iid.FirebaseInstanceId
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
 import eamato.funn.r6companion.viewmodels.MainViewModel
@@ -28,6 +31,20 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         mainViewModel
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("FirebaseInstance", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                val token = task.result?.token
+                if (token == null)
+                    Log.w("FirebaseInstance", "Token is null")
+                else
+                    Log.d("FirebaseInstance", token)
+            })
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

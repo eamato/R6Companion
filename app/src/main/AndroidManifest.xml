@@ -27,6 +27,25 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".firebase.services.FirebaseCloudMessagingService"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/colorAccent" />
+
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="@string/default_notification_channel_id" />
+
+        </service>
+
         <provider
             android:authorities="eamato.funn.r6companion.provider"
             android:name="androidx.core.content.FileProvider"
