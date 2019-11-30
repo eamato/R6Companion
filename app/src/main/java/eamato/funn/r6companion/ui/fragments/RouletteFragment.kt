@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import eamato.funn.r6companion.R
@@ -67,9 +66,8 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         rouletteViewModel.rollingOperatorsAndWinner.observe(this, Observer { rollingOperatorsAndWinner ->
             rollingOperatorsAndWinner?.let { nonNullRollingOperatorsAndWinner ->
                 activity?.run {
-                    val action = RouletteFragmentDirections.actionRouletteFragmentToRouletteResultFragment(
-                        nonNullRollingOperatorsAndWinner.second, nonNullRollingOperatorsAndWinner.first.toParcelableList()
-                    )
+                    mainViewModel.winnerCandidates.value = nonNullRollingOperatorsAndWinner.first
+                    val action = RouletteFragmentDirections.actionRouletteFragmentToRouletteResultFragment(nonNullRollingOperatorsAndWinner.second)
                     if (findNavController().currentDestination?.id == R.id.rouletteFragment)
                         findNavController().navigate(action)
                 }

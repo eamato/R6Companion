@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.entities.RouletteOperator
 import eamato.funn.r6companion.firebase.things.COMING_SOON_TEXT
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -15,6 +16,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val pFirebaseRemoteConfig = MutableLiveData<FirebaseRemoteConfig>()
     val observableFirebaseRemoteConfig: LiveData<FirebaseRemoteConfig> = pFirebaseRemoteConfig
+
+    val winnerCandidates = MutableLiveData<List<RouletteOperator>>(emptyList())
 
     init {
         firebaseRemoteConfig.setConfigSettingsAsync(

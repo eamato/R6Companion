@@ -60,20 +60,110 @@ class RouletteResultFragment : BaseFragment() {
                     cl_winner.visibility = View.GONE
             }
         })
+
+        mainViewModel.winnerCandidates.observe(this, Observer {
+            it?.let {
+                initSimpleOperatorsList(it.toMutableList())
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_roulette_result, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onPause() {
+        autoScroller?.stopAutoScroll()
 
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_roulette_result, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        menu.findItem(R.id.screen_and_share)?.isVisible = rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value ?: false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.screen_and_share -> {
+                context?.let { nonNullContext ->
+                    item.isVisible = false
+
+                    val screen = File(nonNullContext.filesDir, "winner_screen.jpeg")
+
+                    val handlerThread = HandlerThread("Background looper")
+                    if (!handlerThread.isAlive)
+                        handlerThread.start()
+                    val backgroundLooper = handlerThread.looper
+
+                    val displayMetrics = DisplayMetrics()
+                    ContextCompat.getSystemService(nonNullContext, WindowManager::class.java)
+                        ?.defaultDisplay
+                        ?.getMetrics(displayMetrics)
+
+                    val window = activity?.window
+                    val view = window?.decorView ?: cl_root
+
+                    compositeDisposable.add(
+                        createScreenshotAndGetItsUri(view, window, screen, displayMetrics)
+                            .subscribeOn(AndroidSchedulers.from(backgroundLooper))
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doAfterTerminate {
+                                handlerThread.quit()
+                                item.isVisible = true
+                            }
+                            .subscribe({
+                                try {
+                                    val screenUri = FileProvider.getUriForFile(
+                                        nonNullContext,
+                                        nonNullContext.applicationContext.packageName + ".provider",
+                                        it
+                                    )
+                                    val shareIntent = Intent().apply {
+                                        action = Intent.ACTION_SEND
+                                        type = "image/jpeg"
+                                        putExtra(Intent.EXTRA_STREAM, screenUri)
+                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    }
+                                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_with)))
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "Share error: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            }, {
+                                Toast.makeText(context, "Create screenshot error: ${it.message}", Toast.LENGTH_SHORT).show()
+                            })
+                    )
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun changePacketOpeningVisibility(isVisible: Boolean) {
+        val transaction = childFragmentManager.beginTransaction()
+        if (isVisible)
+            transaction.replace(R.id.fragment_packet_opening, packetOpeningFragment, PacketOpeningFragment.TAG)
+        else
+            transaction.remove(packetOpeningFragment)
+        transaction.commit()
+    }
+
+    private fun initSimpleOperatorsList(winnerCandidates: MutableList<RouletteOperator>) {
         pb_waiting?.show()
 
         arguments?.let { nonNullArguments ->
             val arguments = RouletteResultFragmentArgs.fromBundle(nonNullArguments)
-            val winnerCandidates = ArrayList(arguments.rollingOperators)
             val winner = arguments.rollingWinner
 
             tv_winner_name.text = winner.name
@@ -173,93 +263,6 @@ class RouletteResultFragment : BaseFragment() {
             }
 
         } ?: pb_waiting?.hide()
-    }
-
-    override fun onPause() {
-        autoScroller?.stopAutoScroll()
-
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_roulette_result, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-
-        menu.findItem(R.id.screen_and_share)?.isVisible = rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value ?: false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.screen_and_share -> {
-                context?.let { nonNullContext ->
-                    item.isVisible = false
-
-                    val screen = File(nonNullContext.filesDir, "winner_screen.jpeg")
-
-                    val handlerThread = HandlerThread("Background looper")
-                    if (!handlerThread.isAlive)
-                        handlerThread.start()
-                    val backgroundLooper = handlerThread.looper
-
-                    val displayMetrics = DisplayMetrics()
-                    ContextCompat.getSystemService(nonNullContext, WindowManager::class.java)
-                        ?.defaultDisplay
-                        ?.getMetrics(displayMetrics)
-
-                    val window = activity?.window
-                    val view = window?.decorView ?: cl_root
-
-                    compositeDisposable.add(
-                        createScreenshotAndGetItsUri(view, window, screen, displayMetrics)
-                            .subscribeOn(AndroidSchedulers.from(backgroundLooper))
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .doAfterTerminate {
-                                handlerThread.quit()
-                                item.isVisible = true
-                            }
-                            .subscribe({
-                                try {
-                                    val screenUri = FileProvider.getUriForFile(
-                                        nonNullContext,
-                                        nonNullContext.applicationContext.packageName + ".provider",
-                                        it
-                                    )
-                                    val shareIntent = Intent().apply {
-                                        action = Intent.ACTION_SEND
-                                        type = "image/jpeg"
-                                        putExtra(Intent.EXTRA_STREAM, screenUri)
-                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    }
-                                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_with)))
-                                } catch (e: Exception) {
-                                    Toast.makeText(context, "Share error: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
-                            }, {
-                                Toast.makeText(context, "Create screenshot error: ${it.message}", Toast.LENGTH_SHORT).show()
-                            })
-                    )
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun changePacketOpeningVisibility(isVisible: Boolean) {
-        val transaction = childFragmentManager.beginTransaction()
-        if (isVisible)
-            transaction.replace(R.id.fragment_packet_opening, packetOpeningFragment, PacketOpeningFragment.TAG)
-        else
-            transaction.remove(packetOpeningFragment)
-        transaction.commit()
     }
 
 }

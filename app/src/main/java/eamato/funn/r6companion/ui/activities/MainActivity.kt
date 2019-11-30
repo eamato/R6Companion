@@ -1,11 +1,13 @@
 package eamato.funn.r6companion.ui.activities
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.onNavDestinationSelected
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
 import eamato.funn.r6companion.viewmodels.MainViewModel
@@ -33,7 +35,14 @@ class MainActivity : BaseActivity() {
 
         setSupportActionBar(toolbar)
         NavigationUI.setupWithNavController(toolbar, navigationController)
-        bnv.setupWithNavController(navigationController)
+        bnv.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                if (navigationController.currentDestination?.id == item.itemId)
+                    return false
+                item.onNavDestinationSelected(navigationController)
+                return true
+            }
+        })
     }
 
 }

@@ -71,8 +71,12 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
     override fun onStart() {
         super.onStart()
 
-        sv_canvas.holder.addCallback(this)
-        sv_canvas.startAnimation(idlePacketAnimation)
+        if (!shouldDispatchTouchEvent)
+            onPlaybackFinished()
+        else {
+            sv_canvas.holder.addCallback(this)
+            sv_canvas.startAnimation(idlePacketAnimation)
+        }
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {}
@@ -84,7 +88,9 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
     override fun surfaceCreated(holder: SurfaceHolder?) {
         holder?.let { nonNullHolder ->
             val f = Flowable
-                .just(preparePlayer(nonNullHolder))
+                .fromCallable {
+                    preparePlayer(nonNullHolder)
+                }
                 .subscribeOn(Schedulers.single())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap { player2 ->
@@ -164,12 +170,14 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
             backgroundColor
         )
         val playlist = initPacketData()
-        return Player2(playlist) {
-            runOnUiThread {
-                sv_canvas.setOnTouchListener(null)
-                compositeDisposable.clear()
-                rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value = true
-            }
+        return Player2(playlist, this::onPlaybackFinished)
+    }
+
+    private fun onPlaybackFinished() {
+        runOnUiThread {
+            sv_canvas.setOnTouchListener(null)
+            compositeDisposable.clear()
+            rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value = true
         }
     }
 

@@ -52,10 +52,6 @@
             android:name="rolling_winner"
             app:argType="eamato.funn.r6companion.entities.RouletteOperator" />
 
-        <argument
-            android:name="rolling_operators"
-            app:argType="eamato.funn.r6companion.utils.ParcelableListOfRouletteOperators" />
-
     </fragment>
 
 </navigation>
