@@ -12,6 +12,8 @@ apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'io.fabric'
 
+apply plugin: 'com.google.firebase.firebase-perf'
+
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
@@ -129,6 +131,7 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:$firebaseanalytics_version"
     implementation "com.google.firebase:firebase-config:$firebaseremoteconfig_version"
     implementation "com.google.firebase:firebase-messaging:$firebasemessaging_version"
+    implementation "com.google.firebase:firebase-perf:$firebaseperf_version"
 
     /* Test dependencies */
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
