@@ -29,6 +29,8 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_roulette_result.pb_waiting
 import java.io.File
 
+private const val SCREEN_NAME = "Roulette result screen"
+
 class RouletteResultFragment : BaseFragment() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -148,6 +150,10 @@ class RouletteResultFragment : BaseFragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun logScreenView() {
+        super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
     private fun changePacketOpeningVisibility(isVisible: Boolean) {

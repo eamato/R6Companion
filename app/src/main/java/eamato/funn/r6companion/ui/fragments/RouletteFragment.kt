@@ -18,11 +18,14 @@ import eamato.funn.r6companion.adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
+import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import eamato.funn.r6companion.viewmodels.RouletteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_roulette.*
+
+private const val SCREEN_NAME = "Roulette screen"
 
 class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -192,7 +195,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                             .setMessage(R.string.save_confirmation_message)
                             .setPositiveButton(R.string.yes) { _, _ ->
                                 rouletteViewModel.saveSelectedOperators(
-                                    PreferenceManager.getDefaultSharedPreferences(context)
+                                    PreferenceManager.getDefaultSharedPreferences(nonNullContext)
                                 ) {
                                     activity?.invalidateOptionsMenu()
                                 }
@@ -213,7 +216,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                             .setMessage(R.string.delete_saved_confirmation_message)
                             .setPositiveButton(R.string.yes) { _, _ ->
                                 rouletteViewModel.deleteSavedSelectedOperators(
-                                    PreferenceManager.getDefaultSharedPreferences(context)
+                                    PreferenceManager.getDefaultSharedPreferences(nonNullContext)
                                 ) {
                                     activity?.invalidateOptionsMenu()
                                 }
@@ -256,6 +259,10 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
             rouletteViewModel.filter(nonNullQuery)
         } ?: rouletteViewModel.restore()
         return true
+    }
+
+    override fun logScreenView() {
+        super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
     private fun Bundle.restoreStateIfNeed() {

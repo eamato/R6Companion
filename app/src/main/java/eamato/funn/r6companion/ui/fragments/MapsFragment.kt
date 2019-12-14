@@ -10,6 +10,8 @@ import eamato.funn.r6companion.firebase.things.COMING_SOON_TEXT
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import kotlinx.android.synthetic.main.fragment_maps.*
 
+private const val SCREEN_NAME = "Maps screen"
+
 class MapsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +26,10 @@ class MapsFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_maps, container, false)
+    }
+
+    override fun logScreenView() {
+        super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
 }

@@ -44,7 +44,7 @@ val requestInterceptor = object : Interceptor {
         val newRequest = oldRequest
             .newBuilder()
             .url(url)
-            .addHeader("Test-Header", "Test")
+//            .addHeader("Test-Header", "Test")
             .build()
 
         return chain.proceed(newRequest)

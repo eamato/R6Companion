@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.entities.RouletteOperator
+import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
 import kotlinx.android.parcel.Parcelize
 import java.io.File
@@ -28,49 +29,6 @@ import java.io.FileOutputStream
 import kotlin.math.round
 
 const val saveSelectionsPreferencesKey = "save_selections"
-
-class RecyclerViewItemClickListener(
-    context: Context?,
-    private val recyclerView: RecyclerView,
-    private val onItemClickListener: OnItemClickListener
-) : RecyclerView.OnItemTouchListener {
-
-    private val gestureDetector =
-        GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapUp(e: MotionEvent?) = true
-            override fun onLongPress(e: MotionEvent?) {
-                e?.let { nonNullMotionEvent ->
-                    recyclerView.findChildViewUnder(nonNullMotionEvent.x, nonNullMotionEvent.y)
-                        ?.run {
-                            onItemClickListener.onItemLongClicked(
-                                this,
-                                recyclerView.getChildAdapterPosition(this)
-                            )
-                        }
-                }
-            }
-        })
-
-    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
-    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-        rv.findChildViewUnder(e.x, e.y)?.run {
-            if (!gestureDetector.onTouchEvent(e))
-                return false
-            onItemClickListener.onItemClicked(this, rv.getChildAdapterPosition(this))
-            return true
-        }
-        return false
-    }
-
-    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-
-    interface OnItemClickListener {
-        fun onItemClicked(view: View, position: Int)
-        fun onItemLongClicked(view: View, position: Int)
-    }
-
-}
 
 fun RecyclerView.setOnItemClickListener(listener: RecyclerViewItemClickListener) {
     this.removeOnItemTouchListener(listener)

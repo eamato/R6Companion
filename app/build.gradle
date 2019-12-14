@@ -131,7 +131,8 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:$firebaseanalytics_version"
     implementation "com.google.firebase:firebase-config:$firebaseremoteconfig_version"
     implementation "com.google.firebase:firebase-messaging:$firebasemessaging_version"
-    implementation "com.google.firebase:firebase-perf:$firebaseperf_version"
+    implementation "com.google.firebase:firebase-perf:$firebaseperformance_version"
+    implementation "com.google.firebase:firebase-inappmessaging-display:$firebaseinappmessaging_version"
 
     /* Test dependencies */
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

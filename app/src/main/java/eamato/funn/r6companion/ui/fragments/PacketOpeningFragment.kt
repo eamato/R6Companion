@@ -22,6 +22,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_packet_opening.*
 
+private const val SCREEN_NAME = "Packet opening screen"
+
 class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     companion object {
@@ -157,6 +159,10 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
                 })
             compositeDisposable.add(f)
         }
+    }
+
+    override fun logScreenView() {
+        super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
     private fun preparePlayer(surfaceHolder: SurfaceHolder): Player2? {

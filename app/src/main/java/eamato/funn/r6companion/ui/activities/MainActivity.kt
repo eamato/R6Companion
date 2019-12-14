@@ -10,10 +10,10 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.iid.FirebaseInstanceId
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
+import eamato.funn.r6companion.utils.notifications.R6NotificationManager
 import eamato.funn.r6companion.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -32,6 +32,12 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         mainViewModel
+
+        R6NotificationManager.createNotificationChannel(
+            context = this,
+            notificationChannelName = getString(R.string.notification_channel_name),
+            notificationChannelDescription = getString(R.string.notification_channel_description)
+        )
 
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->

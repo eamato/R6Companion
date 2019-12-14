@@ -10,6 +10,8 @@ import eamato.funn.r6companion.firebase.things.COMING_SOON_TEXT
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import kotlinx.android.synthetic.main.fragment_weapons.*
 
+private const val SCREEN_NAME = "Weapons screen"
+
 class WeaponsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +26,10 @@ class WeaponsFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_weapons, container, false)
+    }
+
+    override fun logScreenView() {
+        super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
 }

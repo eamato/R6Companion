@@ -24,3 +24,5 @@ const val API_KEY_PARAM_VALUE = "64c19539130f473083c4684dd5c9f1ee"
 const val CONNECTION_TIME_OUT = 2000L
 const val READ_TIME_OUT = 2000L
 const val WRITE_TIME_OUT = 2000L
+
+const val DEFAULT_NOTIFICATION_CHANNEL_ID = "default_notification_channel_id"
