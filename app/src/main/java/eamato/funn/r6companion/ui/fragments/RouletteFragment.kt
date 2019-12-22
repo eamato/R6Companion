@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import eamato.funn.r6companion.R
-import eamato.funn.r6companion.adapters.RouletteOperatorsAdapter
+import eamato.funn.r6companion.adapters.recycler_view_adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*

@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.firebase.things.COMING_SOON_TEXT
+import eamato.funn.r6companion.ui.fragments.abstracts.BaseCompanionFragment
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import kotlinx.android.synthetic.main.fragment_operators.*
 
 private const val SCREEN_NAME = "Operators screen"
 
-class OperatorsFragment : BaseFragment() {
+class OperatorsFragment : BaseCompanionFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,14 @@ class OperatorsFragment : BaseFragment() {
 
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
+    }
+
+    override fun getFragmentsTitle(): Int {
+        return R.string.operators_fragment_label
+    }
+
+    override fun getFragmentsIcon(): Int {
+        return R.drawable.ic_operators_24dp
     }
 
 }

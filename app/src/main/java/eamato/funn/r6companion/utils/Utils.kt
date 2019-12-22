@@ -12,6 +12,7 @@ import android.os.Handler
 import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,6 +55,18 @@ fun GridLayoutManager.isScrollable(dataSize: Int): Boolean {
 
 fun SharedPreferences.areThereSavedSelectedOperators(): Single<Boolean> {
     return Single.just(!this.getStringSet(saveSelectionsPreferencesKey, null).isNullOrEmpty())
+}
+
+fun SharedPreferences?.isDarkModeEnabled(): Boolean {
+    return this?.getBoolean(PREFERENCE_DARK_MODE_KEY, PREFERENCE_DARK_MODE_DEFAULT_VALUE)
+        ?: PREFERENCE_DARK_MODE_DEFAULT_VALUE
+}
+
+fun Boolean.setDarkMode() {
+    if (this)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    else
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 }
 
 fun List<Operators.Operator>.toRouletteOperators(): List<RouletteOperator> {

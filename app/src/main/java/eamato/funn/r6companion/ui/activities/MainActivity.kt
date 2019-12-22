@@ -2,19 +2,19 @@ package eamato.funn.r6companion.ui.activities
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
+import eamato.funn.r6companion.utils.isDarkModeEnabled
 import eamato.funn.r6companion.utils.notifications.R6NotificationManager
+import eamato.funn.r6companion.utils.setDarkMode
 import eamato.funn.r6companion.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        PreferenceManager.getDefaultSharedPreferences(this).isDarkModeEnabled().setDarkMode()
 
         mainViewModel
 
@@ -62,14 +62,15 @@ class MainActivity : BaseActivity() {
 
         setSupportActionBar(toolbar)
         NavigationUI.setupWithNavController(toolbar, navigationController)
-        bnv.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
-            override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                if (navigationController.currentDestination?.id == item.itemId)
-                    return false
-                item.onNavDestinationSelected(navigationController)
-                return true
-            }
-        })
+        bnv.setupWithNavController(navigationController) //TODO fix back press bug!
+//        bnv.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+//            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+//                if (navigationController.currentDestination?.id == item.itemId)
+//                    return false
+//                item.onNavDestinationSelected(navigationController)
+//                return true
+//            }
+//        })
     }
 
 }

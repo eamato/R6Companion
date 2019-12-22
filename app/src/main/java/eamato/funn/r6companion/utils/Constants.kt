@@ -26,3 +26,6 @@ const val READ_TIME_OUT = 2000L
 const val WRITE_TIME_OUT = 2000L
 
 const val DEFAULT_NOTIFICATION_CHANNEL_ID = "default_notification_channel_id"
+
+const val PREFERENCE_DARK_MODE_KEY = "dark_mode"
+const val PREFERENCE_DARK_MODE_DEFAULT_VALUE = false

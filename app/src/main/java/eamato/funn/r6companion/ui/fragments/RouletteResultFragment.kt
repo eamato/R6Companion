@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import eamato.funn.r6companion.adapters.SimpleOperatorsAdapter
+import eamato.funn.r6companion.adapters.recycler_view_adapters.SimpleOperatorsAdapter
 import kotlinx.android.synthetic.main.fragment_roulette_result.*
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.RouletteOperator

@@ -25,24 +25,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/operatorsFragment"
-        android:name="eamato.funn.r6companion.ui.fragments.OperatorsFragment"
-        android:label="@string/operators_fragment_label"
-        tools:layout="@layout/fragment_operators" />
-
-    <fragment
-        android:id="@+id/weaponsFragment"
-        android:name="eamato.funn.r6companion.ui.fragments.WeaponsFragment"
-        android:label="@string/weapons_fragment_label"
-        tools:layout="@layout/fragment_weapons" />
-
-    <fragment
-        android:id="@+id/mapsFragment"
-        android:name="eamato.funn.r6companion.ui.fragments.MapsFragment"
-        android:label="@string/maps_fragment_label"
-        tools:layout="@layout/fragment_maps" />
-
-    <fragment
         android:id="@+id/rouletteResultFragment"
         android:name="eamato.funn.r6companion.ui.fragments.RouletteResultFragment"
         android:label="@string/roulette_result_fragment_label"
@@ -58,5 +40,11 @@
         android:id="@+id/settingsFragment"
         android:name="eamato.funn.r6companion.ui.fragments.SettingsFragment"
         android:label="@string/settings_fragment_label" />
+
+    <fragment
+        android:id="@+id/companionFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.CompanionFragment"
+        android:label="@string/companion_fragment_label"
+        tools:layout="@layout/fragment_companion" />
 
 </navigation>

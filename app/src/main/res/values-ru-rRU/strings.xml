@@ -8,6 +8,7 @@
     <string name="maps_fragment_label">Карты</string>
     <string name="roulette_result_fragment_label">Результат рулетки</string>
     <string name="settings_fragment_label">Настройки</string>
+    <string name="companion_fragment_label">Компаньён</string>
 
     <string name="operator_img_description">Картинка оператора</string>
     <string name="operator_icon_description">Иконка оператора</string>
@@ -38,4 +39,6 @@
 
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+
+    <string name="enable_dark_mode">Включить тёмную тему</string>
 </resources>

@@ -8,6 +8,7 @@
     <string name="maps_fragment_label">Maps</string>
     <string name="roulette_result_fragment_label">Roulette result</string>
     <string name="settings_fragment_label">Settings</string>
+    <string name="companion_fragment_label">Companion</string>
 
     <string name="operator_img_description">Operator\'s image</string>
     <string name="operator_icon_description">Operator\'s icon</string>
@@ -38,6 +39,8 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <string name="enable_dark_mode">Enable dark mode</string>
     
     <string name="test_text" translatable="false">
         Rainbow Six goes to the land Down Under for Operation Burnt Horizon. Protection specialists with the SASR Mobility Platoon, Gridlock and Mozzie are assigned protection detail for a high-value convoy across sunburnt country. An unscheduled pit stop at a lonely petrol station turns into a standoff when their convoy is unexpectedly pinned down. Discover the new Outback service station map, where the red desert brings plenty of heat. Find more details in the full Patch Notes below, as well as many gameplay fixes implemented this Season.
@@ -55,4 +58,6 @@
     <string name="default_notification_channel_id" translatable="false">default_notification_channel</string>
     <string name="notification_channel_name" translatable="false">Notification channel name</string>
     <string name="notification_channel_description" translatable="false">Notification channel description</string>
+
+    <string name="preference_key_dark_mode" translatable="false">dark_mode</string>
 </resources>

@@ -1,4 +1,4 @@
-package eamato.funn.r6companion.adapters
+package eamato.funn.r6companion.adapters.recycler_view_adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +18,9 @@ class SimpleOperatorsAdapter :
     ListAdapter<RouletteOperator, SimpleOperatorsAdapter.SimpleOperatorsViewHolder>(RouletteOperator.ROULETTE_OPERATOR_DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleOperatorsViewHolder {
-        return SimpleOperatorsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.simple_operator_row, parent, false))
+        return SimpleOperatorsViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.simple_operator_row, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: SimpleOperatorsViewHolder, position: Int) {

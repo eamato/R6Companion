@@ -1,4 +1,4 @@
-package eamato.funn.r6companion.adapters
+package eamato.funn.r6companion.adapters.recycler_view_adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +20,11 @@ class RouletteOperatorsAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouletteOperatorsViewHolder {
         return RouletteOperatorsViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.roulette_operator_row, parent, false)
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.roulette_operator_row,
+                parent,
+                false
+            )
         )
     }
 
