@@ -7,6 +7,7 @@
     <string name="weapons_fragment_label">Оружия</string>
     <string name="maps_fragment_label">Карты</string>
     <string name="roulette_result_fragment_label">Результат рулетки</string>
+    <string name="settings_fragment_label">Настройки</string>
 
     <string name="operator_img_description">Картинка оператора</string>
     <string name="operator_icon_description">Иконка оператора</string>

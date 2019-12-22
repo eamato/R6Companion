@@ -7,6 +7,7 @@
     <string name="weapons_fragment_label">Weapons</string>
     <string name="maps_fragment_label">Maps</string>
     <string name="roulette_result_fragment_label">Roulette result</string>
+    <string name="settings_fragment_label">Settings</string>
 
     <string name="operator_img_description">Operator\'s image</string>
     <string name="operator_icon_description">Operator\'s icon</string>

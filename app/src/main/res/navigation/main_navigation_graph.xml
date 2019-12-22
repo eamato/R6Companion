@@ -54,4 +54,9 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.SettingsFragment"
+        android:label="@string/settings_fragment_label" />
+
 </navigation>

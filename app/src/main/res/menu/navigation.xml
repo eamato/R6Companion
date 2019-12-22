@@ -26,4 +26,9 @@
         android:icon="@drawable/ic_map_24dp"
         android:title="@string/maps_fragment_label" />
 
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="@string/settings_fragment_label" />
+
 </menu>
