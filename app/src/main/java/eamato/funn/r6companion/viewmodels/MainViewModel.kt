@@ -19,6 +19,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val winnerCandidates = MutableLiveData<List<RouletteOperator>>(emptyList())
 
+    private val pIlluminationLevel = MutableLiveData<Float?>(null)
+    val illuminationLevel: LiveData<Float?> = pIlluminationLevel
+
     init {
         firebaseRemoteConfig.setConfigSettingsAsync(
             FirebaseRemoteConfigSettings
@@ -37,6 +40,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     pFirebaseRemoteConfig.value = firebaseRemoteConfig
             }
 
+    }
+
+    fun updateIlluminationLevel(currentIlluminationLevel: Float?) {
+        pIlluminationLevel.value = currentIlluminationLevel
     }
 
 }
