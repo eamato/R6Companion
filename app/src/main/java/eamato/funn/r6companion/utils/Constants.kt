@@ -21,11 +21,19 @@ const val SOURCES_PATH = "/v2/sources"
 const val API_KEY_PARAM_KEY = "apiKey"
 const val API_KEY_PARAM_VALUE = "64c19539130f473083c4684dd5c9f1ee"
 
-const val CONNECTION_TIME_OUT = 2000L
-const val READ_TIME_OUT = 2000L
-const val WRITE_TIME_OUT = 2000L
+const val CONNECTION_TIME_OUT = 2 * 1000L
+const val READ_TIME_OUT = 2 * 1000L
+const val WRITE_TIME_OUT = 2 * 1000L
 
 const val DEFAULT_NOTIFICATION_CHANNEL_ID = "default_notification_channel_id"
 
 const val PREFERENCE_DARK_MODE_KEY = "dark_mode"
-const val PREFERENCE_DARK_MODE_DEFAULT_VALUE = false
+const val PREFERENCE_DARK_MODE_VALUE_OFF = "dm_off"
+const val PREFERENCE_DARK_MODE_VALUE_ON = "dm_on"
+const val PREFERENCE_DARK_MODE_VALUE_ADAPTIVE = "dm_adaptive"
+const val PREFERENCE_DARK_MODE_DEFAULT_VALUE = PREFERENCE_DARK_MODE_VALUE_OFF
+const val PREFERENCE_ILLUMINATION_THRESHOLD_KEY = "illumination_threshold"
+
+const val DARK_MODE_ADAPTIVE_THRESHOLD = 1000
+
+const val DARK_MODE_SWITCHER_DELAY = 2 * 1000L

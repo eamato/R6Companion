@@ -57,16 +57,22 @@ fun SharedPreferences.areThereSavedSelectedOperators(): Single<Boolean> {
     return Single.just(!this.getStringSet(saveSelectionsPreferencesKey, null).isNullOrEmpty())
 }
 
-fun SharedPreferences?.isDarkModeEnabled(): Boolean {
-    return this?.getBoolean(PREFERENCE_DARK_MODE_KEY, PREFERENCE_DARK_MODE_DEFAULT_VALUE)
+fun SharedPreferences?.getDarkMode(): String {
+    return this?.getString(PREFERENCE_DARK_MODE_KEY, PREFERENCE_DARK_MODE_DEFAULT_VALUE)
         ?: PREFERENCE_DARK_MODE_DEFAULT_VALUE
 }
 
-fun Boolean.setDarkMode() {
-    if (this)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-    else
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+fun SharedPreferences?.getDarkModeIlluminationThreshold(): Int {
+    return this?.getInt(PREFERENCE_ILLUMINATION_THRESHOLD_KEY, DARK_MODE_ADAPTIVE_THRESHOLD)
+        ?: DARK_MODE_ADAPTIVE_THRESHOLD
+}
+
+fun String.setDarkMode() {
+    when (this) {
+        PREFERENCE_DARK_MODE_VALUE_OFF -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        PREFERENCE_DARK_MODE_VALUE_ON -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        PREFERENCE_DARK_MODE_VALUE_ADAPTIVE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_UNSPECIFIED)
+    }
 }
 
 fun List<Operators.Operator>.toRouletteOperators(): List<RouletteOperator> {

@@ -40,5 +40,10 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
 
-    <string name="enable_dark_mode">Включить тёмную тему</string>
+    <string name="dark_mode">Тёмная тема</string>
+    <string name="dark_mode_off">Тёмная тема всегда выключена</string>
+    <string name="dark_mode_on">Тёмная тема всегда включена</string>
+    <string name="dark_mode_adaptive">Адаптивная (Зависит от освещённости)</string>
+    <string name="illumination_calibration">Калибровка освещённости</string>
+    <string name="illumination_calibration_summary">Выберите значение которое будет использоваться как порог освещённости в ключения тёмной темы</string>
 </resources>

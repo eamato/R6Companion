@@ -2,9 +2,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreferenceCompat
+    <ListPreference
         app:key="@string/preference_key_dark_mode"
-        app:title="@string/enable_dark_mode"
-        app:defaultValue="false" />
+        app:defaultValue="dm_off"
+        app:summary="%s"
+        android:title="@string/dark_mode"
+        android:entries="@array/dark_modes"
+        android:entryValues="@array/dark_modes_values" />
+
+    <SeekBarPreference
+        app:key="@string/preference_key_illumination_threshold"
+        app:defaultValue="1000"
+        android:title="@string/illumination_calibration"
+        app:summary="@string/illumination_calibration_summary"
+        app:showSeekBarValue="true"
+        android:max="2000"
+        app:min="0" />
 
 </PreferenceScreen>

@@ -2,10 +2,10 @@ package eamato.funn.r6companion.ui.fragments
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.preference.Preference
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.ui.fragments.abstracts.BasePreferenceFragment
-import eamato.funn.r6companion.utils.isDarkModeEnabled
-import eamato.funn.r6companion.utils.setDarkMode
+import eamato.funn.r6companion.utils.*
 
 private const val SCREEN_NAME = "Settings screen"
 
@@ -13,6 +13,7 @@ class SettingsFragment : BasePreferenceFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
+        hideIlluminationThresholdCalibrationIfNeeded()
     }
 
     override fun logScreenView() {
@@ -20,7 +21,23 @@ class SettingsFragment : BasePreferenceFragment() {
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        sharedPreferences.isDarkModeEnabled().setDarkMode()
+        when (key) {
+            PREFERENCE_DARK_MODE_KEY -> {
+                sharedPreferences.getDarkMode().setDarkMode()
+                hideIlluminationThresholdCalibrationIfNeeded()
+            }
+        }
+    }
+
+    private fun hideIlluminationThresholdCalibrationIfNeeded() {
+        findPreference<Preference>(PREFERENCE_ILLUMINATION_THRESHOLD_KEY)
+            ?.let { nonNullIlluminationCalibration ->
+                nonNullIlluminationCalibration.isVisible = preferenceManager
+                    .sharedPreferences
+                    .getString(
+                        PREFERENCE_DARK_MODE_KEY, PREFERENCE_DARK_MODE_DEFAULT_VALUE
+                    ) == PREFERENCE_DARK_MODE_VALUE_ADAPTIVE
+            }
     }
 
 }

@@ -5,14 +5,14 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
-import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
@@ -22,13 +22,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
-import eamato.funn.r6companion.utils.isDarkModeEnabled
+import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.notifications.R6NotificationManager
-import eamato.funn.r6companion.utils.setDarkMode
 import eamato.funn.r6companion.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
+
+    private var applyIlluminationSensorValue = true
 
     private val mainViewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -48,7 +49,8 @@ class MainActivity : BaseActivity() {
         }
 
         override fun onSensorChanged(event: SensorEvent?) {
-            mainViewModel.updateIlluminationLevel(event?.values?.get(0))
+            if (applyIlluminationSensorValue)
+                mainViewModel.updateIlluminationLevel(event?.values?.get(0))
         }
     }
 
@@ -56,9 +58,28 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        PreferenceManager.getDefaultSharedPreferences(this).isDarkModeEnabled().setDarkMode()
+        PreferenceManager.getDefaultSharedPreferences(this).getDarkMode().setDarkMode()
 
-        mainViewModel
+        mainViewModel.illuminationLevel.observe(this, Observer {
+            it?.let { nonNullIlluminationLevel ->
+                with (PreferenceManager.getDefaultSharedPreferences(this)) {
+                    getDarkMode()
+                        .takeIf { darkMode -> darkMode == PREFERENCE_DARK_MODE_VALUE_ADAPTIVE }
+                        ?.let {
+                            if (nonNullIlluminationLevel > getDarkModeIlluminationThreshold())
+                                PREFERENCE_DARK_MODE_VALUE_OFF.setDarkMode()
+                            else
+                                PREFERENCE_DARK_MODE_VALUE_ON.setDarkMode()
+                        }
+                        ?.also {
+                            applyIlluminationSensorValue = false
+                            Handler().postDelayed({
+                                applyIlluminationSensorValue = true
+                            }, DARK_MODE_SWITCHER_DELAY)
+                        }
+                }
+            }
+        })
 
         R6NotificationManager.createNotificationChannel(
             context = this,
@@ -84,7 +105,7 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         sensorManager?.getDefaultSensor(Sensor.TYPE_LIGHT)?.let { nonNullSensor ->
-            sensorManager?.registerListener(sensorEventListener, nonNullSensor, SensorManager.SENSOR_DELAY_FASTEST)
+            sensorManager?.registerListener(sensorEventListener, nonNullSensor, SensorManager.SENSOR_DELAY_UI)
         }
     }
 

@@ -40,24 +40,17 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <string name="enable_dark_mode">Enable dark mode</string>
-    
-    <string name="test_text" translatable="false">
-        Rainbow Six goes to the land Down Under for Operation Burnt Horizon. Protection specialists with the SASR Mobility Platoon, Gridlock and Mozzie are assigned protection detail for a high-value convoy across sunburnt country. An unscheduled pit stop at a lonely petrol station turns into a standoff when their convoy is unexpectedly pinned down. Discover the new Outback service station map, where the red desert brings plenty of heat. Find more details in the full Patch Notes below, as well as many gameplay fixes implemented this Season.
-        \n\n
-        Joining Operation Burnt Horizon are two Aussies, Gridlock and Mozzie.When the Season launches, Season Pass owners can unlock these new Operators immediately and gain exclusive access for seven days. All players can unlock these Operators with Renown or R6 Credits once those seven days have passed.
-        \n\n
-        Welcome to the Outback! This map kicks dust in your eyes in its homage to all the lonely service stations and motels along the forgotten highways that cross Australia’s desert. Fan favourites Oregon and Clubhouse were the inspiration when designing the 21st map of the game.
-        \n\n
-        The map is divided into three distinct sections – the Garage, the Motel, and the Restaurant – with much effort put into ensuring each section is recognisable, even from a distance.
-        \n\n
-        The focus returns to a style of gameplay that players have enjoyed in the past. There’s only one door between each of the sections but roamers can create new paths by destroying walls, and there’s always the option of changing floors as a flanking strategy. It’s a medium-sized map, so players won’t need to go far to find alternative routes. Packed with twists, turns, and Australiana, Outback is filled with unexpected corners and souvenirs from the Great Southern Land.
-        \n\
-        Explore this map in Australia’s Red Heart on our test server and submit your feedback on R6 Fix.
-    </string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="dark_mode_off">Dark mode always off</string>
+    <string name="dark_mode_on">Dark mode always on</string>
+    <string name="dark_mode_adaptive">Adaptive (Depends on surrounding illumination)</string>
+    <string name="illumination_calibration">Illumination calibration</string>
+    <string name="illumination_calibration_summary">Select value to be used as illumination threshold for enabling dark mode</string>
+
     <string name="default_notification_channel_id" translatable="false">default_notification_channel</string>
     <string name="notification_channel_name" translatable="false">Notification channel name</string>
     <string name="notification_channel_description" translatable="false">Notification channel description</string>
 
     <string name="preference_key_dark_mode" translatable="false">dark_mode</string>
+    <string name="preference_key_illumination_threshold" translatable="false">illumination_threshold</string>
 </resources>
