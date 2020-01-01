@@ -7,12 +7,14 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
@@ -119,18 +121,28 @@ class MainActivity : BaseActivity() {
 
         setSupportActionBar(toolbar)
         NavigationUI.setupWithNavController(toolbar, navigationController)
+        navigationController.addOnDestinationChangedListener { _, destination, _ ->
+            bnv.menu.forEach {
+                if (destination.matchMenuDestination(it.itemId))
+                    it.isChecked = true
+            }
+        }
         bnv.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 if (navigationController.currentDestination?.id == item.itemId)
                     return false
-                bnv.menu.forEach {
-                    it.isChecked = false
-                }
-                item.isChecked = true
                 item.onNavDestinationSelected(navigationController)
                 return true
             }
         })
+    }
+
+    private fun NavDestination.matchMenuDestination(menuItemId: Int): Boolean {
+        var currentDestination: NavDestination? = this
+        while (currentDestination != null && currentDestination.id != menuItemId && currentDestination.parent != null) {
+            currentDestination = currentDestination.parent
+        }
+        return currentDestination?.id == menuItemId
     }
 
 }
