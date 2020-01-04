@@ -1,254 +1,264 @@
 {
   "operators": [
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-operators-list-warden_349633.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-list-wamai_358318.png",
+      "name": "Wamai",
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-badge-wamai_358314.png"
+    },
+    {
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-list-kali_358317.png",
+      "name": "Kali",
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-badge-kali_358313.png"
+    },
+    {
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-list-warden_349633.png",
       "name": "Warden",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-operators-badge-warden_349635.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-badge-warden_349635.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-operators-list-nokk_349632.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-list-nokk_349632.png",
       "name": "Nøkk",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-operators-badge-nokk_349634.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-badge-nokk_349634.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-operators-list-goyo_353749.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-list-goyo_353749.png",
       "name": "Goyo",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-emberrise-badge-goyo_353744.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-emberrise-badge-goyo_353744.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-operators-list-amaru_353748.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-list-amaru_353748.png",
       "name": "Amaru",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-us\/game\/rainbow6\/siege-v3\/r6-emberrise-badge-amaru_353745.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-emberrise-badge-amaru_353745.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-mozzie_343537.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-mozzie_343537.png",
       "name": "Mozzie",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-mozzie_343389.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-mozzie_343389.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-gridlock_343536.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-gridlock_343536.png",
       "name": "Gridlock",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-gridlock_343369.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-gridlock_343369.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-nomad_339957.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-nomad_339957.png",
       "name": "Nomad",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-nomad_339958.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-nomad_339958.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-kaid_339956.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-kaid_339956.png",
       "name": "Kaid",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-kaid_340015.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-kaid_340015.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-clash_332946.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-clash_332946.png",
       "name": "Clash",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-clash_332735.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-clash_332735.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-maverick_332583.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-maverick_332583.png",
       "name": "Maverick",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-maverick_332733.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-maverick_332733.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-maestro_324448.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-maestro_324448.png",
       "name": "Maestro",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-maestro_324450.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-maestro_324450.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-alibi_324447.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-alibi_324447.png",
       "name": "Alibi",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-alibi_324449.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-alibi_324449.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-lion_319121.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-lion_319121.png",
       "name": "Lion",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-lion.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-lion.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-finka_319120.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-finka_319120.png",
       "name": "Finka",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-finka.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-finka.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-vigil_317287.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-vigil_317287.png",
       "name": "Vigil",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operator-vigil-badges_307135.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operator-vigil-badges_307135.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-dokkaebi_317263.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-dokkaebi_317263.png",
       "name": "Dokkaebi",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6_operator_dokkaebi_badge_307134.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6_operator_dokkaebi_badge_307134.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-zofia_317289.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-zofia_317289.png",
       "name": "Zofia",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/zofia_badge_306416.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/zofia_badge_306416.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-ela_317265.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-ela_317265.png",
       "name": "Ela",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-ela_301983.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-ela_301983.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-ying_317288.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-ying_317288.png",
       "name": "Ying",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-blood-orchid-badge-ying_298983.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-blood-orchid-badge-ying_298983.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-lesion_317274.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-lesion_317274.png",
       "name": "Lesion",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-blood-orchid-badge-lesion_298982.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-blood-orchid-badge-lesion_298982.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-mira_317275.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-mira_317275.png",
       "name": "Mira",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-velvet-shell-badge-mira_282826.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-velvet-shell-badge-mira_282826.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-jackal_317271.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-jackal_317271.png",
       "name": "Jackal",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-velvet-shell-badge-jackal_282825.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-velvet-shell-badge-jackal_282825.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-hibana_317269.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-hibana_317269.png",
       "name": "Hibana",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-hibana_275569.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-hibana_275569.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-echo_317264.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-echo_317264.png",
       "name": "Echo",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-echo_275572.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-echo_275572.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-caveira_317261.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-caveira_317261.png",
       "name": "Caveira",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-caveira_263102.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-caveira_263102.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-capitao_317258.png",
-      "name": "Capit\u00e3o",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-capitao_263100.png"
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-capitao_317258.png",
+      "name": "Capitu00e3o",
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-capitao_263100.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-blackbeard_317255.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-blackbeard_317255.png",
       "name": "Blackbeard",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-blackbeard_250312.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-blackbeard_250312.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-valkyrie_317286.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-valkyrie_317286.png",
       "name": "Valkyrie",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-valkyrie_250313.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-valkyrie_250313.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-buck_317257.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-buck_317257.png",
       "name": "Buck",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-buck_237592.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-buck_237592.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-frost_317266.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-frost_317266.png",
       "name": "Frost",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-badge-frost_237595.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-badge-frost_237595.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-mute_317277.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-mute_317277.png",
       "name": "Mute",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-mute_229870.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-mute_229870.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-sledge_317280.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-sledge_317280.png",
       "name": "Sledge",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-sledge_229873.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-sledge_229873.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-smoke_317281.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-smoke_317281.png",
       "name": "Smoke",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-smoke_229874.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-smoke_229874.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-thatcher_317283.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-thatcher_317283.png",
       "name": "Thatcher",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-thatcher_229877.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-thatcher_229877.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-ash_317253.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-ash_317253.png",
       "name": "Ash",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-ash_229847.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-ash_229847.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-castle_317260.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-castle_317260.png",
       "name": "Castle",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-castle_229852.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-castle_229852.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-pulse_317278.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-pulse_317278.png",
       "name": "Pulse",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-pulse_229871.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-pulse_229871.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-thermite_317284.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-thermite_317284.png",
       "name": "Thermite",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-thermite_229878.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-thermite_229878.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-montagne_317276.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-montagne_317276.png",
       "name": "Montagne",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-montagne_229868.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-montagne_229868.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-twitch_317285.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-twitch_317285.png",
       "name": "Twitch",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-twitch_229879.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-twitch_229879.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-doc_317262.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-doc_317262.png",
       "name": "Doc",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-doc_229853.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-doc_229853.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-rook_317279.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-rook_317279.png",
       "name": "Rook",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-rook_229872.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-rook_229872.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-jager_317272.png",
-      "name": "J\u00e4ger",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-jager_229864.png"
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-jager_317272.png",
+      "name": "Ju00e4ger",
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-jager_229864.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-bandit_317254.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-bandit_317254.png",
       "name": "Bandit",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-bandit_229848.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-bandit_229848.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-blitz_317256.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-blitz_317256.png",
       "name": "Blitz",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-blitz_229849.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-blitz_229849.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-iq_317270.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-iq_317270.png",
       "name": "IQ",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-iq_229861.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-iq_229861.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-fuze_317267.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-fuze_317267.png",
       "name": "Fuze",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-fuze_229856.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-fuze_229856.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-glaz_317268.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-glaz_317268.png",
       "name": "Glaz",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-glaz_229859.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-glaz_229859.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-tachanka_317282.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-tachanka_317282.png",
       "name": "Tachanka",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-tachanka_229876.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-tachanka_229876.png"
     },
     {
-      "img_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege-v3\/r6-operators-list-kapkan_317273.png",
+      "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege-v3/r6-operators-list-kapkan_317273.png",
       "name": "Kapkan",
-      "operator_icon_link": "https:\/\/ubistatic19-a.akamaihd.net\/resource\/en-gb\/game\/rainbow6\/siege\/r6-operators-badge-kapkan_229866.png"
+      "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-gb/game/rainbow6/siege/r6-operators-badge-kapkan_229866.png"
     }
   ]
 }

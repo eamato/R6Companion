@@ -22,13 +22,13 @@
             <item
                 android:id="@+id/alphabetic_sort_ascending"
                 android:orderInCategory="102"
-                android:icon="@drawable/ic_sort_by_alpha_black_24dp"
+                android:icon="@drawable/ic_sort_by_alpha_white_24dp"
                 android:title="@string/alphabetic_sort_ascending" />
 
             <item
                 android:id="@+id/alphabetic_sort_descending"
                 android:orderInCategory="103"
-                android:icon="@drawable/ic_sort_by_alpha_black_24dp"
+                android:icon="@drawable/ic_sort_by_alpha_white_24dp"
                 android:title="@string/alphabetic_sort_descending" />
         </menu>
 

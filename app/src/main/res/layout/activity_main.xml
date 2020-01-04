@@ -18,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:theme="@style/AppTheme.Toolbar"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        tools:title="Title" />
 
     <fragment
         android:id="@+id/fragment"

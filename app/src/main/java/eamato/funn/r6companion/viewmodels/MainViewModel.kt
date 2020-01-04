@@ -22,6 +22,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val pIlluminationLevel = MutableLiveData<Float?>(null)
     val illuminationLevel: LiveData<Float?> = pIlluminationLevel
 
+    var applyIlluminationSensorValue = true
+
     init {
         firebaseRemoteConfig.setConfigSettingsAsync(
             FirebaseRemoteConfigSettings

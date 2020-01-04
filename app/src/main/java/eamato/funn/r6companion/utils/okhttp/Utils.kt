@@ -1,6 +1,7 @@
 package eamato.funn.r6companion.utils.okhttp
 
 import android.content.Context
+import androidx.preference.PreferenceManager
 import eamato.funn.r6companion.BuildConfig
 import eamato.funn.r6companion.utils.*
 import okhttp3.Interceptor
@@ -11,7 +12,10 @@ import java.util.concurrent.TimeUnit
 
 fun getWifiOnlyRequestInterceptor(context: Context) = object : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        return if (context.isCurrentlyConnectedNetworkWIFI())
+        return if (
+            context.isCurrentlyConnectedNetworkWIFI() ||
+            PreferenceManager.getDefaultSharedPreferences(context).getIsImageDownloadingViaMobileNetworkAllowed()
+        )
             chain.proceed(chain.request())
         else
             chain

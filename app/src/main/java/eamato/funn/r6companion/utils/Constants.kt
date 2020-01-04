@@ -27,12 +27,16 @@ const val WRITE_TIME_OUT = 2 * 1000L
 
 const val DEFAULT_NOTIFICATION_CHANNEL_ID = "default_notification_channel_id"
 
+const val PREFERENCE_SAVE_SELECTIONS_KEY = "save_selections"
 const val PREFERENCE_DARK_MODE_KEY = "dark_mode"
 const val PREFERENCE_DARK_MODE_VALUE_OFF = "dm_off"
 const val PREFERENCE_DARK_MODE_VALUE_ON = "dm_on"
 const val PREFERENCE_DARK_MODE_VALUE_ADAPTIVE = "dm_adaptive"
 const val PREFERENCE_DARK_MODE_DEFAULT_VALUE = PREFERENCE_DARK_MODE_VALUE_OFF
 const val PREFERENCE_ILLUMINATION_THRESHOLD_KEY = "illumination_threshold"
+const val PREFERENCE_USE_MOBILE_NETWORK_FOR_IMAGE_DOWNLOAD_KEY = "use_mobile_network_for_image_downloading"
+const val PREFERENCE_USE_MOBILE_NETWORK_FOR_IMAGE_DOWNLOAD_DEFAULT_VALUE = false
+const val PREFERENCE_ABOUT_KEY = "about"
 
 const val DARK_MODE_ADAPTIVE_THRESHOLD = 1000
 

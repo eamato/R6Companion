@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import eamato.funn.r6companion.entities.RouletteOperator
 import eamato.funn.r6companion.repositories.OperatorsRepository
 import eamato.funn.r6companion.utils.areThereSavedSelectedOperators
-import eamato.funn.r6companion.utils.saveSelectionsPreferencesKey
+import eamato.funn.r6companion.utils.PREFERENCE_SAVE_SELECTIONS_KEY
 import eamato.funn.r6companion.utils.toRouletteOperators
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -126,7 +126,7 @@ class RouletteViewModel : ViewModel() {
                 .toObservable()
                 .flatMap {
                     if (it) {
-                        val savedSelectedOperators = preferences.getStringSet(saveSelectionsPreferencesKey, emptySet()) ?: emptySet()
+                        val savedSelectedOperators = preferences.getStringSet(PREFERENCE_SAVE_SELECTIONS_KEY, emptySet()) ?: emptySet()
                         Observable.fromIterable(immutableOperators).filter { operator ->
                             savedSelectedOperators.any { savedSelectedOperator ->
                                 savedSelectedOperator == operator.name
@@ -150,7 +150,7 @@ class RouletteViewModel : ViewModel() {
         immutableOperators.filter { it.isSelected }.takeIf { it.isNotEmpty() }?.let { nonNullSelectedOperators ->
             val selectedOperatorsNames = HashSet(nonNullSelectedOperators.map { it.name })
             preferences.edit()
-                .putStringSet(saveSelectionsPreferencesKey, selectedOperatorsNames)
+                .putStringSet(PREFERENCE_SAVE_SELECTIONS_KEY, selectedOperatorsNames)
                 .apply().also { doAfter?.invoke() }
         }
     }
@@ -161,7 +161,7 @@ class RouletteViewModel : ViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    preferences.edit().remove(saveSelectionsPreferencesKey).apply()
+                    preferences.edit().remove(PREFERENCE_SAVE_SELECTIONS_KEY).apply()
                     doAfter?.invoke()
                 }, {
                     it.printStackTrace()

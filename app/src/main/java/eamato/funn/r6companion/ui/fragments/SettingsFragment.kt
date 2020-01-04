@@ -2,6 +2,7 @@ package eamato.funn.r6companion.ui.fragments
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.ui.fragments.abstracts.BasePreferenceFragment
@@ -26,6 +27,16 @@ class SettingsFragment : BasePreferenceFragment() {
                 sharedPreferences.getDarkMode().setDarkMode()
                 hideIlluminationThresholdCalibrationIfNeeded()
             }
+        }
+    }
+
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        return when (preference?.key) {
+            PREFERENCE_ABOUT_KEY -> {
+                findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAboutFragment())
+                true
+            }
+            else -> super.onPreferenceTreeClick(preference)
         }
     }
 

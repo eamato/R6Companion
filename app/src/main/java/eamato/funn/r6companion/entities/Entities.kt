@@ -55,3 +55,7 @@ data class RouletteOperator(
     }
 
 }
+
+@Parcelize
+data class ParcelableListOfRouletteOperators(val rouletteOperators: List<RouletteOperator>) :
+    ArrayList<RouletteOperator>(rouletteOperators), Parcelable

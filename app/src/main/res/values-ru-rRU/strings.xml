@@ -9,6 +9,7 @@
     <string name="roulette_result_fragment_label">Результат рулетки</string>
     <string name="settings_fragment_label">Настройки</string>
     <string name="companion_fragment_label">Компаньён</string>
+    <string name="about_fragment_label">О приложении</string>
 
     <string name="operator_img_description">Картинка оператора</string>
     <string name="operator_icon_description">Иконка оператора</string>
@@ -46,4 +47,7 @@
     <string name="dark_mode_adaptive">Адаптивная (Зависит от освещённости)</string>
     <string name="illumination_calibration">Калибровка освещённости</string>
     <string name="illumination_calibration_summary">Выберите значение которое будет использоваться как порог освещённости в ключения тёмной темы</string>
+    <string name="use_mobile_network">Загружать картинки через мобильный интернет</string>
+    <string name="use_mobile_network_summary">Включите чтобы позволить загрузку картинок через мобильный интернет</string>
+    <string name="about">О приложении</string>
 </resources>

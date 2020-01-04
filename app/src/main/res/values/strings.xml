@@ -9,6 +9,7 @@
     <string name="roulette_result_fragment_label">Roulette result</string>
     <string name="settings_fragment_label">Settings</string>
     <string name="companion_fragment_label">Companion</string>
+    <string name="about_fragment_label">About</string>
 
     <string name="operator_img_description">Operator\'s image</string>
     <string name="operator_icon_description">Operator\'s icon</string>
@@ -46,6 +47,9 @@
     <string name="dark_mode_adaptive">Adaptive (Depends on surrounding illumination)</string>
     <string name="illumination_calibration">Illumination calibration</string>
     <string name="illumination_calibration_summary">Select value to be used as illumination threshold for enabling dark mode</string>
+    <string name="use_mobile_network">Load images with mobile network</string>
+    <string name="use_mobile_network_summary">Enable this to allow image downloading while using mobile network</string>
+    <string name="about">About</string>
 
     <string name="default_notification_channel_id" translatable="false">default_notification_channel</string>
     <string name="notification_channel_name" translatable="false">Notification channel name</string>
@@ -53,4 +57,6 @@
 
     <string name="preference_key_dark_mode" translatable="false">dark_mode</string>
     <string name="preference_key_illumination_threshold" translatable="false">illumination_threshold</string>
+    <string name="preference_key_use_mobile_network_for_image_downloading" translatable="false">use_mobile_network_for_image_downloading</string>
+    <string name="preference_key_about" translatable="false">about</string>
 </resources>

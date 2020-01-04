@@ -39,12 +39,22 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="eamato.funn.r6companion.ui.fragments.SettingsFragment"
-        android:label="@string/settings_fragment_label" />
+        android:label="@string/settings_fragment_label" >
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/companionFragment"
         android:name="eamato.funn.r6companion.ui.fragments.CompanionFragment"
         android:label="@string/companion_fragment_label"
         tools:layout="@layout/fragment_companion" />
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.AboutFragment"
+        tools:layout="@layout/fragment_about"
+        android:label="@string/about_fragment_label" />
 
 </navigation>

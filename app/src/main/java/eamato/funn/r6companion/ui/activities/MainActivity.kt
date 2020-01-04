@@ -7,14 +7,12 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
@@ -30,8 +28,6 @@ import eamato.funn.r6companion.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
-
-    private var applyIlluminationSensorValue = true
 
     private val mainViewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -51,7 +47,7 @@ class MainActivity : BaseActivity() {
         }
 
         override fun onSensorChanged(event: SensorEvent?) {
-            if (applyIlluminationSensorValue)
+            if (mainViewModel.applyIlluminationSensorValue)
                 mainViewModel.updateIlluminationLevel(event?.values?.get(0))
         }
     }
@@ -73,10 +69,11 @@ class MainActivity : BaseActivity() {
                             else
                                 PREFERENCE_DARK_MODE_VALUE_ON.setDarkMode()
                         }
+                        ?.takeIf { newModeApplied -> newModeApplied }
                         ?.also {
-                            applyIlluminationSensorValue = false
+                            mainViewModel.applyIlluminationSensorValue = false
                             Handler().postDelayed({
-                                applyIlluminationSensorValue = true
+                                mainViewModel.applyIlluminationSensorValue = true
                             }, DARK_MODE_SWITCHER_DELAY)
                         }
                 }
@@ -135,14 +132,6 @@ class MainActivity : BaseActivity() {
                 return true
             }
         })
-    }
-
-    private fun NavDestination.matchMenuDestination(menuItemId: Int): Boolean {
-        var currentDestination: NavDestination? = this
-        while (currentDestination != null && currentDestination.id != menuItemId && currentDestination.parent != null) {
-            currentDestination = currentDestination.parent
-        }
-        return currentDestination?.id == menuItemId
     }
 
 }
