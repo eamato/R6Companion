@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        app:key="@string/preference_key_dark_mode"
-        app:defaultValue="dm_off"
-        app:summary="%s"
-        android:title="@string/dark_mode"
-        app:icon="@drawable/ic_dark_theme"
         android:entries="@array/dark_modes"
-        android:entryValues="@array/dark_modes_values" />
+        android:entryValues="@array/dark_modes_values"
+        android:title="@string/dark_mode"
+        app:defaultValue="dm_off"
+        app:icon="@drawable/ic_dark_theme"
+        app:key="@string/preference_key_dark_mode"
+        app:summary="%s" />
 
     <SeekBarPreference
         app:key="@string/preference_key_illumination_threshold"
@@ -25,10 +26,12 @@
         app:key="@string/preference_key_use_mobile_network_for_image_downloading"
         app:defaultValue="false"
         android:title="@string/use_mobile_network"
-        app:summary="@string/use_mobile_network_summary" />
+        app:summary="@string/use_mobile_network_summary"
+        app:icon="@drawable/ic_mobile_data" />
 
     <Preference
         android:key="@string/preference_key_about"
-        android:title="@string/about" />
+        android:title="@string/about"
+        app:icon="@drawable/ic_info" />
 
 </PreferenceScreen>

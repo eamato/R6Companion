@@ -5,12 +5,14 @@
         <item>@string/dark_mode_off</item>
         <item>@string/dark_mode_on</item>
         <item>@string/dark_mode_adaptive</item>
+        <item>@string/dark_mode_set_by_battery_saver</item>
     </string-array>
 
     <string-array name="dark_modes_values">
         <item>dm_off</item>
         <item>dm_on</item>
         <item>dm_adaptive</item>
+        <item>dm_battery_saver</item>
     </string-array>
 
 </resources>

@@ -45,11 +45,16 @@
     <string name="dark_mode_off">Dark mode always off</string>
     <string name="dark_mode_on">Dark mode always on</string>
     <string name="dark_mode_adaptive">Adaptive (Depends on surrounding illumination)</string>
+    <string name="dark_mode_system_default">System default</string>
+    <string name="dark_mode_set_by_battery_saver">Set by battery saver</string>
     <string name="illumination_calibration">Illumination calibration</string>
     <string name="illumination_calibration_summary">Select value to be used as illumination threshold for enabling dark mode</string>
     <string name="use_mobile_network">Load images with mobile network</string>
     <string name="use_mobile_network_summary">Enable this to allow image downloading while using mobile network</string>
     <string name="about">About</string>
+    <string name="our_team">Our team</string>
+    <string name="mission">Mission</string>
+    <string name="mission_text">Mission large text, Mission large text, Mission large text, Mission large text\nMission large text, Mission large text, Mission large text, Mission large text</string>
 
     <string name="default_notification_channel_id" translatable="false">default_notification_channel</string>
     <string name="notification_channel_name" translatable="false">Notification channel name</string>

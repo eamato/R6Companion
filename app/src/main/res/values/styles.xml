@@ -28,12 +28,12 @@
     <style name="AppTheme.TitleStyle">
         <item name="android:textSize">@dimen/text_size_title</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorR6Text</item>
     </style>
 
     <style name="AppTheme.SubTitleStyle">
         <item name="android:textSize">@dimen/text_size_subtitle</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorR6Text</item>
     </style>
 
     <style name="AppTheme.CheckboxStyle" parent="Base.Theme.AppCompat">
@@ -43,7 +43,7 @@
 
     <style name="MyDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="dialogCornerRadius">@dimen/margin_8_dp</item>
-        <item name="android:textColorPrimary">@color/colorBlack</item>
+        <item name="android:textColorPrimary">@color/colorR6DialogTextColor</item>
         <item name="buttonBarButtonStyle">@style/MyDialogButtonTheme</item>
     </style>
 
@@ -53,6 +53,9 @@
 
     <style name="AppTheme.TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout.Colored">
         <item name="android:background">@color/colorPrimary</item>
+        <item name="tabIconTint">@drawable/tab_layout_colors_selector</item>
+        <item name="tabTextColor">@color/colorWhite</item>
+        <item name="tabIndicatorColor">@color/colorWhite</item>
     </style>
 
 </resources>

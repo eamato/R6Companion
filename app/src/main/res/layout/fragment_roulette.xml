@@ -37,7 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:enabled="@{safeUnbox(rouletteViewModel.canRoll)}"
             android:text="@string/roll"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorR6Text"
             android:background="@drawable/r6_styled_button_background"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#36A9E0</color>
-    <color name="colorPrimaryDark">#3095C6</color>
+    <color name="colorPrimaryDark">#007AAE</color>
     <color name="colorAccent">#237094</color>
 
     <color name="colorBackground">#E6F6EC</color>
     <color name="colorOperatorsCellBackground">#B8BFBB</color>
     <color name="colorCandidateBorder">#5F5F5F</color>
-    <color name="colorButtonBorder">#303030</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
@@ -18,11 +17,18 @@
     <color name="colorBlackSemiTransparent">#80000000</color>
     <color name="colorWhiteSemiTransparent">#80FFFFFF</color>
 
-    <color name="colorIconBlack">#FF000000</color>
+    <color name="colorTextBackground">#80000000</color>
+
     <color name="colorIconWhite">#FFFFFFFF</color>
 
     <color name="colorIconActive">#FFF9F0</color>
     <color name="colorIconInactive">#B1DAEE</color>
 
-    <color name="test">#3A9FD0</color>
+    <color name="colorR6Text">#36A9E0</color>
+    <color name="colorR6ButtonBorder">#36A9E0</color>
+    <color name="colorR6DialogTextColor">#000000</color>
+
+    <color name="colorCardBackground">#FFFFFF</color>
+
+    <color name="colorIconTint">#000000</color>
 </resources>

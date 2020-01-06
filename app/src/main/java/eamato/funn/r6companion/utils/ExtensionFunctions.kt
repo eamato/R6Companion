@@ -96,6 +96,22 @@ fun String.setDarkMode(): Boolean {
                 false
             }
         }
+        PREFERENCE_DARK_MODE_VALUE_SYSTEM_DEFAULT -> {
+            if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                true
+            } else {
+                false
+            }
+        }
+        PREFERENCE_DARK_MODE_VALUE_SET_BY_BATTERY_SAVER -> {
+            if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+                true
+            } else {
+                false
+            }
+        }
         else -> {
             false
         }
