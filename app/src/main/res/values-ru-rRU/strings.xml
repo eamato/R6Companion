@@ -10,9 +10,6 @@
     <string name="settings_fragment_label">Настройки</string>
     <string name="companion_fragment_label">Компаньён</string>
     <string name="about_fragment_label">О приложении</string>
-    <string name="our_team">Наша команда</string>
-    <string name="mission">Цель</string>
-    <string name="mission_text">Mission large text, Mission large text, Mission large text, Mission large text\nMission large text, Mission large text, Mission large text, Mission large text</string>
 
     <string name="operator_img_description">Картинка оператора</string>
     <string name="operator_icon_description">Иконка оператора</string>
@@ -55,4 +52,9 @@
     <string name="use_mobile_network">Загружать картинки через мобильный интернет</string>
     <string name="use_mobile_network_summary">Включите чтобы позволить загрузку картинок через мобильный интернет</string>
     <string name="about">О приложении</string>
+    <string name="our_team">Наша команда</string>
+    <string name="mission">Цель</string>
+    <string name="mission_text">Наша задача…</string>
+
+    <string name="language">ru</string>
 </resources>

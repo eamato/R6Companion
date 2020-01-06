@@ -43,3 +43,6 @@ const val PREFERENCE_ABOUT_KEY = "about"
 const val DARK_MODE_ADAPTIVE_THRESHOLD = 1000
 
 const val DARK_MODE_SWITCHER_DELAY = 2 * 1000L
+
+const val RUSSIAN_LANGUAGE_CODE = "ru"
+const val ENGLISH_LANGUAGE_CODE = "en"

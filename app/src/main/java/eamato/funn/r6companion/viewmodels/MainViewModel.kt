@@ -8,7 +8,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.RouletteOperator
-import eamato.funn.r6companion.firebase.things.COMING_SOON_TEXT
+import eamato.funn.r6companion.firebase.things.COMING_SOON_KEY
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -33,7 +33,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         )
 
         firebaseRemoteConfig.setDefaultsAsync(
-            mapOf(COMING_SOON_TEXT to application.getString(R.string.coming_soon))
+            mapOf(COMING_SOON_KEY to application.getString(R.string.coming_soon))
         )
 
         firebaseRemoteConfig.fetchAndActivate()

@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import eamato.funn.r6companion.R
-import eamato.funn.r6companion.firebase.things.COMING_SOON_TEXT
+import eamato.funn.r6companion.firebase.things.COMING_SOON_KEY
+import eamato.funn.r6companion.firebase.things.ComingSoon
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseCompanionFragment
-import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
-import eamato.funn.r6companion.utils.IGetFragmentsTitle
+import eamato.funn.r6companion.utils.getFirebaseRemoteConfigEntity
+import eamato.funn.r6companion.utils.getText
 import kotlinx.android.synthetic.main.fragment_maps.*
 
 private const val SCREEN_NAME = "Maps screen"
@@ -21,7 +22,12 @@ class MapsFragment : BaseCompanionFragment() {
 
         mainViewModel.observableFirebaseRemoteConfig.observe(this, Observer {
             it?.let { nonNullFirebaseRemoteConfig ->
-                tv_coming_soon_placeholder.text = nonNullFirebaseRemoteConfig.getString(COMING_SOON_TEXT)
+                nonNullFirebaseRemoteConfig.getString(COMING_SOON_KEY)
+                    .getFirebaseRemoteConfigEntity(ComingSoon::class.java)?.let { nonNullComingSoon ->
+                        context?.let { nonNullContext ->
+                            tv_coming_soon_placeholder?.text = nonNullComingSoon.getText(nonNullContext)
+                        }
+                    }
             }
         })
     }

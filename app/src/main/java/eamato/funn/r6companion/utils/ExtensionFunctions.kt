@@ -14,17 +14,23 @@ import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.os.ConfigurationCompat
 import androidx.navigation.NavDestination
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.entities.ParcelableListOfRouletteOperators
 import eamato.funn.r6companion.entities.RouletteOperator
+import eamato.funn.r6companion.firebase.things.ComingSoon
+import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
 import kotlin.math.round
 
 fun RecyclerView.setOnItemClickListener(listener: RecyclerViewItemClickListener) {
@@ -193,4 +199,19 @@ fun NavDestination.matchMenuDestination(menuItemId: Int): Boolean {
         currentDestination = currentDestination.parent
     }
     return currentDestination?.id == menuItemId
+}
+
+fun <T> String.getFirebaseRemoteConfigEntity(entityClass: Class<T>): T? {
+    return try {
+        Gson().fromJson(this, entityClass)
+    } catch (e: Exception) {
+        null
+    }
+}
+
+fun LocalizedRemoteConfigEntity.getText(context: Context): String {
+    return if (context.getString(R.string.language) == RUSSIAN_LANGUAGE_CODE)
+        ru ?: context.getString(R.string.coming_soon)
+    else
+        en ?: context.getString(R.string.coming_soon)
 }

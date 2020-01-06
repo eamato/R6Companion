@@ -63,6 +63,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8_dp"
                         android:layout_gravity="center_horizontal"
                         android:theme="@style/AppTheme.TitleStyle"
                         android:text="@string/our_team" />
@@ -70,7 +71,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_team"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp" />
+                        android:layout_height="300dp"
+                        android:layout_margin="@dimen/margin_8_dp" />
 
                 </LinearLayout>
 
@@ -97,16 +99,18 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8_dp"
                         android:layout_gravity="center_horizontal"
                         android:theme="@style/AppTheme.TitleStyle"
                         android:text="@string/mission" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_our_mission"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
                         android:theme="@style/AppTheme.SubTitleStyle"
-                        android:text="@string/mission_text" />
+                        android:text="@string/mission_text"
+                        android:layout_margin="@dimen/margin_8_dp" />
 
                 </LinearLayout>
 

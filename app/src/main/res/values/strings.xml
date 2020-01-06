@@ -54,7 +54,9 @@
     <string name="about">About</string>
     <string name="our_team">Our team</string>
     <string name="mission">Mission</string>
-    <string name="mission_text">Mission large text, Mission large text, Mission large text, Mission large text\nMission large text, Mission large text, Mission large text, Mission large text</string>
+    <string name="mission_text">Our mission…</string>
+
+    <string name="language">en</string>
 
     <string name="default_notification_channel_id" translatable="false">default_notification_channel</string>
     <string name="notification_channel_name" translatable="false">Notification channel name</string>
