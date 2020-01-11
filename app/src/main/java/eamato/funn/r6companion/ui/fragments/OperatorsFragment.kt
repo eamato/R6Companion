@@ -17,9 +17,15 @@ private const val SCREEN_NAME = "Operators screen"
 
 class OperatorsFragment : BaseCompanionFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_operators, container, false)
+    }
 
+    override fun logScreenView() {
+        super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
+    }
+
+    override fun setLiveDataObservers() {
         mainViewModel.observableFirebaseRemoteConfig.observe(this, Observer {
             it?.let { nonNullFirebaseRemoteConfig ->
                 nonNullFirebaseRemoteConfig.getString(COMING_SOON_KEY)
@@ -32,12 +38,8 @@ class OperatorsFragment : BaseCompanionFragment() {
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_operators, container, false)
-    }
+    override fun onLiveDataObserversSet() {
 
-    override fun logScreenView() {
-        super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
     override fun getFragmentsTitle(): Int {

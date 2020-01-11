@@ -15,26 +15,27 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_news_image"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:scaleType="fitStart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/tv_news_title"
+            app:layout_constraintDimensionRatio="2:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:src="@drawable/news_image_test" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_news_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/iv_news_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tv_news_subtitle"
             android:layout_margin="@dimen/margin_2_dp"
             android:padding="@dimen/margin_2_dp"
-            android:background="@color/colorWhiteSemiTransparent"
             style="@style/AppTheme.TitleStyle"
             tools:text="AVAILABLE FOR PRE-ORDER: THE SEASON 4 CHIBI COLLECTION HAS DROPPED!" />
 
@@ -42,14 +43,22 @@
             android:id="@+id/tv_news_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_news_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="@dimen/margin_4_dp"
             android:padding="@dimen/margin_4_dp"
-            android:background="@color/colorWhiteSemiTransparent"
             style="@style/AppTheme.SubTitleStyle"
             tools:text="Four new Chibis ready for action! Buy all four to get a FREE Gold Glaz Chibi!" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/clpb_news_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/iv_news_image"
+            app:layout_constraintEnd_toEndOf="@+id/iv_news_image"
+            style="?android:progressBarStyleSmall" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

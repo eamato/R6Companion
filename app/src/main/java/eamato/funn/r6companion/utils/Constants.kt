@@ -16,10 +16,12 @@ const val UN_EXISTENT_HOST = "https://unexisting.host.mne/"
 
 const val ROULETTE_SEARCH_QUERY_KEY = "searchViewQuery"
 
-const val NEWS_HOST = "https://newsapi.org"
-const val SOURCES_PATH = "/v2/sources"
-const val API_KEY_PARAM_KEY = "apiKey"
-const val API_KEY_PARAM_VALUE = "64c19539130f473083c4684dd5c9f1ee"
+const val NEWS_HOST = "http://13.59.232.121/"
+const val SOURCES_PATH = "news"
+const val NEWS_COUNT_PARAM_KEY = "news_count"
+const val NEWS_PAGE_PARAM_KEY = "page"
+const val NEWS_COUNT_MAX_VALUE = 100
+const val NEWS_COUNT_DEFAULT_VALUE = 30
 
 const val CONNECTION_TIME_OUT = 2 * 1000L
 const val READ_TIME_OUT = 2 * 1000L

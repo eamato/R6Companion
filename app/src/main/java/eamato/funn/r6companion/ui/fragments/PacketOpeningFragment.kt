@@ -165,6 +165,14 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
+    override fun setLiveDataObservers() {
+
+    }
+
+    override fun onLiveDataObserversSet() {
+
+    }
+
     private fun preparePlayer(surfaceHolder: SurfaceHolder): Player2? {
         runOnUiThread { pb_waiting?.show() }
         canvasSize = surfaceHolder.getCanvasMySize()

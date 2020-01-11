@@ -14,7 +14,6 @@ import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.core.os.ConfigurationCompat
 import androidx.navigation.NavDestination
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,23 +23,25 @@ import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.entities.ParcelableListOfRouletteOperators
 import eamato.funn.r6companion.entities.RouletteOperator
-import eamato.funn.r6companion.firebase.things.ComingSoon
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
 import java.io.File
 import java.io.FileOutputStream
-import java.util.*
 import kotlin.math.round
 
-fun RecyclerView.setOnItemClickListener(listener: RecyclerViewItemClickListener) {
-    this.removeOnItemTouchListener(listener)
-    this.addOnItemTouchListener(listener)
+fun RecyclerView?.setOnItemClickListener(listener: RecyclerViewItemClickListener) {
+    if (this == null)
+        return
+    removeOnItemTouchListener(listener)
+    addOnItemTouchListener(listener)
 }
 
-fun RecyclerView.setMyOnScrollListener(onScrollListener: RecyclerView.OnScrollListener) {
-    this.removeOnScrollListener(onScrollListener)
-    this.addOnScrollListener(onScrollListener)
+fun RecyclerView?.setMyOnScrollListener(onScrollListener: RecyclerView.OnScrollListener) {
+    if (this == null)
+        return
+    removeOnScrollListener(onScrollListener)
+    addOnScrollListener(onScrollListener)
 }
 
 fun LinearLayoutManager.isScrollable(dataSize: Int): Boolean {
@@ -211,7 +212,7 @@ fun <T> String.getFirebaseRemoteConfigEntity(entityClass: Class<T>): T? {
 
 fun LocalizedRemoteConfigEntity.getText(context: Context): String {
     return if (context.getString(R.string.language) == RUSSIAN_LANGUAGE_CODE)
-        ru ?: context.getString(R.string.coming_soon)
+        ru ?: ""
     else
-        en ?: context.getString(R.string.coming_soon)
+        en ?: ""
 }

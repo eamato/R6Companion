@@ -70,4 +70,8 @@ val defaultOkHttpClient = OkHttpClient
 fun getImageOkHttpClient(context: Context) = defaultOkHttpClient
     .newBuilder()
     .addInterceptor(getWifiOnlyRequestInterceptor(context))
+    .also {
+        if (BuildConfig.DEBUG)
+            it.addInterceptor(loginInterceptor)
+    }
     .build()

@@ -49,12 +49,16 @@
     <string name="dark_mode_set_by_battery_saver">Энергосберегающий</string>
     <string name="illumination_calibration">Калибровка освещённости</string>
     <string name="illumination_calibration_summary">Выберите значение которое будет использоваться как порог освещённости в ключения тёмной темы</string>
-    <string name="use_mobile_network">Загружать картинки через мобильный интернет</string>
+    <string name="use_mobile_network">Использовать мобильный интернет</string>
     <string name="use_mobile_network_summary">Включите чтобы позволить загрузку картинок через мобильный интернет</string>
     <string name="about">О приложении</string>
     <string name="our_team">Наша команда</string>
     <string name="mission">Цель</string>
     <string name="mission_text">Наша задача…</string>
+
+    <string name="an_error_occurred">Произошла ошибка</string>
+    <string name="retry">Повторить</string>
+    <string name="scroll_to_top">В начало</string>
 
     <string name="language">ru</string>
 </resources>

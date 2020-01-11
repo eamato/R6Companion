@@ -60,23 +60,6 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
         setHasOptionsMenu(true)
 
-        rouletteViewModel.visibleRouletteOperators.observe(this, Observer { rouletteOperators ->
-            rouletteOperators?.let { nonNullRouletteOperators ->
-                rouletteOperatorsAdapter.submitList(nonNullRouletteOperators)
-            }
-        })
-
-        rouletteViewModel.rollingOperatorsAndWinner.observe(this, Observer { rollingOperatorsAndWinner ->
-            rollingOperatorsAndWinner?.let { nonNullRollingOperatorsAndWinner ->
-                activity?.run {
-                    mainViewModel.winnerCandidates.value = nonNullRollingOperatorsAndWinner.first
-                    val action = RouletteFragmentDirections.actionRouletteFragmentToRouletteResultFragment(nonNullRollingOperatorsAndWinner.second)
-                    if (findNavController().currentDestination?.id == R.id.rouletteFragment)
-                        findNavController().navigate(action)
-                }
-            }
-        })
-
         savedInstanceState?.restoreStateIfNeed()
     }
 
@@ -263,6 +246,29 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
+    }
+
+    override fun setLiveDataObservers() {
+        rouletteViewModel.visibleRouletteOperators.observe(this, Observer { rouletteOperators ->
+            rouletteOperators?.let { nonNullRouletteOperators ->
+                rouletteOperatorsAdapter.submitList(nonNullRouletteOperators)
+            }
+        })
+
+        rouletteViewModel.rollingOperatorsAndWinner.observe(this, Observer { rollingOperatorsAndWinner ->
+            rollingOperatorsAndWinner?.let { nonNullRollingOperatorsAndWinner ->
+                activity?.run {
+                    mainViewModel.winnerCandidates.value = nonNullRollingOperatorsAndWinner.first
+                    val action = RouletteFragmentDirections.actionRouletteFragmentToRouletteResultFragment(nonNullRollingOperatorsAndWinner.second)
+                    if (findNavController().currentDestination?.id == R.id.rouletteFragment)
+                        findNavController().navigate(action)
+                }
+            }
+        })
+    }
+
+    override fun onLiveDataObserversSet() {
+
     }
 
     private fun Bundle.restoreStateIfNeed() {

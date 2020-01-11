@@ -119,12 +119,12 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         NavigationUI.setupWithNavController(toolbar, navigationController)
         navigationController.addOnDestinationChangedListener { _, destination, _ ->
-            bnv.menu.forEach {
+            bnv?.menu?.forEach {
                 if (destination.matchMenuDestination(it.itemId))
                     it.isChecked = true
             }
         }
-        bnv.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+        bnv?.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 if (navigationController.currentDestination?.id == item.itemId)
                     return false

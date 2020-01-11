@@ -1,12 +1,12 @@
 package eamato.funn.r6companion
 
+import eamato.funn.r6companion.utils.NEWS_COUNT_DEFAULT_VALUE
 import io.reactivex.Flowable
 import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 
 import org.junit.Assert.*
-import java.lang.NullPointerException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit

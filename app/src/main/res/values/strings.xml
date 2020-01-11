@@ -49,12 +49,16 @@
     <string name="dark_mode_set_by_battery_saver">Set by battery saver</string>
     <string name="illumination_calibration">Illumination calibration</string>
     <string name="illumination_calibration_summary">Select value to be used as illumination threshold for enabling dark mode</string>
-    <string name="use_mobile_network">Load images with mobile network</string>
+    <string name="use_mobile_network">Use mobile network</string>
     <string name="use_mobile_network_summary">Enable this to allow image downloading while using mobile network</string>
     <string name="about">About</string>
     <string name="our_team">Our team</string>
     <string name="mission">Mission</string>
     <string name="mission_text">Our mission…</string>
+
+    <string name="an_error_occurred">An error occurred</string>
+    <string name="retry">Retry</string>
+    <string name="scroll_to_top">Scroll to top</string>
 
     <string name="language">en</string>
 

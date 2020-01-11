@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.analytics.FirebaseAnalytics
+import eamato.funn.r6companion.ui.activities.MainActivity
 import eamato.funn.r6companion.utils.ILogScreenView
 import eamato.funn.r6companion.viewmodels.MainViewModel
 
@@ -15,9 +16,14 @@ abstract class BaseFragment : Fragment(), ILogScreenView {
         } ?: throw Exception("Activity is null")
     }
 
+    protected val mainActivity: MainActivity? by lazy {
+        activity as MainActivity?
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logScreenView()
+        setLiveDataObservers()
     }
 
     protected fun logScreenView(className: String, screenName: String) {
@@ -25,5 +31,8 @@ abstract class BaseFragment : Fragment(), ILogScreenView {
             FirebaseAnalytics.getInstance(it).setCurrentScreen(it, className, screenName)
         }
     }
+
+    abstract fun setLiveDataObservers()
+    abstract fun onLiveDataObserversSet()
 
 }

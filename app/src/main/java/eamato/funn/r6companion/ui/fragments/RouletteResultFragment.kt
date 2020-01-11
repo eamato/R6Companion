@@ -51,23 +51,6 @@ class RouletteResultFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-
-        rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.observe(this, Observer {
-            it?.let {
-                activity?.invalidateOptionsMenu()
-                changePacketOpeningVisibility(!it)
-                if (it)
-                    cl_winner.visibility = View.VISIBLE
-                else
-                    cl_winner.visibility = View.GONE
-            }
-        })
-
-        mainViewModel.winnerCandidates.observe(this, Observer {
-            it?.let {
-                initSimpleOperatorsList(it.toMutableList())
-            }
-        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -154,6 +137,29 @@ class RouletteResultFragment : BaseFragment() {
 
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
+    }
+
+    override fun setLiveDataObservers() {
+        rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.observe(this, Observer {
+            it?.let {
+                activity?.invalidateOptionsMenu()
+                changePacketOpeningVisibility(!it)
+                if (it)
+                    cl_winner.visibility = View.VISIBLE
+                else
+                    cl_winner.visibility = View.GONE
+            }
+        })
+
+        mainViewModel.winnerCandidates.observe(this, Observer {
+            it?.let {
+                initSimpleOperatorsList(it.toMutableList())
+            }
+        })
+    }
+
+    override fun onLiveDataObserversSet() {
+
     }
 
     private fun changePacketOpeningVisibility(isVisible: Boolean) {

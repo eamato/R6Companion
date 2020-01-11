@@ -46,4 +46,12 @@ class CompanionFragment : BaseFragment() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
+    override fun setLiveDataObservers() {
+
+    }
+
+    override fun onLiveDataObserversSet() {
+
+    }
+
 }

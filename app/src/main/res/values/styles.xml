@@ -9,6 +9,10 @@
         <item name="windowNoTitle">true</item>
 
         <item name="alertDialogTheme">@style/MyDialogTheme</item>
+
+        <item name="snackbarStyle">@style/AppTheme.SnackbarStyle</item>
+        <item name="snackbarButtonStyle">@style/AppTheme.SnackbarButtonStyle</item>
+        <item name="snackbarTextViewStyle">@style/AppTheme.SnackbarTextStyle</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
@@ -56,6 +60,18 @@
         <item name="tabIconTint">@drawable/tab_layout_colors_selector</item>
         <item name="tabTextColor">@color/colorWhite</item>
         <item name="tabIndicatorColor">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme.SnackbarStyle" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.SnackbarButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/colorGreen</item>
+    </style>
+
+    <style name="AppTheme.SnackbarTextStyle" parent="Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
 </resources>
