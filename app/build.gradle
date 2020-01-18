@@ -133,6 +133,7 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$firebase_messaging_version"
     implementation "com.google.firebase:firebase-perf:$firebase_performance_version"
     implementation "com.google.firebase:firebase-inappmessaging-display:$firebase_inappmessaging_version"
+    implementation 'com.google.firebase:firebase-ads:18.3.0'
 
     /* Test dependencies */
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

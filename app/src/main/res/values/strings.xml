@@ -10,6 +10,7 @@
     <string name="settings_fragment_label">Settings</string>
     <string name="companion_fragment_label">Companion</string>
     <string name="about_fragment_label">About</string>
+    <string name="news_details_label">News details</string>
 
     <string name="operator_img_description">Operator\'s image</string>
     <string name="operator_icon_description">Operator\'s icon</string>
@@ -70,4 +71,8 @@
     <string name="preference_key_illumination_threshold" translatable="false">illumination_threshold</string>
     <string name="preference_key_use_mobile_network_for_image_downloading" translatable="false">use_mobile_network_for_image_downloading</string>
     <string name="preference_key_about" translatable="false">about</string>
+
+    <string name="ad_mod_app_id" translatable="false">ca-app-pub-6576243137966846~4299148913</string>
+    <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-3940256099942544/2247696110</string> <!-- TEST -->
+<!--    <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-6576243137966846/6466340777</string> &lt;!&ndash; REAL &ndash;&gt;-->
 </resources>

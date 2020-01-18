@@ -1,6 +1,7 @@
 package eamato.funn.r6companion.ui.fragments.abstracts
 
 import android.os.Bundle
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -26,6 +27,7 @@ abstract class BaseFragment : Fragment(), ILogScreenView {
         setLiveDataObservers()
     }
 
+    @CallSuper
     protected fun logScreenView(className: String, screenName: String) {
         activity?.let {
             FirebaseAnalytics.getInstance(it).setCurrentScreen(it, className, screenName)

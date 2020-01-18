@@ -31,4 +31,6 @@
     <color name="colorCardBackground">#FFFFFF</color>
 
     <color name="colorIconTint">#000000</color>
+
+    <color name="colorDefaultText">#000000</color>
 </resources>

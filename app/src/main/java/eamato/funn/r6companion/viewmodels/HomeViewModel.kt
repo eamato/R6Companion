@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import eamato.funn.r6companion.api.requests.NewsRequests
-import eamato.funn.r6companion.entities.News
 import eamato.funn.r6companion.paging.NewsDataSourceFactory
 import eamato.funn.r6companion.utils.NEWS_COUNT_DEFAULT_VALUE
+import eamato.funn.r6companion.utils.NewsDataMixedWithAds
 import io.reactivex.disposables.CompositeDisposable
 
 class HomeViewModel : ViewModel() {
@@ -21,7 +21,7 @@ class HomeViewModel : ViewModel() {
         .setPageSize(NEWS_COUNT_DEFAULT_VALUE)
         .build()
 
-    val news: LiveData<PagedList<News.Data?>> = LivePagedListBuilder(newsDataSourceFactory, newsDataSourceFactoryConfig).build()
+    val news: LiveData<PagedList<NewsDataMixedWithAds?>> = LivePagedListBuilder(newsDataSourceFactory, newsDataSourceFactoryConfig).build()
 
     val requestNewsStatus = Transformations.switchMap(newsDataSourceFactory.newsDataSource) {
         it?.requestNewsStatuses

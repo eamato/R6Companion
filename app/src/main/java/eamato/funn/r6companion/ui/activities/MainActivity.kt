@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.preference.PreferenceManager
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
@@ -99,6 +101,8 @@ class MainActivity : BaseActivity() {
                 else
                     Log.d("FirebaseInstance", token)
             })
+
+        MobileAds.initialize(this, getString(R.string.ad_mod_app_id))
     }
 
     override fun onResume() {
@@ -116,8 +120,8 @@ class MainActivity : BaseActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        setSupportActionBar(toolbar)
-        NavigationUI.setupWithNavController(toolbar, navigationController)
+        setParentToolbar()
+
         navigationController.addOnDestinationChangedListener { _, destination, _ ->
             bnv?.menu?.forEach {
                 if (destination.matchMenuDestination(it.itemId))
@@ -132,6 +136,12 @@ class MainActivity : BaseActivity() {
                 return true
             }
         })
+    }
+
+    fun setParentToolbar(parentToolbar: Toolbar = toolbar) {
+        setSupportActionBar(parentToolbar)
+        NavigationUI.setupWithNavController(toolbar, navigationController)
+        supportActionBar?.show()
     }
 
 }

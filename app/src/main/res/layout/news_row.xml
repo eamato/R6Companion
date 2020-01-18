@@ -46,11 +46,24 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_news_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tv_news_date"
             android:layout_margin="@dimen/margin_4_dp"
             android:padding="@dimen/margin_4_dp"
             style="@style/AppTheme.SubTitleStyle"
             tools:text="Four new Chibis ready for action! Buy all four to get a FREE Gold Glaz Chibi!" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_news_date"
+            style="@style/AppTheme.SubTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_4_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_news_subtitle"
+            tools:text="31.12.2020" />
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/clpb_news_image"

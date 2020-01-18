@@ -13,6 +13,8 @@
         <item name="snackbarStyle">@style/AppTheme.SnackbarStyle</item>
         <item name="snackbarButtonStyle">@style/AppTheme.SnackbarButtonStyle</item>
         <item name="snackbarTextViewStyle">@style/AppTheme.SnackbarTextStyle</item>
+
+        <item name="android:textViewStyle">@style/AppTheme.DefaultTextViewStyle</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
@@ -72,6 +74,18 @@
 
     <style name="AppTheme.SnackbarTextStyle" parent="Widget.MaterialComponents.Snackbar.TextView">
         <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme.CollapsingToolBarLayoutCollapsedTitleStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme.CollapsingToolBarLayoutExpandedTitleStyle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme.DefaultTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorDefaultText</item>
     </style>
 
 </resources>

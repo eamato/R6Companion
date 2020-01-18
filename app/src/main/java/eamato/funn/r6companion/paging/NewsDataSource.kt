@@ -4,17 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import eamato.funn.r6companion.api.requests.NewsRequests
-import eamato.funn.r6companion.entities.News
 import eamato.funn.r6companion.utils.LiveDataStatuses
 import eamato.funn.r6companion.utils.NEWS_COUNT_DEFAULT_VALUE
+import eamato.funn.r6companion.utils.NewsDataMixedWithAds
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.internal.toImmutableList
 
 class NewsDataSource(
     private val compositeDisposable: CompositeDisposable,
     private val newsRequests: NewsRequests
-) : PageKeyedDataSource<Int, News.Data?>() {
+) : PageKeyedDataSource<Int, NewsDataMixedWithAds?>() {
 
     private val pRequestNewsStatuses = MutableLiveData<LiveDataStatuses>(LiveDataStatuses.IDLE)
     val requestNewsStatuses: LiveData<LiveDataStatuses> = pRequestNewsStatuses
@@ -23,7 +24,7 @@ class NewsDataSource(
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, News.Data?>
+        callback: LoadInitialCallback<Int, NewsDataMixedWithAds?>
     ) {
         pRequestNewsStatuses.postValue(LiveDataStatuses.WAITING)
         compositeDisposable.add(
@@ -33,7 +34,14 @@ class NewsDataSource(
                     it.data ?: emptyList()
                 }
                 .subscribe({
-                    callback.onResult(it, null, 2)
+                    val result = it
+                        .map { newsData -> NewsDataMixedWithAds(newsData) }
+                        .toMutableList()
+                        .also { res ->
+                            res.add(NewsDataMixedWithAds(null, true))
+                        }
+                        .toImmutableList()
+                    callback.onResult(result, null, 2)
                     pRequestNewsStatuses.postValue(LiveDataStatuses.DONE)
                     retryCompletable = null
                 }, {
@@ -45,14 +53,14 @@ class NewsDataSource(
 
     override fun loadBefore(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, News.Data?>
+        callback: LoadCallback<Int, NewsDataMixedWithAds?>
     ) {
 
     }
 
     override fun loadAfter(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, News.Data?>
+        callback: LoadCallback<Int, NewsDataMixedWithAds?>
     ) {
         pRequestNewsStatuses.postValue(LiveDataStatuses.WAITING)
         compositeDisposable.add(
@@ -62,7 +70,12 @@ class NewsDataSource(
                     it.data ?: emptyList()
                 }
                 .subscribe({
-                    callback.onResult(it, params.key.inc())
+                    val result = it
+                        .map { newsData -> NewsDataMixedWithAds(newsData) }
+                        .toMutableList()
+                        .also { res -> res.add(NewsDataMixedWithAds(null, true)) }
+                        .toImmutableList()
+                    callback.onResult(result, params.key.inc())
                     pRequestNewsStatuses.postValue(LiveDataStatuses.DONE)
                     retryCompletable = null
                 }, {

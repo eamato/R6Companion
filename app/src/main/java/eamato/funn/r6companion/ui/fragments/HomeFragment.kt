@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -13,7 +14,9 @@ import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.recycler_view_adapters.NewsAdapter
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.LiveDataStatuses
+import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import eamato.funn.r6companion.utils.setMyOnScrollListener
+import eamato.funn.r6companion.utils.setOnItemClickListener
 import eamato.funn.r6companion.viewmodels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -45,10 +48,28 @@ class HomeFragment : BaseFragment() {
             fab_scroll_to_top?.let { nonNullFabScrollToTop ->
                 if (dy >= 0 && nonNullFabScrollToTop.isShown)
                     nonNullFabScrollToTop.hide()
+                else if (!recyclerView.canScrollVertically(-1))
+                    nonNullFabScrollToTop.hide()
                 else
                     nonNullFabScrollToTop.show()
             }
         }
+    }
+
+    private val onNewsClickListener: RecyclerViewItemClickListener by lazy {
+        RecyclerViewItemClickListener(context, rv_news, object : RecyclerViewItemClickListener.OnItemClickListener {
+            override fun onItemClicked(view: View, position: Int) {
+                newsAdapter.getItemAtPosition(position)?.let { nonNullSelectedNews ->
+                    nonNullSelectedNews.newsData?.let {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNewsDetailsFragment(it))
+                    }
+                }
+            }
+
+            override fun onItemLongClicked(view: View, position: Int) {
+
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,10 +85,13 @@ class HomeFragment : BaseFragment() {
             rv_news?.adapter = newsAdapter
         }
         rv_news.setMyOnScrollListener(myScrollListener)
+        rv_news.setOnItemClickListener(onNewsClickListener)
 
         fab_scroll_to_top?.setOnClickListener {
             rv_news?.scrollToPosition(0)
         }
+
+        clpb_news?.hide()
     }
 
     override fun logScreenView() {

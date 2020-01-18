@@ -1,8 +1,10 @@
 package eamato.funn.r6companion.entities
 
 
+import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class News(
     @SerializedName("current_page")
@@ -30,11 +32,12 @@ data class News(
     @SerializedName("total")
     val total: Int? = null
 ) {
+    @Parcelize
     data class Data(
         @SerializedName("body")
         val body: String? = null,
         @SerializedName("date")
-        val date: String? = null,
+        val date: Long? = null,
         @SerializedName("image_url")
         val imageUrl: String? = null,
         @SerializedName("news_id")
@@ -43,7 +46,7 @@ data class News(
         val subtitle: String? = null,
         @SerializedName("title")
         val title: String? = null
-    ) {
+    ): Parcelable {
         companion object {
             val NEWS_DATA_DIFF_CALLBACK = object : DiffUtil.ItemCallback<Data>() {
                 override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {

@@ -10,6 +10,7 @@
     <string name="settings_fragment_label">Настройки</string>
     <string name="companion_fragment_label">Компаньён</string>
     <string name="about_fragment_label">О приложении</string>
+    <string name="news_details_label">Детали</string>
 
     <string name="operator_img_description">Картинка оператора</string>
     <string name="operator_icon_description">Иконка оператора</string>
