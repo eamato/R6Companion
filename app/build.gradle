@@ -48,6 +48,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+        alpha {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        beta {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
     }
 
     androidExtensions {
@@ -79,6 +89,10 @@ android {
                 outputFileName = "${appName}.apk"
             if (output.apkData.fullName == 'debug')
                 outputFileName = "${appName}_debug.apk"
+            if (output.apkData.fullName == 'alpha')
+                outputFileName = "${appName}_alpha.apk"
+            if (output.apkData.fullName == 'beta')
+                outputFileName = "${appName}_beta.apk"
         }
     }
 }

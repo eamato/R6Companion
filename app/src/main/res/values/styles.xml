@@ -19,7 +19,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="android:backgroundTint">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textViewStyle">@style/AppTheme.PopupOverlayTextViewStyle</item>
     </style>
 
     <style name="AppTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
@@ -81,11 +81,15 @@
     </style>
 
     <style name="AppTheme.CollapsingToolBarLayoutExpandedTitleStyle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorTransparent</item>
     </style>
 
     <style name="AppTheme.DefaultTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/colorDefaultText</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlayTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
 </resources>

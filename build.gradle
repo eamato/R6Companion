@@ -8,13 +8,13 @@ buildscript {
     ext.gradle_version = '3.5.3'
     ext.retrofit_version = '2.6.1'
     ext.google_services_version = '4.3.3'
-    ext.firebase_core_version = '17.2.1'
+    ext.firebase_core_version = '17.2.2'
     ext.firebase_crashlytics_version = '2.10.1'
-    ext.firebase_analytics_version = '17.2.1'
+    ext.firebase_analytics_version = '17.2.2'
     ext.firebase_remoteconfig_version = '19.1.0'
     ext.firebase_messaging_version = '20.1.0'
-    ext.firebase_performance_version = '19.0.4'
-    ext.firebase_inappmessaging_version = '19.0.2'
+    ext.firebase_performance_version = '19.0.5'
+    ext.firebase_inappmessaging_version = '19.0.3'
 
     repositories {
         google()

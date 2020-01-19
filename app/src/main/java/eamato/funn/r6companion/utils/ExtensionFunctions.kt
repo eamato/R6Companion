@@ -12,8 +12,10 @@ import android.util.DisplayMetrics
 import android.view.PixelCopy
 import android.view.View
 import android.view.Window
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDestination
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -215,4 +217,12 @@ fun LocalizedRemoteConfigEntity.getText(context: Context): String {
         ru ?: ""
     else
         en ?: ""
+}
+
+fun FragmentActivity?.getDisplayMetrics(): DisplayMetrics {
+    val displayMetrics = DisplayMetrics()
+    if (this == null)
+        return displayMetrics
+    windowManager.defaultDisplay.getMetrics(displayMetrics)
+    return displayMetrics
 }

@@ -11,7 +11,7 @@ import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 
-class ImageGetter(private val textView: TextView) : Html.ImageGetter {
+class ImageGetter(private val textView: TextView, private val width: Int = Target.SIZE_ORIGINAL, private val height: Int = Target.SIZE_ORIGINAL) : Html.ImageGetter {
 
     override fun getDrawable(source: String?): Drawable? {
         val drawable = DrawableTarget()
@@ -48,7 +48,7 @@ class ImageGetter(private val textView: TextView) : Html.ImageGetter {
         }
 
         override fun getSize(cb: SizeReadyCallback) {
-            cb.onSizeReady(500, 500)
+            cb.onSizeReady(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
         }
 
         override fun getRequest(): Request? {
@@ -85,8 +85,7 @@ class ImageGetter(private val textView: TextView) : Html.ImageGetter {
 
         private fun setDrawable(drawable: Drawable) {
             this.drawable = drawable
-            val width = drawable.intrinsicWidth
-            val height = drawable.intrinsicHeight
+            val height = width * drawable.intrinsicHeight / drawable.intrinsicWidth
             drawable.setBounds(0, 0, width, height)
             setBounds(0, 0, width, height)
             val text = textView.text

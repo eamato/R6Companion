@@ -12,6 +12,7 @@ import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.News
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseInnerToolbarFragment
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
+import eamato.funn.r6companion.utils.getDisplayMetrics
 import eamato.funn.r6companion.utils.glide.GlideApp
 import eamato.funn.r6companion.utils.glide.ImageGetter
 import kotlinx.android.synthetic.main.fragment_news_details.*
@@ -73,8 +74,10 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     .into(nonNullImageView)
             }
 
+            val displayMetrics = activity.getDisplayMetrics()
+
             tv_content?.text = HtmlCompat.fromHtml(it.body ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY,
-                ImageGetter(tv_content), null)
+                ImageGetter(tv_content, displayMetrics.widthPixels), null)
             tv_content?.movementMethod = LinkMovementMethod.getInstance()
         }
     }
