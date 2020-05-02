@@ -65,6 +65,7 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     .load(it.imageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .transition(DrawableTransitionOptions.withCrossFade(500))
+                    .error(R.drawable.no_data_placeholder)
                     .listener(object : IDoAfterTerminateGlide {
                         override fun doAfterTerminate() {
                             clpb_news_image?.hide()

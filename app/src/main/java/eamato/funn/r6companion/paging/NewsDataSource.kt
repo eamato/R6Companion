@@ -4,13 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import eamato.funn.r6companion.api.requests.NewsRequests
-import eamato.funn.r6companion.utils.LiveDataStatuses
-import eamato.funn.r6companion.utils.NEWS_COUNT_DEFAULT_VALUE
-import eamato.funn.r6companion.utils.NewsDataMixedWithAds
+import eamato.funn.r6companion.utils.*
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.internal.toImmutableList
 
 class NewsDataSource(
     private val compositeDisposable: CompositeDisposable,
@@ -34,14 +31,7 @@ class NewsDataSource(
                     it.data ?: emptyList()
                 }
                 .subscribe({
-                    val result = it
-                        .map { newsData -> NewsDataMixedWithAds(newsData) }
-                        .toMutableList()
-                        .also { res ->
-                            res.add(NewsDataMixedWithAds(null, true))
-                        }
-                        .toImmutableList()
-                    callback.onResult(result, null, 2)
+                    callback.onResult(it.toNewsMixedWithAds(), null, 2)
                     pRequestNewsStatuses.postValue(LiveDataStatuses.DONE)
                     retryCompletable = null
                 }, {
@@ -70,12 +60,7 @@ class NewsDataSource(
                     it.data ?: emptyList()
                 }
                 .subscribe({
-                    val result = it
-                        .map { newsData -> NewsDataMixedWithAds(newsData) }
-                        .toMutableList()
-                        .also { res -> res.add(NewsDataMixedWithAds(null, true)) }
-                        .toImmutableList()
-                    callback.onResult(result, params.key.inc())
+                    callback.onResult(it.toNewsMixedWithAds(), params.key.inc())
                     pRequestNewsStatuses.postValue(LiveDataStatuses.DONE)
                     retryCompletable = null
                 }, {

@@ -22,6 +22,7 @@ const val NEWS_COUNT_PARAM_KEY = "news_count"
 const val NEWS_PAGE_PARAM_KEY = "page"
 const val NEWS_COUNT_MAX_VALUE = 100
 const val NEWS_COUNT_DEFAULT_VALUE = 30
+const val AD_INSERTION_COUNT = 15
 
 const val CONNECTION_TIME_OUT = 2 * 1000L
 const val READ_TIME_OUT = 2 * 1000L

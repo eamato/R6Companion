@@ -62,4 +62,6 @@
     <string name="scroll_to_top">В начало</string>
 
     <string name="language">ru</string>
+
+    <string name="ad_label">Реклама</string>
 </resources>

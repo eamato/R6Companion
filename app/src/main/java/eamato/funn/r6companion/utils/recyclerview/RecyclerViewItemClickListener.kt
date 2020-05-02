@@ -36,7 +36,7 @@ class RecyclerViewItemClickListener(
             val position = rv.getChildAdapterPosition(this)
             if (position != RecyclerView.NO_POSITION)
                 onItemClickListener.onItemClicked(this, position)
-            return true
+            return false
         }
         return false
     }

@@ -12,7 +12,6 @@ import android.util.DisplayMetrics
 import android.view.PixelCopy
 import android.view.View
 import android.view.Window
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -22,12 +21,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.entities.News
 import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.entities.ParcelableListOfRouletteOperators
 import eamato.funn.r6companion.entities.RouletteOperator
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
+import okhttp3.internal.toImmutableList
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.round
@@ -225,4 +226,26 @@ fun FragmentActivity?.getDisplayMetrics(): DisplayMetrics {
         return displayMetrics
     windowManager.defaultDisplay.getMetrics(displayMetrics)
     return displayMetrics
+}
+
+fun List<News.Data?>.toNewsMixedWithAds(): List<NewsDataMixedWithAds> {
+    return map { NewsDataMixedWithAds(it) }.let {
+        it
+            .takeIf { it.size >= AD_INSERTION_COUNT }
+            ?.toMutableList()
+            ?.also { mutableList ->
+                mutableList.insertItemAtEveryStep(NewsDataMixedWithAds(null, true), AD_INSERTION_COUNT)
+            }
+            ?.toImmutableList() ?: it
+    }
+}
+
+fun <T> MutableList<T>.insertItemAtEveryStep(item: T, step: Int): MutableList<T> {
+    var iteration = step
+    val count = size / step
+    for (i in 0 until count) {
+        add(iteration, item)
+        iteration += step
+    }
+    return this
 }

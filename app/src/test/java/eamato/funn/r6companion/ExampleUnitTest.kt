@@ -4,6 +4,7 @@ import eamato.funn.r6companion.utils.NEWS_COUNT_DEFAULT_VALUE
 import io.reactivex.Flowable
 import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
+import okhttp3.internal.toImmutableList
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -501,6 +502,22 @@ class ExampleUnitTest {
             }, {
                 it.message
             })
+    }
+
+    @Test
+    fun insertOnEachStep() {
+        val list = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9")
+        println(list.joinToString())
+        val step = 5
+        val count = list.size / step
+        println(count)
+        var iteration = step
+        println(list.toMutableList().also {
+            for (i in 0 until count) {
+                it.add(iteration, "*")
+                iteration += step.inc()
+            }
+        }.toImmutableList().joinToString())
     }
 
 }

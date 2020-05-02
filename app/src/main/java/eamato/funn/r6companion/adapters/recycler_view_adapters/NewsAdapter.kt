@@ -1,9 +1,12 @@
 package eamato.funn.r6companion.adapters.recycler_view_adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.paging.PagedListAdapter
@@ -13,7 +16,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAdOptions
+import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
@@ -37,6 +42,8 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (holder is AdItemViewHolder)
+            Log.i("ADADAD", "Ad at position: $position")
         holder.bindView(getItem(position))
     }
 
@@ -82,6 +89,7 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
                             .load(nonNullNewsData.imageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .transition(DrawableTransitionOptions.withCrossFade(500))
+                            .error(R.drawable.no_data_placeholder)
                             .listener(object : IDoAfterTerminateGlide {
                                 override fun doAfterTerminate() {
                                     clpb_news_image?.hide()
@@ -103,45 +111,117 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
 
     class AdItemViewHolder(itemView: View) : ViewHolder(itemView) {
 
-        private var iv_ad_icon: ImageView? = null
-        private var tv_ad_headline: TextView? = null
-        private var tv_ad_body: TextView? = null
-        private var tv_ad_call_to_action: TextView? = null
+        private var unav: UnifiedNativeAdView? = null
+        private var ad_app_icon: ImageView? = null
+        private var ad_headline: TextView? = null
+        private var ad_advertiser: TextView? = null
+        private var ad_stars: RatingBar? = null
+        private var ad_body: TextView? = null
+        private var ad_media: MediaView? = null
+        private var ad_price: TextView? = null
+        private var ad_store: TextView? = null
+        private var ad_call_to_action: Button? = null
+
+        private var currentNativeAd: UnifiedNativeAd? = null
 
         init {
-            iv_ad_icon = itemView.findViewById(R.id.iv_ad_icon)
-            tv_ad_headline = itemView.findViewById(R.id.tv_ad_headline)
-            tv_ad_body = itemView.findViewById(R.id.tv_ad_body)
-            tv_ad_call_to_action = itemView.findViewById(R.id.tv_ad_call_to_action)
+            unav = itemView.findViewById(R.id.unav)
+            ad_app_icon = itemView.findViewById(R.id.ad_app_icon)
+            ad_headline = itemView.findViewById(R.id.ad_headline)
+            ad_advertiser = itemView.findViewById(R.id.ad_advertiser)
+            ad_stars = itemView.findViewById(R.id.ad_stars)
+            ad_body = itemView.findViewById(R.id.ad_body)
+            ad_media = itemView.findViewById(R.id.ad_media)
+            ad_price = itemView.findViewById(R.id.ad_price)
+            ad_store = itemView.findViewById(R.id.ad_store)
+            ad_call_to_action = itemView.findViewById(R.id.ad_call_to_action)
         }
 
         override fun bindView(data: NewsDataMixedWithAds?) {
+            hideAdViews()
+            currentNativeAd?.destroy()
+
             val adLoader = AdLoader.Builder(itemView.context, itemView.context.getString(R.string.ad_mod_first_ad_unit))
                 .forUnifiedNativeAd { ad ->
-                    ad.icon?.let { nonNullAdIcon ->
-                        iv_ad_icon?.setImageDrawable(nonNullAdIcon.drawable)
-                    }
-                    tv_ad_headline?.text = ad.headline
-                    tv_ad_body?.text = ad.body
-                    tv_ad_call_to_action?.text = ad.callToAction
+                    currentNativeAd = ad
+
+                    unav?.let { populateAd(ad, it) }
                 }
                 .withAdListener(object : AdListener() {
                     override fun onAdFailedToLoad(p0: Int) {
                         super.onAdFailedToLoad(p0)
-                    }
-
-                    override fun onAdLoaded() {
-                        super.onAdLoaded()
-                    }
-
-                    override fun onAdClicked() {
-                        super.onAdClicked()
                     }
                 })
                 .withNativeAdOptions(NativeAdOptions.Builder().build())
                 .build()
 
             adLoader.loadAd(AdRequest.Builder().build())
+        }
+
+        private fun populateAd(unifiedNativeAd: UnifiedNativeAd, unifiedNativeAdView: UnifiedNativeAdView) {
+            ad_headline?.text = unifiedNativeAd.headline
+            ad_media?.setMediaContent(unifiedNativeAd.mediaContent)
+
+            unifiedNativeAd.body?.let {
+                ad_body?.visibility = View.VISIBLE
+                ad_body?.text = it
+            } ?: kotlin.run { ad_body?.visibility = View.INVISIBLE }
+
+            unifiedNativeAd.callToAction?.let {
+                ad_call_to_action?.visibility = View.VISIBLE
+                ad_call_to_action?.text = it
+            } ?: kotlin.run { ad_call_to_action?.visibility = View.INVISIBLE }
+
+            unifiedNativeAd.icon?.let {
+                ad_app_icon?.visibility = View.VISIBLE
+                ad_app_icon?.setImageDrawable(it.drawable)
+            } ?: kotlin.run { ad_app_icon?.visibility = View.INVISIBLE }
+
+            unifiedNativeAd.price?.let {
+                ad_price?.visibility = View.VISIBLE
+                ad_price?.text = it
+            } ?: kotlin.run { ad_price?.visibility = View.INVISIBLE }
+
+            unifiedNativeAd.store?.let {
+                ad_store?.visibility = View.VISIBLE
+                ad_store?.text = it
+            } ?: kotlin.run { ad_store?.visibility = View.INVISIBLE }
+
+            unifiedNativeAd.starRating?.let {
+                ad_stars?.visibility = View.VISIBLE
+                ad_stars?.rating = it.toFloat()
+            } ?: kotlin.run { ad_stars?.visibility = View.INVISIBLE }
+
+            unifiedNativeAd.advertiser?.let {
+                ad_advertiser?.visibility = View.VISIBLE
+                ad_advertiser?.text = it
+            } ?: kotlin.run { ad_advertiser?.visibility = View.INVISIBLE }
+
+            unifiedNativeAdView.headlineView = ad_headline
+            unifiedNativeAdView.bodyView = ad_body
+            unifiedNativeAdView.callToActionView = ad_call_to_action
+            unifiedNativeAdView.iconView = ad_app_icon
+            unifiedNativeAdView.priceView = ad_price
+            unifiedNativeAdView.starRatingView = ad_stars
+            unifiedNativeAdView.storeView = ad_store
+            unifiedNativeAdView.advertiserView = ad_advertiser
+            unifiedNativeAdView.mediaView = ad_media
+
+            unifiedNativeAdView.mediaView.setMediaContent(unifiedNativeAd.mediaContent)
+
+            unifiedNativeAdView.setNativeAd(unifiedNativeAd)
+        }
+
+        private fun hideAdViews() {
+            ad_app_icon?.visibility = View.INVISIBLE
+            ad_headline?.visibility = View.INVISIBLE
+            ad_advertiser?.visibility = View.INVISIBLE
+            ad_stars?.visibility = View.INVISIBLE
+            ad_body?.visibility = View.INVISIBLE
+            ad_media?.visibility = View.INVISIBLE
+            ad_price?.visibility = View.INVISIBLE
+            ad_store?.visibility = View.INVISIBLE
+            ad_call_to_action?.visibility = View.INVISIBLE
         }
     }
 
