@@ -1,9 +1,9 @@
 package eamato.funn.r6companion.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import eamato.funn.r6companion.entities.News
+import eamato.funn.r6companion.entities.Updates
 
-data class NewsDataMixedWithAds(val newsData: News.Data?, val isAd: Boolean = false) {
+data class NewsDataMixedWithAds(val newsData: Updates.Item?, val isAd: Boolean = false) {
 
     companion object {
         val NEWS_DATA_DIFF_CALLBACK = object : DiffUtil.ItemCallback<NewsDataMixedWithAds?>() {
@@ -14,7 +14,7 @@ data class NewsDataMixedWithAds(val newsData: News.Data?, val isAd: Boolean = fa
                 val oldItemNewsData = oldItem.newsData
                 val newItemNewsData = newItem.newsData
                 return if (oldItemNewsData != null && newItemNewsData != null)
-                    News.Data.NEWS_DATA_DIFF_CALLBACK.areItemsTheSame(oldItemNewsData, newItemNewsData)
+                    Updates.Item.UPDATES_ITEM_DIFF_ITEM_CALLBACK.areItemsTheSame(oldItemNewsData, newItemNewsData)
                 else
                     false
             }
@@ -26,7 +26,7 @@ data class NewsDataMixedWithAds(val newsData: News.Data?, val isAd: Boolean = fa
                 val oldItemNewsData = oldItem.newsData
                 val newItemNewsData = newItem.newsData
                 return if (oldItemNewsData != null && newItemNewsData != null)
-                    News.Data.NEWS_DATA_DIFF_CALLBACK.areContentsTheSame(oldItemNewsData, newItemNewsData)
+                    Updates.Item.UPDATES_ITEM_DIFF_ITEM_CALLBACK.areContentsTheSame(oldItemNewsData, newItemNewsData)
                 else
                     false
             }

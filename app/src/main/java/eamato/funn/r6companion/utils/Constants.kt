@@ -16,10 +16,15 @@ const val UN_EXISTENT_HOST = "https://unexisting.host.mne/"
 
 const val ROULETTE_SEARCH_QUERY_KEY = "searchViewQuery"
 
-const val NEWS_HOST = "http://13.59.232.121/"
-const val SOURCES_PATH = "news"
-const val NEWS_COUNT_PARAM_KEY = "news_count"
-const val NEWS_PAGE_PARAM_KEY = "page"
+const val NEWS_HOST = "https://www.ubisoft.com/"
+const val NEWS_PATH = "api/updates/items"
+const val NEWS_TAG_PARAM_KEY = "tags"
+const val NEWS_COUNT_PARAM_KEY = "limit"
+const val NEWS_SKIP_PARAM_KEY = "skip"
+const val NEWS_CATEGORIES_FILTER_PARAM_KEY = "categoriesFilter"
+const val NEWS_LOCALE_PARAM_KEY = "locale"
+const val NEWS_TAG_PARAM_R6_VALUE = "BR-rainbow-six GA-siege"
+const val NEWS_CATEGORIES_FILTER_PARAM_NEWS_VALUE = "news"
 const val NEWS_COUNT_MAX_VALUE = 100
 const val NEWS_COUNT_DEFAULT_VALUE = 30
 const val AD_INSERTION_COUNT = 15

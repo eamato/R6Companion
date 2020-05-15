@@ -21,10 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import eamato.funn.r6companion.R
-import eamato.funn.r6companion.entities.News
-import eamato.funn.r6companion.entities.Operators
-import eamato.funn.r6companion.entities.ParcelableListOfRouletteOperators
-import eamato.funn.r6companion.entities.RouletteOperator
+import eamato.funn.r6companion.entities.*
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
@@ -228,7 +225,7 @@ fun FragmentActivity?.getDisplayMetrics(): DisplayMetrics {
     return displayMetrics
 }
 
-fun List<News.Data?>.toNewsMixedWithAds(): List<NewsDataMixedWithAds> {
+fun List<Updates.Item?>.toNewsMixedWithAds(): List<NewsDataMixedWithAds> {
     return map { NewsDataMixedWithAds(it) }.let {
         it
             .takeIf { it.size >= AD_INSERTION_COUNT }

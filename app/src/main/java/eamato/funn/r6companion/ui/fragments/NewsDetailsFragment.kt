@@ -5,23 +5,20 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import eamato.funn.r6companion.R
-import eamato.funn.r6companion.entities.News
+import eamato.funn.r6companion.entities.Updates
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseInnerToolbarFragment
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
-import eamato.funn.r6companion.utils.getDisplayMetrics
 import eamato.funn.r6companion.utils.glide.GlideApp
-import eamato.funn.r6companion.utils.glide.ImageGetter
 import kotlinx.android.synthetic.main.fragment_news_details.*
 
 private const val SCREEN_NAME = "News details screen"
 
 class NewsDetailsFragment : BaseInnerToolbarFragment() {
 
-    private var selectedNews: News.Data? = null
+    private var selectedNews: Updates.Item? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +59,7 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
             iv_news_image?.let { nonNullImageView ->
                 clpb_news_image?.show()
                 GlideApp.with(nonNullImageView)
-                    .load(it.imageUrl)
+                    .load(it.thumbnail?.url)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .transition(DrawableTransitionOptions.withCrossFade(500))
                     .error(R.drawable.no_data_placeholder)
@@ -75,10 +72,12 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     .into(nonNullImageView)
             }
 
-            val displayMetrics = activity.getDisplayMetrics()
+            tv_content?.text = it.content
 
-            tv_content?.text = HtmlCompat.fromHtml(it.body ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY,
-                ImageGetter(tv_content, displayMetrics.widthPixels), null)
+//            val displayMetrics = activity.getDisplayMetrics()
+
+//            tv_content?.text = HtmlCompat.fromHtml(it.body ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY,
+//                ImageGetter(tv_content, displayMetrics.widthPixels), null)
             tv_content?.movementMethod = LinkMovementMethod.getInstance()
         }
     }

@@ -14,7 +14,7 @@ class NewsDataSource(
     private val newsRequests: NewsRequests
 ) : PageKeyedDataSource<Int, NewsDataMixedWithAds?>() {
 
-    private val pRequestNewsStatuses = MutableLiveData<LiveDataStatuses>(LiveDataStatuses.IDLE)
+    private val pRequestNewsStatuses = MutableLiveData(LiveDataStatuses.IDLE)
     val requestNewsStatuses: LiveData<LiveDataStatuses> = pRequestNewsStatuses
 
     var retryCompletable: Completable? = null
@@ -25,13 +25,14 @@ class NewsDataSource(
     ) {
         pRequestNewsStatuses.postValue(LiveDataStatuses.WAITING)
         compositeDisposable.add(
-            newsRequests.getNews(NEWS_COUNT_DEFAULT_VALUE, 1)
+            newsRequests.getNews()
                 .subscribeOn(Schedulers.io())
-                .map {
-                    it.data ?: emptyList()
-                }
                 .subscribe({
-                    callback.onResult(it.toNewsMixedWithAds(), null, 2)
+                    callback.onResult(
+                        (it.items ?: emptyList()).toNewsMixedWithAds(),
+                        null,
+                        it.limit
+                    )
                     pRequestNewsStatuses.postValue(LiveDataStatuses.DONE)
                     retryCompletable = null
                 }, {
@@ -54,13 +55,13 @@ class NewsDataSource(
     ) {
         pRequestNewsStatuses.postValue(LiveDataStatuses.WAITING)
         compositeDisposable.add(
-            newsRequests.getNews(NEWS_COUNT_DEFAULT_VALUE, params.key)
+            newsRequests.getNews(params.key)
                 .subscribeOn(Schedulers.io())
-                .map {
-                    it.data ?: emptyList()
-                }
                 .subscribe({
-                    callback.onResult(it.toNewsMixedWithAds(), params.key.inc())
+                    callback.onResult(
+                        (it.items ?: emptyList()).toNewsMixedWithAds(),
+                        (it.skip ?: 0) + (it.limit ?: NEWS_COUNT_DEFAULT_VALUE)
+                    )
                     pRequestNewsStatuses.postValue(LiveDataStatuses.DONE)
                     retryCompletable = null
                 }, {

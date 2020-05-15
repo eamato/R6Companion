@@ -71,6 +71,7 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
         private var clpb_news_image: ContentLoadingProgressBar? = null
 
         private val newsDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        private val inputFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
 
         init {
             iv_news_image = itemView.findViewById(R.id.iv_news_image)
@@ -86,7 +87,7 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
                     iv_news_image?.let {
                         clpb_news_image?.show()
                         GlideApp.with(itemView.context)
-                            .load(nonNullNewsData.imageUrl)
+                            .load(nonNullNewsData.thumbnail?.url)
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .transition(DrawableTransitionOptions.withCrossFade(500))
                             .error(R.drawable.no_data_placeholder)
@@ -99,8 +100,8 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
                             .into(it)
                     }
                     tv_news_title?.text = nonNullNewsData.title
-                    tv_news_subtitle?.text = nonNullNewsData.subtitle
-                    tv_news_date?.text = nonNullNewsData.date?.let {
+                    tv_news_subtitle?.text = nonNullNewsData.abstract
+                    tv_news_date?.text = nonNullNewsData.date?.let { inputFormatter.parse(it) }?.let {
                         newsDateFormat.format(it)
                     } ?: ""
                 }
