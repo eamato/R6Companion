@@ -3,7 +3,7 @@ package eamato.funn.r6companion.ui.fragments.abstracts
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.analytics.FirebaseAnalytics
 import eamato.funn.r6companion.ui.activities.MainActivity
 import eamato.funn.r6companion.utils.ILogScreenView
@@ -13,7 +13,7 @@ abstract class BaseFragment : Fragment(), ILogScreenView {
 
     protected val mainViewModel: MainViewModel by lazy {
         activity?.let { nonNullActivity ->
-            ViewModelProviders.of(nonNullActivity).get(MainViewModel::class.java)
+            ViewModelProvider(nonNullActivity).get(MainViewModel::class.java)
         } ?: throw Exception("Activity is null")
     }
 
@@ -23,8 +23,13 @@ abstract class BaseFragment : Fragment(), ILogScreenView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        logScreenView()
         setLiveDataObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        logScreenView()
     }
 
     @CallSuper

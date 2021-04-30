@@ -13,13 +13,12 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.formats.MediaView
-import com.google.android.gms.ads.formats.NativeAdOptions
-import com.google.android.gms.ads.formats.UnifiedNativeAd
-import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.android.gms.ads.nativead.MediaView
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions
+import com.google.android.gms.ads.nativead.NativeAdView
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
 import eamato.funn.r6companion.utils.NewsDataMixedWithAds
@@ -112,7 +111,7 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
 
     class AdItemViewHolder(itemView: View) : ViewHolder(itemView) {
 
-        private var unav: UnifiedNativeAdView? = null
+        private var unav: NativeAdView? = null
         private var ad_app_icon: ImageView? = null
         private var ad_headline: TextView? = null
         private var ad_advertiser: TextView? = null
@@ -123,7 +122,7 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
         private var ad_store: TextView? = null
         private var ad_call_to_action: Button? = null
 
-        private var currentNativeAd: UnifiedNativeAd? = null
+        private var currentNativeAd: NativeAd? = null
 
         init {
             unav = itemView.findViewById(R.id.unav)
@@ -143,74 +142,69 @@ class NewsAdapter : PagedListAdapter<NewsDataMixedWithAds?, NewsAdapter.ViewHold
             currentNativeAd?.destroy()
 
             val adLoader = AdLoader.Builder(itemView.context, itemView.context.getString(R.string.ad_mod_first_ad_unit))
-                .forUnifiedNativeAd { ad ->
+                .forNativeAd { ad ->
                     currentNativeAd = ad
 
                     unav?.let { populateAd(ad, it) }
                 }
-                .withAdListener(object : AdListener() {
-                    override fun onAdFailedToLoad(p0: Int) {
-                        super.onAdFailedToLoad(p0)
-                    }
-                })
                 .withNativeAdOptions(NativeAdOptions.Builder().build())
                 .build()
 
             adLoader.loadAd(AdRequest.Builder().build())
         }
 
-        private fun populateAd(unifiedNativeAd: UnifiedNativeAd, unifiedNativeAdView: UnifiedNativeAdView) {
-            ad_headline?.text = unifiedNativeAd.headline
-            ad_media?.setMediaContent(unifiedNativeAd.mediaContent)
+        private fun populateAd(nativeAd: NativeAd, nativeAdView: NativeAdView) {
+            ad_headline?.text = nativeAd.headline
+            ad_media?.setMediaContent(nativeAd.mediaContent)
 
-            unifiedNativeAd.body?.let {
+            nativeAd.body?.let {
                 ad_body?.visibility = View.VISIBLE
                 ad_body?.text = it
             } ?: kotlin.run { ad_body?.visibility = View.INVISIBLE }
 
-            unifiedNativeAd.callToAction?.let {
+            nativeAd.callToAction?.let {
                 ad_call_to_action?.visibility = View.VISIBLE
                 ad_call_to_action?.text = it
             } ?: kotlin.run { ad_call_to_action?.visibility = View.INVISIBLE }
 
-            unifiedNativeAd.icon?.let {
+            nativeAd.icon?.let {
                 ad_app_icon?.visibility = View.VISIBLE
                 ad_app_icon?.setImageDrawable(it.drawable)
             } ?: kotlin.run { ad_app_icon?.visibility = View.INVISIBLE }
 
-            unifiedNativeAd.price?.let {
+            nativeAd.price?.let {
                 ad_price?.visibility = View.VISIBLE
                 ad_price?.text = it
             } ?: kotlin.run { ad_price?.visibility = View.INVISIBLE }
 
-            unifiedNativeAd.store?.let {
+            nativeAd.store?.let {
                 ad_store?.visibility = View.VISIBLE
                 ad_store?.text = it
             } ?: kotlin.run { ad_store?.visibility = View.INVISIBLE }
 
-            unifiedNativeAd.starRating?.let {
+            nativeAd.starRating?.let {
                 ad_stars?.visibility = View.VISIBLE
                 ad_stars?.rating = it.toFloat()
             } ?: kotlin.run { ad_stars?.visibility = View.INVISIBLE }
 
-            unifiedNativeAd.advertiser?.let {
+            nativeAd.advertiser?.let {
                 ad_advertiser?.visibility = View.VISIBLE
                 ad_advertiser?.text = it
             } ?: kotlin.run { ad_advertiser?.visibility = View.INVISIBLE }
 
-            unifiedNativeAdView.headlineView = ad_headline
-            unifiedNativeAdView.bodyView = ad_body
-            unifiedNativeAdView.callToActionView = ad_call_to_action
-            unifiedNativeAdView.iconView = ad_app_icon
-            unifiedNativeAdView.priceView = ad_price
-            unifiedNativeAdView.starRatingView = ad_stars
-            unifiedNativeAdView.storeView = ad_store
-            unifiedNativeAdView.advertiserView = ad_advertiser
-            unifiedNativeAdView.mediaView = ad_media
+            nativeAdView.headlineView = ad_headline
+            nativeAdView.bodyView = ad_body
+            nativeAdView.callToActionView = ad_call_to_action
+            nativeAdView.iconView = ad_app_icon
+            nativeAdView.priceView = ad_price
+            nativeAdView.starRatingView = ad_stars
+            nativeAdView.storeView = ad_store
+            nativeAdView.advertiserView = ad_advertiser
+            nativeAdView.mediaView = ad_media
 
-            unifiedNativeAdView.mediaView.setMediaContent(unifiedNativeAd.mediaContent)
+            nativeAdView.mediaView?.setMediaContent(nativeAd.mediaContent)
 
-            unifiedNativeAdView.setNativeAd(unifiedNativeAd)
+            nativeAdView.setNativeAd(nativeAd)
         }
 
         private fun hideAdViews() {

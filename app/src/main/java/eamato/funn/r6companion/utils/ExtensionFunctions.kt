@@ -8,12 +8,19 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Handler
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
 import android.view.PixelCopy
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDestination
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,6 +30,7 @@ import com.google.gson.Gson
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.*
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
+import eamato.funn.r6companion.utils.glide.GlideDynamicDrawableSpan
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
 import okhttp3.internal.toImmutableList
@@ -245,4 +253,64 @@ fun <T> MutableList<T>.insertItemAtEveryStep(item: T, step: Int): MutableList<T>
         iteration += step
     }
     return this
+}
+
+fun String.toSpannableContent(displayMetrics: DisplayMetrics, textView: TextView): SpannableStringBuilder {
+    val headerPrefix = "(?<=[^#]|^)#{3} (.*?)[\\n]".toRegex()
+//    val headerPrefixReplace = "((?<=[^#]|^)#{3} )".toRegex()
+
+    val biggerHeaderPrefix = "(?<=[^#]|^)# (.*?)[\\n]".toRegex()
+//    val biggerHeaderPrefixReplace = "((?<=[^#]|^)# )".toRegex()
+
+//    val imagePrefix = "!\\[\\[R6S] .*]\\((/{2}.*?\\.(?:jpg|gif|png|jpeg))\\)[\\n]".toRegex()
+    val imagePrefix = "(/{2}.*?\\.(?:jpg|gif|png|jpeg))".toRegex()
+//    val imagePrefixReplace = "(!\\[\\[R6S] .*]\\()".toRegex()
+
+    val imageWidth = textView.parent.takeIf { it is ViewGroup }?.let { it as ViewGroup }?.let {
+        displayMetrics.widthPixels - (it.marginStart + it.marginEnd)
+    } ?: displayMetrics.widthPixels
+
+    var spannable = SpannableStringBuilder(this)
+
+    headerPrefix.findAll(this)
+        .map { it.value }
+        .forEach {
+            spannable.setSpan(RelativeSizeSpan(1.5f), indexOf(it), indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+    biggerHeaderPrefix.findAll(this)
+        .map { it.value }
+        .forEach {
+            spannable.setSpan(RelativeSizeSpan(2f), indexOf(it), indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+    imagePrefix.findAll(this)
+        .map { it.value }
+        .forEach {
+            spannable = spannable.insert(indexOf(it), "\n")
+            spannable.setSpan(
+                GlideDynamicDrawableSpan(
+                textView, imageWidth, url = "http:$it"
+            ), indexOf(it), indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+//    headerPrefixReplace.findAll(this)
+//        .map { it.value }
+//        .forEach {
+//            spannable = spannable.replace(spannable.indexOf(it), spannable.indexOf(it) + it.length, "")
+//        }
+//
+//    biggerHeaderPrefixReplace.findAll(this)
+//        .map { it.groupValues[1] }
+//        .forEach {
+//            spannable = spannable.replace(spannable.indexOf(it), spannable.indexOf(it) + it.length, "")
+//        }
+//
+//    imagePrefixReplace.findAll(this)
+//        .map { it.value }
+//        .forEach {
+//            spannable = spannable.replace(spannable.indexOf(it), spannable.indexOf(it) + it.length, "")
+//        }
+
+    return spannable
 }

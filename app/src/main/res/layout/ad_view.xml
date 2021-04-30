@@ -10,7 +10,7 @@
     app:cardCornerRadius="@dimen/margin_4_dp"
     android:layout_margin="@dimen/margin_4_dp">
 
-    <com.google.android.gms.ads.formats.UnifiedNativeAdView
+    <com.google.android.gms.ads.nativead.NativeAdView
         android:id="@+id/unav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -106,7 +106,7 @@
                         tools:text="Ad body"
                         android:textSize="12sp" />
 
-                    <com.google.android.gms.ads.formats.MediaView
+                    <com.google.android.gms.ads.nativead.MediaView
                         android:id="@+id/ad_media"
                         android:layout_gravity="center_horizontal"
                         android:layout_width="@dimen/ad_media_width"
@@ -157,6 +157,6 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </com.google.android.gms.ads.formats.UnifiedNativeAdView>
+    </com.google.android.gms.ads.nativead.NativeAdView>
 
 </androidx.cardview.widget.CardView>

@@ -16,7 +16,7 @@
         android:orderInCategory="101"
         android:icon="@drawable/ic_sort_24dp"
         android:title="@string/sort"
-        app:showAsAction="always">
+        app:showAsAction="ifRoom">
 
         <menu>
             <item
@@ -30,44 +30,50 @@
                 android:orderInCategory="103"
                 android:icon="@drawable/ic_sort_by_alpha_white_24dp"
                 android:title="@string/alphabetic_sort_descending" />
+
+            <item
+                android:id="@+id/sort_selected"
+                android:orderInCategory="104"
+                android:icon="@drawable/ic_baseline_check_24"
+                android:title="@string/sort_selected" />
         </menu>
 
     </item>
 
     <item
         android:id="@+id/settings"
-        android:orderInCategory="104"
+        android:orderInCategory="105"
         android:title="@string/sort"
         app:showAsAction="never">
 
         <item
             android:id="@+id/select_all"
             android:icon="@drawable/ic_done_all_24dp"
-            android:orderInCategory="105"
+            android:orderInCategory="106"
             android:title="@string/select_all" />
 
         <item
             android:id="@+id/un_select_all"
             android:icon="@drawable/ic_clear_24dp"
-            android:orderInCategory="106"
+            android:orderInCategory="107"
             android:title="@string/clear_selections" />
 
         <item
             android:id="@+id/save_selected"
             android:icon="@drawable/ic_save_24dp"
-            android:orderInCategory="107"
+            android:orderInCategory="108"
             android:title="@string/save_selected" />
 
         <item
             android:id="@+id/delete_saved"
             android:icon="@drawable/ic_delete_24dp"
-            android:orderInCategory="108"
+            android:orderInCategory="109"
             android:title="@string/delete_saved" />
 
         <item
             android:id="@+id/restore_saved"
             android:icon="@drawable/ic_restore_24dp"
-            android:orderInCategory="109"
+            android:orderInCategory="110"
             android:title="@string/restore_saved" />
 
     </item>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_image"
+        android:layout_width="@dimen/our_team_image_width"
+        android:layout_height="@dimen/our_team_image_height"
+        android:layout_margin="@dimen/margin_16_dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_first_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8_dp"
+        android:layout_marginEnd="@dimen/margin_8_dp"
+        android:layout_marginBottom="@dimen/margin_8_dp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_positions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8_dp"
+        android:layout_marginEnd="@dimen/margin_8_dp"
+        android:layout_marginBottom="@dimen/margin_16_dp"
+        android:gravity="center_horizontal" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

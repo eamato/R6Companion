@@ -105,7 +105,6 @@ class ImageGetter(
             val text = textView.text
             textView.text = text
         }
-
     }
 
 }

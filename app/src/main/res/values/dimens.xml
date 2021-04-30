@@ -19,4 +19,6 @@
     <dimen name="ad_icon_height">40dp</dimen>
     <dimen name="ad_media_width">250dp</dimen>
     <dimen name="ad_media_height">175dp</dimen>
+    <dimen name="our_team_image_width">75dp</dimen>
+    <dimen name="our_team_image_height">75dp</dimen>
 </resources>

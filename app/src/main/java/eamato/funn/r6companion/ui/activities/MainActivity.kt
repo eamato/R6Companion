@@ -58,6 +58,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        startActivity(Intent(this, TestActivity::class.java))
+
         PreferenceManager.getDefaultSharedPreferences(this).getDarkMode().setDarkMode()
 
         mainViewModel.illuminationLevel.observe(this, Observer {
@@ -102,7 +104,7 @@ class MainActivity : BaseActivity() {
                     Log.d("FirebaseInstance", token)
             })
 
-        MobileAds.initialize(this, getString(R.string.ad_mod_app_id))
+        MobileAds.initialize(this)
     }
 
     override fun onResume() {

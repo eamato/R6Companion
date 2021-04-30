@@ -1,7 +1,6 @@
 package eamato.funn.r6companion.ui.fragments
 
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,9 @@ import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.Updates
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseInnerToolbarFragment
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
+import eamato.funn.r6companion.utils.getDisplayMetrics
 import eamato.funn.r6companion.utils.glide.GlideApp
+import eamato.funn.r6companion.utils.toSpannableContent
 import kotlinx.android.synthetic.main.fragment_news_details.*
 
 private const val SCREEN_NAME = "News details screen"
@@ -72,13 +73,11 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     .into(nonNullImageView)
             }
 
-            tv_content?.text = it.content
-
-//            val displayMetrics = activity.getDisplayMetrics()
-
-//            tv_content?.text = HtmlCompat.fromHtml(it.body ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY,
-//                ImageGetter(tv_content, displayMetrics.widthPixels), null)
-            tv_content?.movementMethod = LinkMovementMethod.getInstance()
+            tv_content?.let { nonNullTextView ->
+                activity?.getDisplayMetrics()?.let { nonNullDisplayMetrix ->
+                    nonNullTextView.text = it.content?.toSpannableContent(nonNullDisplayMetrix, nonNullTextView)
+                }
+            }
         }
     }
 

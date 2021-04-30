@@ -161,6 +161,12 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                 }
                 true
             }
+            R.id.sort_selected -> {
+                rouletteViewModel.sortSelected {
+                    rv_all_roulette_operators.smoothScrollToPosition(0)
+                }
+                true
+            }
             R.id.select_all -> {
                 rouletteViewModel.selectAll()
                 true

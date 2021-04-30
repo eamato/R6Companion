@@ -24,13 +24,17 @@
 -keepattributes Annotation
 -keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
--dontwarn okhttp3.**
--dontwarn javax.annotation.**
+#-dontwarn okhttp3.**
+#-dontwarn javax.annotation.**
 -optimizations !class/unboxing/enum
 #-keep class sun.misc.Unsafe { *; }
 #-dontwarn java.nio.file.*
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
--dontwarn okio.**
+#-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+#-dontwarn okio.**
+
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
 
 -dontobfuscate
 

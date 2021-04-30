@@ -111,6 +111,12 @@ class RouletteViewModel : ViewModel() {
         doAfter?.invoke()
     }
 
+    fun sortSelected(doAfter: (() -> Unit)? = null) {
+        pVisibleRouletteOperators.value = pVisibleRouletteOperators.value
+            ?.sortedBy { it.isSelected.not() } ?: emptyList()
+        doAfter?.invoke()
+    }
+
     fun selectAll() {
         immutableOperators.forEach { selectUnSelectRouletteOperator(it, true) }
     }

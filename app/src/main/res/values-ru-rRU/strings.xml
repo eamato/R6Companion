@@ -22,6 +22,7 @@
     <string name="sort">Сортировка</string>
     <string name="alphabetic_sort_ascending">Сортировка имени по возвростанию</string>
     <string name="alphabetic_sort_descending">Сортировка имени по убыванию</string>
+    <string name="sort_selected">Выбранные</string>
     <string name="select_all">Выбрать всё</string>
     <string name="clear_selections">Очистить выбранное</string>
     <string name="save_selected">Сохранить выбранное</string>
@@ -64,4 +65,6 @@
     <string name="language">ru</string>
 
     <string name="ad_label">Реклама</string>
+
+    <string name="news_request_lang">ru-ru</string>
 </resources>

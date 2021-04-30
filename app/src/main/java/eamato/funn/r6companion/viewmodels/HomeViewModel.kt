@@ -11,14 +11,15 @@ import eamato.funn.r6companion.utils.NEWS_COUNT_DEFAULT_VALUE
 import eamato.funn.r6companion.utils.NewsDataMixedWithAds
 import io.reactivex.disposables.CompositeDisposable
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(newsLocale: String) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val newsDataSourceFactory = NewsDataSourceFactory(compositeDisposable, NewsRequests.getNewsRequest())
+    private val newsDataSourceFactory = NewsDataSourceFactory(compositeDisposable, NewsRequests.getNewsRequest(), newsLocale)
     private val newsDataSourceFactoryConfig = PagedList.Config.Builder()
         .setEnablePlaceholders(true)
-        .setPageSize(NEWS_COUNT_DEFAULT_VALUE)
+        .setPageSize(NEWS_COUNT_DEFAULT_VALUE / 2)
+        .setPrefetchDistance(NEWS_COUNT_DEFAULT_VALUE / 4)
         .build()
 
     val news: LiveData<PagedList<NewsDataMixedWithAds?>> = LivePagedListBuilder(newsDataSourceFactory, newsDataSourceFactoryConfig).build()

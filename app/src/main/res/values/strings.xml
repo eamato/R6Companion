@@ -22,6 +22,7 @@
     <string name="sort">Sort</string>
     <string name="alphabetic_sort_ascending">Alphabetic sort ascending</string>
     <string name="alphabetic_sort_descending">Alphabetic sort descending</string>
+    <string name="sort_selected">Selected first</string>
     <string name="select_all">Select all</string>
     <string name="clear_selections">Clear selections</string>
     <string name="save_selected">Save selected</string>
@@ -68,6 +69,9 @@
     <string name="default_notification_channel_id" translatable="false">default_notification_channel</string>
     <string name="notification_channel_name" translatable="false">Notification channel name</string>
     <string name="notification_channel_description" translatable="false">Notification channel description</string>
+    <string name="first_name_last_name_pattern" translatable="false">%1$s %2$s</string>
+
+    <string name="news_request_lang">en-us</string>
 
     <string name="preference_key_dark_mode" translatable="false">dark_mode</string>
     <string name="preference_key_illumination_threshold" translatable="false">illumination_threshold</string>
@@ -75,6 +79,6 @@
     <string name="preference_key_about" translatable="false">about</string>
 
     <string name="ad_mod_app_id" translatable="false">ca-app-pub-6576243137966846~4299148913</string>
-    <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-3940256099942544/2247696110</string> <!-- TEST -->
-<!--    <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-6576243137966846/6466340777</string> &lt;!&ndash; REAL &ndash;&gt;-->
+<!--    <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-3940256099942544/2247696110</string> &lt;!&ndash; TEST &ndash;&gt;-->
+    <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-6576243137966846/6466340777</string> <!-- REAL -->
 </resources>

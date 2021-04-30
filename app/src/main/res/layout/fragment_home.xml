@@ -37,7 +37,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                style="?android:progressBarStyleSmall" />
+                style="?android:progressBarStyleSmall"
+                android:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_scroll_to_top"

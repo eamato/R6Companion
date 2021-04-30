@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +17,7 @@ import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import eamato.funn.r6companion.utils.setMyOnScrollListener
 import eamato.funn.r6companion.utils.setOnItemClickListener
 import eamato.funn.r6companion.viewmodels.HomeViewModel
+import eamato.funn.r6companion.viewmodels.HomeViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
 
 private const val SCREEN_NAME = "Home screen"
@@ -27,7 +27,7 @@ class HomeFragment : BaseFragment() {
     private val newsAdapter = NewsAdapter()
 
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        ViewModelProvider(this, HomeViewModelFactory(getString(R.string.news_request_lang))).get(HomeViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -90,8 +90,6 @@ class HomeFragment : BaseFragment() {
         fab_scroll_to_top?.setOnClickListener {
             rv_news?.scrollToPosition(0)
         }
-
-        clpb_news?.hide()
     }
 
     override fun logScreenView() {
@@ -99,13 +97,13 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun setLiveDataObservers() {
-        homeViewModel.news.observe(this, Observer {
+        homeViewModel.news.observe(this, {
             it?.let {
                 newsAdapter.submitList(it)
             }
         })
 
-        homeViewModel.requestNewsStatus.observe(this, Observer {
+        homeViewModel.requestNewsStatus.observe(this, {
             srl_news?.isRefreshing = false
             when (it) {
                 LiveDataStatuses.ERROR -> {
@@ -116,7 +114,10 @@ class HomeFragment : BaseFragment() {
                     fab_scroll_to_top?.hide()
                     clpb_news?.show()
                 }
-                else -> clpb_news?.hide()
+                LiveDataStatuses.DONE -> {
+                    clpb_news?.hide()
+                }
+                else -> {}
             }
         })
     }
@@ -130,7 +131,7 @@ class HomeFragment : BaseFragment() {
             .setAction(R.string.retry) {
                 homeViewModel.retry()
             }
-            .setAnchorView(mainActivity?.findViewById<View>(R.id.bnv))
+            .setAnchorView(mainActivity?.findViewById(R.id.bnv))
             .show()
     }
 

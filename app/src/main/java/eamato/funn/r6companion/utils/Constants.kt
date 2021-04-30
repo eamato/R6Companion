@@ -12,6 +12,9 @@ const val WINNER_OPERATOR_IMAGE_HEIGHT = 600
 const val ROULETTE_OPERATOR_ICON_WIDTH = 75
 const val ROULETTE_OPERATOR_ICON_HEIGHT = 75
 
+const val OUR_TEAM_IMAGE_WIDTH = 75
+const val OUR_TEAM_IMAGE_HEIGHT = 75
+
 const val UN_EXISTENT_HOST = "https://unexisting.host.mne/"
 
 const val ROULETTE_SEARCH_QUERY_KEY = "searchViewQuery"
@@ -29,9 +32,9 @@ const val NEWS_COUNT_MAX_VALUE = 100
 const val NEWS_COUNT_DEFAULT_VALUE = 30
 const val AD_INSERTION_COUNT = 15
 
-const val CONNECTION_TIME_OUT = 2 * 1000L
-const val READ_TIME_OUT = 2 * 1000L
-const val WRITE_TIME_OUT = 2 * 1000L
+const val CONNECTION_TIME_OUT = 5 * 1000L
+const val READ_TIME_OUT = 5 * 1000L
+const val WRITE_TIME_OUT = 5 * 1000L
 
 const val DEFAULT_NOTIFICATION_CHANNEL_ID = "default_notification_channel_id"
 

@@ -81,84 +81,84 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
         }
     }
 
-    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {}
+    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
 
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
+    }
+
+    override fun surfaceDestroyed(holder: SurfaceHolder) {
         compositeDisposable.clear()
     }
 
-    override fun surfaceCreated(holder: SurfaceHolder?) {
-        holder?.let { nonNullHolder ->
-            val f = Flowable
-                .fromCallable {
-                    preparePlayer(nonNullHolder)
-                }
-                .subscribeOn(Schedulers.single())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap { player2 ->
-                    player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this, Observer {
-                        when (it) {
-                            PlaybackStatus.PLAYING -> {
-                                shouldDispatchTouchEvent = false
-                                player2.topPlayRoadPlayer.isFrameVisible.set(false)
+    override fun surfaceCreated(holder: SurfaceHolder) {
+        val f = Flowable
+            .fromCallable {
+                preparePlayer(holder)
+            }
+            .subscribeOn(Schedulers.single())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap { player2 ->
+                player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this, Observer {
+                    when (it) {
+                        PlaybackStatus.PLAYING -> {
+                            shouldDispatchTouchEvent = false
+                            player2.topPlayRoadPlayer.isFrameVisible.set(false)
 
-                                sv_canvas.clearAnimation()
-                            }
-                            PlaybackStatus.PAUSED -> {
-                                player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
-                                shouldDispatchTouchEvent = true
-                                player2.topPlayRoadPlayer.isFrameVisible.set(true)
-
-                                sv_canvas.startAnimation(idlePacketAnimation)
-                            }
-                            PlaybackStatus.STOPPED -> {
-                                player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
-                                shouldDispatchTouchEvent = true
-                                player2.topPlayRoadPlayer.isFrameVisible.set(true)
-
-                                sv_canvas.startAnimation(idlePacketAnimation)
-                            }
-                            PlaybackStatus.PLAYINGFBF -> {
-                                shouldDispatchTouchEvent = true
-                                player2.topPlayRoadPlayer.isFrameVisible.set(false)
-
-                                sv_canvas.clearAnimation()
-                            }
-                            else -> {
-
-                            }
+                            sv_canvas.clearAnimation()
                         }
-                    })
+                        PlaybackStatus.PAUSED -> {
+                            player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
+                            shouldDispatchTouchEvent = true
+                            player2.topPlayRoadPlayer.isFrameVisible.set(true)
 
-                    pb_waiting?.hide()
-
-                    val myGestureDetectorImplementation2 =
-                        MyGestureDetectorImplementation2(player2, canvasSize)
-                    val gestureDetector =
-                        GestureDetector(context, myGestureDetectorImplementation2)
-
-                    sv_canvas.setOnTouchListener { _, event ->
-                        if (shouldDispatchTouchEvent) {
-                            gestureDetector.onTouchEvent(event)
-                            if (event.action == MotionEvent.ACTION_UP && myGestureDetectorImplementation2.isScrollDetected) {
-                                myGestureDetectorImplementation2.isScrollDetected = false
-                                player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.REVERSED)
-                                player2.middlePlayRoadPlayer.playRoad.playbackStatus.value =
-                                    PlaybackStatus.PLAYING
-                            }
+                            sv_canvas.startAnimation(idlePacketAnimation)
                         }
-                        true
+                        PlaybackStatus.STOPPED -> {
+                            player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
+                            shouldDispatchTouchEvent = true
+                            player2.topPlayRoadPlayer.isFrameVisible.set(true)
+
+                            sv_canvas.startAnimation(idlePacketAnimation)
+                        }
+                        PlaybackStatus.PLAYINGFBF -> {
+                            shouldDispatchTouchEvent = true
+                            player2.topPlayRoadPlayer.isFrameVisible.set(false)
+
+                            sv_canvas.clearAnimation()
+                        }
+                        else -> {
+
+                        }
                     }
-
-                    player2.playback
-                }
-                .subscribe({
-                    draw(nonNullHolder, it.bottomLayer, it.centerLayer, it.topLayer, backgroundColor)
-                }, {
-                    it.printStackTrace()
                 })
-            compositeDisposable.add(f)
-        }
+
+                pb_waiting?.hide()
+
+                val myGestureDetectorImplementation2 =
+                    MyGestureDetectorImplementation2(player2, canvasSize)
+                val gestureDetector =
+                    GestureDetector(context, myGestureDetectorImplementation2)
+
+                sv_canvas.setOnTouchListener { _, event ->
+                    if (shouldDispatchTouchEvent) {
+                        gestureDetector.onTouchEvent(event)
+                        if (event.action == MotionEvent.ACTION_UP && myGestureDetectorImplementation2.isScrollDetected) {
+                            myGestureDetectorImplementation2.isScrollDetected = false
+                            player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.REVERSED)
+                            player2.middlePlayRoadPlayer.playRoad.playbackStatus.value =
+                                PlaybackStatus.PLAYING
+                        }
+                    }
+                    true
+                }
+
+                player2.playback
+            }
+            .subscribe({
+                draw(holder, it.bottomLayer, it.centerLayer, it.topLayer, backgroundColor)
+            }, {
+                it.printStackTrace()
+            })
+        compositeDisposable.add(f)
     }
 
     override fun logScreenView() {

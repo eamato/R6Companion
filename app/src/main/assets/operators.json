@@ -1,6 +1,41 @@
 {
   "operators": [
     {
+      "img_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/3hXRjYHsrlFOocJjyxyYZY/29eb8f1ad9eab150518a053b775c336f/r6s-operators-list-flores.png",
+      "name": "Flores",
+      "operator_icon_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/75vqJXXKCM2EDO0iiNqRDe/fa018cd2e2900ce2fee7ab49ff3eb09b/r6s-operators-badge-flores.png"
+    },
+    {
+      "img_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/4yfuWCW8O4ja2VqR9tXqaE/c8dd123a6405959cf4f091c3854c9d96/r6s-operators-list-aruni.png",
+      "name": "Aruni",
+      "operator_icon_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/5rOLCYQOh5HH0Nv6NHe38H/9b0328e497113d55ecb88cc2b090cbcd/r6s-operators-badge-aruni.png"
+    },
+    {
+      "img_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/24jDQIfDdVMLX5K54pKNe5/58dec3b1e7d32a637bc76560e0cf0385/r6s-operator-list-zero.png",
+      "name": "Zero",
+      "operator_icon_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/4ZbzOZt1Sur77RZTFwYVJ4/98da1c4251466ee1af68e321d81cc276/r6s-operators-badge-zero.png"
+    },
+    {
+      "img_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/5snW47tH4a5VuPhidr61sm/40b812d32eb85b5c3390865541578bea/r6s-operator-list-ace.png",
+      "name": "Ace",
+      "operator_icon_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/dgG7GmXY1HgfeEE2gI1H9/dece6d768f1d3682709815e8f645b94c/R6_live_Y5S2_IMG_Ace_Icon.png"
+    },
+    {
+      "img_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/1yoVAGw5rEQ8zPPHoQSDJb/b16a570fadb3342416c5c44847cc651a/r6s-operator-list-melusi.png",
+      "name": "Melusi",
+      "operator_icon_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/74H52a9GMql8wamIy6WqH5/dc61748984f94d604875a40cf4befdd9/R6_live_Y5S2_IMG_Melusi_Icon_Detailed.png"
+    },
+    {
+      "img_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/3JBOp3MXgGeuEwyoYrkuMi/b7aa3c4a3fa6f165135954aa30252838/r6s-operator-list-oryx.png",
+      "name": "Oryx",
+      "operator_icon_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/7mLA8GY9ZKlUfDXrfo9Nek/730d5ca033d97c9b18a3c1b9ffbebfbf/r6s-operator-badge-oryx.png"
+    },
+    {
+      "img_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/6vES8lEllMwW9OaBYRT7YX/39b5fe90684d7ce637a7d025cdd1ec96/r6s-operator-list-iana.png",
+      "name": "Iana",
+      "operator_icon_link": "https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/6deSi1vse5iJTkErFksrGq/5b116e90bae5c039e4db5e6150c33cd2/r6s-operator-badge-iana.png"
+    },
+    {
       "img_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-list-wamai_358318.png",
       "name": "Wamai",
       "operator_icon_link": "https://ubistatic19-a.akamaihd.net/resource/en-us/game/rainbow6/siege-v3/r6-operators-badge-wamai_358314.png"

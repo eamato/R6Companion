@@ -11,7 +11,8 @@ import io.reactivex.schedulers.Schedulers
 
 class NewsDataSource(
     private val compositeDisposable: CompositeDisposable,
-    private val newsRequests: NewsRequests
+    private val newsRequests: NewsRequests,
+    private val newsLocale: String
 ) : PageKeyedDataSource<Int, NewsDataMixedWithAds?>() {
 
     private val pRequestNewsStatuses = MutableLiveData(LiveDataStatuses.IDLE)
@@ -25,7 +26,7 @@ class NewsDataSource(
     ) {
         pRequestNewsStatuses.postValue(LiveDataStatuses.WAITING)
         compositeDisposable.add(
-            newsRequests.getNews()
+            newsRequests.getUpdates(newsLocale = newsLocale)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     callback.onResult(
@@ -55,7 +56,7 @@ class NewsDataSource(
     ) {
         pRequestNewsStatuses.postValue(LiveDataStatuses.WAITING)
         compositeDisposable.add(
-            newsRequests.getNews(params.key)
+            newsRequests.getUpdates(params.key, newsLocale = newsLocale)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     callback.onResult(
