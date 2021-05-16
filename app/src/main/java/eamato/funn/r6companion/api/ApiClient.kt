@@ -18,4 +18,14 @@ object ApiClient {
             .build()
     }
 
+    @Synchronized
+    @JvmStatic
+    fun getApiClientCoroutines(baseUrl: String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(defaultOkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
 }

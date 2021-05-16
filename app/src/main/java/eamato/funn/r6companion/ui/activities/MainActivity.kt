@@ -8,11 +8,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -31,9 +30,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
-    private val mainViewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
+    private val mainViewModel: MainViewModel by viewModels()
 
     private val navigationController: NavController by lazy {
         findNavController(R.id.fragment)
@@ -60,9 +57,7 @@ class MainActivity : BaseActivity() {
 
 //        startActivity(Intent(this, TestActivity::class.java))
 
-        PreferenceManager.getDefaultSharedPreferences(this).getDarkMode().setDarkMode()
-
-        mainViewModel.illuminationLevel.observe(this, Observer {
+        mainViewModel.illuminationLevel.observe(this, {
             it?.let { nonNullIlluminationLevel ->
                 with (PreferenceManager.getDefaultSharedPreferences(this)) {
                     getDarkMode()

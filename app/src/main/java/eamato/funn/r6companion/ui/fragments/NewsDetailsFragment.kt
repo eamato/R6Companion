@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.Updates
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseInnerToolbarFragment
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
-import eamato.funn.r6companion.utils.getDisplayMetrics
+import eamato.funn.r6companion.utils.contentToViewList
 import eamato.funn.r6companion.utils.glide.GlideApp
-import eamato.funn.r6companion.utils.toSpannableContent
 import kotlinx.android.synthetic.main.fragment_news_details.*
 
 private const val SCREEN_NAME = "News details screen"
@@ -73,9 +73,11 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     .into(nonNullImageView)
             }
 
-            tv_content?.let { nonNullTextView ->
-                activity?.getDisplayMetrics()?.let { nonNullDisplayMetrix ->
-                    nonNullTextView.text = it.content?.toSpannableContent(nonNullDisplayMetrix, nonNullTextView)
+            context?.let { nonNullContext ->
+                it.content?.contentToViewList()?.map { contentView ->
+                    contentView.createView(nonNullContext)
+                }?.forEach { nonNullView ->
+                    ll_content?.addView(nonNullView)
                 }
             }
         }

@@ -6,7 +6,7 @@ import eamato.funn.r6companion.entities.Updates
 data class NewsDataMixedWithAds(val newsData: Updates.Item?, val isAd: Boolean = false) {
 
     companion object {
-        val NEWS_DATA_DIFF_CALLBACK = object : DiffUtil.ItemCallback<NewsDataMixedWithAds?>() {
+        val NEWS_DATA_DIFF_CALLBACK = object : DiffUtil.ItemCallback<NewsDataMixedWithAds>() {
             override fun areItemsTheSame(
                 oldItem: NewsDataMixedWithAds,
                 newItem: NewsDataMixedWithAds

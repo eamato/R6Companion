@@ -57,3 +57,5 @@ const val DARK_MODE_SWITCHER_DELAY = 2 * 1000L
 
 const val RUSSIAN_LANGUAGE_CODE = "ru"
 const val ENGLISH_LANGUAGE_CODE = "en"
+
+const val DEFAULT_NEWS_LOCALE = "en-us"

@@ -2,14 +2,15 @@ package eamato.funn.r6companion.viewmodels
 
 import android.content.SharedPreferences
 import android.content.res.AssetManager
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.entities.RouletteOperator
+import eamato.funn.r6companion.firebase.things.*
 import eamato.funn.r6companion.repositories.OperatorsRepository
-import eamato.funn.r6companion.utils.areThereSavedSelectedOperators
-import eamato.funn.r6companion.utils.PREFERENCE_SAVE_SELECTIONS_KEY
-import eamato.funn.r6companion.utils.toRouletteOperators
+import eamato.funn.r6companion.utils.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -57,6 +58,25 @@ class RouletteViewModel : ViewModel() {
                     pVisibleRouletteOperators.value = emptyList()
                 })
         )
+    }
+
+    fun getAllOperators(
+        mainViewModel: MainViewModel,
+        lifeCycleOwner: LifecycleOwner,
+        preferences: SharedPreferences
+    ) {
+        mainViewModel.observableFirebaseRemoteConfig.observe(lifeCycleOwner, {
+            it?.let { nonNullFirebaseRemoteConfig ->
+                nonNullFirebaseRemoteConfig.getString(OPERATORS)
+                    .getFirebaseRemoteConfigEntity(Operators::class.java)?.let { nonNullOperators ->
+                        nonNullOperators.operators?.filterNotNull()?.toRouletteOperators()?.let { nonNullRouletteOperators ->
+                            immutableOperators = ArrayList(nonNullRouletteOperators.map { operator -> operator.copy() })
+                            pVisibleRouletteOperators.value = ArrayList(nonNullRouletteOperators.map { operator -> operator.copy() })
+                            selectPreviouslySelectedOperators(preferences)
+                        }
+                    }
+            }
+        })
     }
 
     fun roll() {

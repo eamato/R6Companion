@@ -12,7 +12,18 @@ import eamato.funn.r6companion.firebase.things.COMING_SOON_KEY
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+    private val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance().apply {
+        setConfigSettingsAsync(
+            FirebaseRemoteConfigSettings
+                .Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build()
+        )
+
+        setDefaultsAsync(
+            mapOf(COMING_SOON_KEY to application.getString(R.string.coming_soon))
+        )
+    }
 
     private val pFirebaseRemoteConfig = MutableLiveData<FirebaseRemoteConfig>()
     val observableFirebaseRemoteConfig: LiveData<FirebaseRemoteConfig> = pFirebaseRemoteConfig
@@ -25,23 +36,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var applyIlluminationSensorValue = true
 
     init {
-        firebaseRemoteConfig.setConfigSettingsAsync(
-            FirebaseRemoteConfigSettings
-                .Builder()
-                .setMinimumFetchIntervalInSeconds(0)
-                .build()
-        )
+        fetchRemoteConfig()
+    }
 
-        firebaseRemoteConfig.setDefaultsAsync(
-            mapOf(COMING_SOON_KEY to application.getString(R.string.coming_soon))
-        )
-
+    private fun fetchRemoteConfig() {
         firebaseRemoteConfig.fetchAndActivate()
             .addOnCompleteListener {
                 if (it.isSuccessful)
                     pFirebaseRemoteConfig.value = firebaseRemoteConfig
             }
-
     }
 
     fun updateIlluminationLevel(currentIlluminationLevel: Float?) {

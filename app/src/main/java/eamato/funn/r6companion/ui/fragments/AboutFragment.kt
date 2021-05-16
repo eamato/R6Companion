@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.recycler_view_adapters.OurTeamAdapter
 import eamato.funn.r6companion.firebase.things.OUR_MISSION_KEY

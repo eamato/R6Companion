@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -11,6 +12,7 @@ import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.util.DisplayMetrics
 import android.view.PixelCopy
 import android.view.View
@@ -29,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.*
+import eamato.funn.r6companion.entities.content_view.*
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
 import eamato.funn.r6companion.utils.glide.GlideDynamicDrawableSpan
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
@@ -141,6 +144,18 @@ fun List<RouletteOperator>.toParcelableList(): ParcelableListOfRouletteOperators
     return ParcelableListOfRouletteOperators(this)
 }
 
+fun Context?.isCurrentlyConnectedToInternet(): Boolean {
+    if (this == null)
+        return false
+    return ContextCompat.getSystemService(this, ConnectivityManager::class.java)?.let {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            it.isCurrentConnectedToInternet()
+        } else {
+            it.isCurrentConnectedNetworkWIFILegacy()
+        }
+    } ?: false
+}
+
 fun Context?.isCurrentlyConnectedNetworkWIFI(): Boolean {
     if (this == null)
         return false
@@ -163,6 +178,19 @@ fun ConnectivityManager.isCurrentConnectedNetworkWIFI(): Boolean {
     val network = activeNetwork
     val networkCapabilities = getNetworkCapabilities(network) ?: return false
     return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+}
+
+@Suppress("DEPRECATION")
+fun ConnectivityManager.isCurrentConnectedToInternetLegacy(): Boolean {
+    val activeNetworkInfo = activeNetworkInfo ?: return false
+    return activeNetworkInfo.isConnected
+}
+
+@TargetApi(Build.VERSION_CODES.M)
+fun ConnectivityManager.isCurrentConnectedToInternet(): Boolean {
+    val network = activeNetwork
+    val networkCapabilities = getNetworkCapabilities(network) ?: return false
+    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
 }
 
 @TargetApi(Build.VERSION_CODES.O)
@@ -257,60 +285,153 @@ fun <T> MutableList<T>.insertItemAtEveryStep(item: T, step: Int): MutableList<T>
 
 fun String.toSpannableContent(displayMetrics: DisplayMetrics, textView: TextView): SpannableStringBuilder {
     val headerPrefix = "(?<=[^#]|^)#{3} (.*?)[\\n]".toRegex()
-//    val headerPrefixReplace = "((?<=[^#]|^)#{3} )".toRegex()
-
     val biggerHeaderPrefix = "(?<=[^#]|^)# (.*?)[\\n]".toRegex()
-//    val biggerHeaderPrefixReplace = "((?<=[^#]|^)# )".toRegex()
-
-//    val imagePrefix = "!\\[\\[R6S] .*]\\((/{2}.*?\\.(?:jpg|gif|png|jpeg))\\)[\\n]".toRegex()
     val imagePrefix = "(/{2}.*?\\.(?:jpg|gif|png|jpeg))".toRegex()
-//    val imagePrefixReplace = "(!\\[\\[R6S] .*]\\()".toRegex()
+    val captionPrefix2 = "(__)(.*)(__)".toRegex()
+    val videoPrefix = "\\[video\\]\\((.*)\\)".toRegex()
 
-    val imageWidth = textView.parent.takeIf { it is ViewGroup }?.let { it as ViewGroup }?.let {
-        displayMetrics.widthPixels - (it.marginStart + it.marginEnd)
-    } ?: displayMetrics.widthPixels
+    val imageWidth = textView.parent
+        .takeIf { it is ViewGroup }
+        ?.let { it as ViewGroup }
+        ?.let {
+            displayMetrics.widthPixels - (it.marginStart + it.marginEnd)
+        } ?: displayMetrics.widthPixels
 
     var spannable = SpannableStringBuilder(this)
 
     headerPrefix.findAll(this)
         .map { it.value }
         .forEach {
-            spannable.setSpan(RelativeSizeSpan(1.5f), indexOf(it), indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val start = indexOf(it)
+            spannable.setSpan(
+                RelativeSizeSpan(1.5f),
+                start,
+                start + it.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
 
     biggerHeaderPrefix.findAll(this)
         .map { it.value }
         .forEach {
-            spannable.setSpan(RelativeSizeSpan(2f), indexOf(it), indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val start = indexOf(it)
+            spannable.setSpan(
+                RelativeSizeSpan(2f),
+                start,
+                start + it.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
 
     imagePrefix.findAll(this)
         .map { it.value }
         .forEach {
-            spannable = spannable.insert(indexOf(it), "\n")
+            val start = indexOf(it)
+            spannable = spannable.insert(start, "\n")
             spannable.setSpan(
-                GlideDynamicDrawableSpan(
-                textView, imageWidth, url = "http:$it"
-            ), indexOf(it), indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                GlideDynamicDrawableSpan(textView, imageWidth, url = "http:$it"),
+                start,
+                start + it.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
 
-//    headerPrefixReplace.findAll(this)
-//        .map { it.value }
-//        .forEach {
-//            spannable = spannable.replace(spannable.indexOf(it), spannable.indexOf(it) + it.length, "")
-//        }
-//
-//    biggerHeaderPrefixReplace.findAll(this)
-//        .map { it.groupValues[1] }
-//        .forEach {
-//            spannable = spannable.replace(spannable.indexOf(it), spannable.indexOf(it) + it.length, "")
-//        }
-//
-//    imagePrefixReplace.findAll(this)
-//        .map { it.value }
-//        .forEach {
-//            spannable = spannable.replace(spannable.indexOf(it), spannable.indexOf(it) + it.length, "")
-//        }
+    captionPrefix2.findAll(this)
+        .map { it.value }
+        .forEach {
+            val start = indexOf(it)
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD_ITALIC),
+                start,
+                start + it.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+    captionPrefix2.findAll(this)
+        .map { it.groups }
+        .forEach { _ ->
+            captionPrefix2.replace(spannable)
+        }
 
     return spannable
+}
+
+fun Regex.replace(spannableStringBuilder: SpannableStringBuilder) {
+    findAll(spannableStringBuilder)
+        .map { it.groups }
+        .forEach {
+            it.forEachIndexed { index, matchGroup ->
+                if (index == 1 || index == 3) {
+                    matchGroup?.value?.let { nonNullValue ->
+                        val start = spannableStringBuilder.indexOf(nonNullValue)
+                        spannableStringBuilder.replace(start, start + nonNullValue.length, "")
+                    }
+                }
+            }
+        }
+}
+
+fun String.contentToViewList(): List<IContentView> {
+    val mainContentSplitter = "\n\n"
+    val innerContentSplitter = "\n"
+    val mainContent = split(mainContentSplitter)
+    val contentViewList = mutableListOf<IContentView>()
+    mainContent.forEach {
+        if (it.contains(innerContentSplitter))
+            it.split(innerContentSplitter)
+                .map { innerContent ->
+                    innerContent.contentToView()
+                }
+                .filterNotNullTo(contentViewList)
+        else
+            it.contentToView()
+                ?.let { nonNullContentView ->
+                    contentViewList.add(nonNullContentView)
+                }
+    }
+    return contentViewList
+}
+
+fun String.contentToView(): IContentView? {
+    val header1 = "(?<=[^#]|^)# (.*)".toRegex()
+    val header2 = "(?<=[^#]|^)#{2} (.*)".toRegex()
+    val imagePrefix = "(/{2}.*?\\.(?:jpg|gif|png|jpeg))".toRegex()
+    val captionPrefix = "(?<=__)(.*?)(?=__)".toRegex()
+    val italicPrefix = "(?<=\\*)(.*?)(?=\\*)".toRegex()
+    val videoPrefix = "\\[video\\]\\((.*)\\)".toRegex()
+
+    return when {
+        this.startsWith("##") -> {
+            header2.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+                HeaderTextView(nonNullValue, R.style.AppTheme_ContentHeader2Style)
+            }
+        }
+        this.startsWith("#") -> {
+            header1.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+                HeaderTextView(nonNullValue)
+            }
+        }
+        this.startsWith("![") || this.startsWith("[![") -> {
+            imagePrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+                ContentImageView("http:$nonNullValue")
+            }
+        }
+        this.startsWith("__") -> {
+            captionPrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+                ContentTextView(nonNullValue, R.style.AppTheme_ContentCaptionStyle)
+            }
+        }
+        this.startsWith("*") -> {
+            italicPrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+                ContentTextView(nonNullValue, R.style.AppTheme_ContentItalicStyle)
+            }
+        }
+        this.startsWith("[video]") -> {
+            videoPrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+                ContentVideoView(nonNullValue)
+            }
+        }
+        else -> ContentTextView(this)
+    }
 }

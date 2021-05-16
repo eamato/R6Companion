@@ -92,4 +92,34 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
+    <style name="AppTheme.ContentHeader1Style" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorDefaultText</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
+    </style>
+
+    <style name="AppTheme.ContentHeader2Style" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorDefaultText</item>
+        <item name="fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">@dimen/text_size_subtitle</item>
+    </style>
+
+    <style name="AppTheme.ContentCaptionStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorDefaultText</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/text_size_subtitle</item>
+    </style>
+
+    <style name="AppTheme.ContentItalicStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorDefaultText</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/text_size_default</item>
+    </style>
+
+    <style name="AppTheme.ContentButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
 </resources>

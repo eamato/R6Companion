@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.recycler_view_adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
+import eamato.funn.r6companion.firebase.things.*
+import eamato.funn.r6companion.firebase.things.OUR_MISSION_KEY
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
@@ -23,6 +25,7 @@ import eamato.funn.r6companion.viewmodels.RouletteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.android.synthetic.main.fragment_roulette.*
 
 private const val SCREEN_NAME = "Roulette screen"
@@ -97,7 +100,11 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
         if (rouletteViewModel.visibleRouletteOperators.value.isNullOrEmpty()) {
             context?.let { nonNullContext ->
-                rouletteViewModel.getAllOperators(nonNullContext.assets, PreferenceManager.getDefaultSharedPreferences(nonNullContext))
+                if (nonNullContext.isCurrentlyConnectedToInternet()) {
+                    rouletteViewModel.getAllOperators(mainViewModel, viewLifecycleOwner, PreferenceManager.getDefaultSharedPreferences(nonNullContext))
+                } else {
+                    rouletteViewModel.getAllOperators(nonNullContext.assets, PreferenceManager.getDefaultSharedPreferences(nonNullContext))
+                }
             }
         }
     }

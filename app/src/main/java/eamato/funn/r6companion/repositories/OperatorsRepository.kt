@@ -14,7 +14,7 @@ object OperatorsRepository {
     fun getOperators(assetManager: AssetManager): Single<List<Operators.Operator>> {
         return if (operators.isNullOrEmpty()) {
                 try {
-                    val operators = Gson().fromJson<Operators?>(
+                    val operators = Gson().fromJson(
                         BufferedReader(InputStreamReader(assetManager.open("operators.json"))),
                         Operators::class.java
                     )
@@ -23,7 +23,7 @@ object OperatorsRepository {
                     Single.just(temp)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Single.just(emptyList<Operators.Operator>())
+                    Single.just(emptyList())
                 }
             } else {
                 Single.just(operators)

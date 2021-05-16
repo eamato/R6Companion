@@ -25,8 +25,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         multiDexEnabled true
-        versionCode 3
-        versionName "3.0"
+        versionCode 4
+        versionName "4.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -68,6 +68,10 @@ android {
         enabled = true
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -102,15 +106,18 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    implementation 'com.google.android.material:material:1.4.0-alpha02'
+    implementation 'com.google.android.material:material:1.4.0-beta01'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.0'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.14.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.14.0'
 
     /* AndroidX dependencies */
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.core:core-ktx:1.6.0-alpha02'
+    implementation 'androidx.core:core-ktx:1.6.0-alpha03'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.preference:preference-ktx:$preference_version"
-    implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
+    implementation 'androidx.paging:paging-runtime-ktx:3.0.0'
 
     /* Lifecycle dependencies */
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -148,7 +155,7 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$firebase_messaging_version"
     implementation "com.google.firebase:firebase-perf:$firebase_performance_version"
     implementation "com.google.firebase:firebase-inappmessaging-display:$firebase_inappmessaging_version"
-    implementation 'com.google.firebase:firebase-ads:20.0.0'
+    implementation 'com.google.firebase:firebase-ads:20.1.0'
 
     /* Test dependencies */
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
