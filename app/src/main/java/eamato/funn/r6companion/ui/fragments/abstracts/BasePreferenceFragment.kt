@@ -2,7 +2,7 @@ package eamato.funn.r6companion.ui.fragments.abstracts
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceFragmentCompat
 import com.google.firebase.analytics.FirebaseAnalytics
 import eamato.funn.r6companion.utils.ILogScreenView
@@ -13,7 +13,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(), ILogScreenVi
 
     protected val mainViewModel: MainViewModel by lazy {
         activity?.let { nonNullActivity ->
-            ViewModelProviders.of(nonNullActivity).get(MainViewModel::class.java)
+            ViewModelProvider(nonNullActivity).get(MainViewModel::class.java)
         } ?: throw Exception("Activity is null")
     }
 

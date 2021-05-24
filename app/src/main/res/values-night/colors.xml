@@ -13,4 +13,6 @@
     <color name="colorIconTint">#FFFFFF</color>
 
     <color name="colorDefaultText">#FFFFFF</color>
+
+    <color name="colorOperatorRoleIcon">#FFFFFF</color>
 </resources>

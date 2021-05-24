@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -18,19 +19,20 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.preference.PreferenceManager
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.databinding.ActivityMainBinding
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.notifications.R6NotificationManager
 import eamato.funn.r6companion.viewmodels.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
+
+    private lateinit var binding: ActivityMainBinding
 
     private val navigationController: NavController by lazy {
         findNavController(R.id.fragment)
@@ -53,9 +55,9 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-//        startActivity(Intent(this, TestActivity::class.java))
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         mainViewModel.illuminationLevel.observe(this, {
             it?.let { nonNullIlluminationLevel ->
@@ -71,7 +73,7 @@ class MainActivity : BaseActivity() {
                         ?.takeIf { newModeApplied -> newModeApplied }
                         ?.also {
                             mainViewModel.applyIlluminationSensorValue = false
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 mainViewModel.applyIlluminationSensorValue = true
                             }, DARK_MODE_SWITCHER_DELAY)
                         }
@@ -85,19 +87,19 @@ class MainActivity : BaseActivity() {
             notificationChannelDescription = getString(R.string.notification_channel_description)
         )
 
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w("FirebaseInstance", "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.w("FirebaseInstance", "getInstanceId failed", it.exception)
+                return@addOnCompleteListener
+            }
 
-                val token = task.result?.token
-                if (token == null)
-                    Log.w("FirebaseInstance", "Token is null")
-                else
-                    Log.d("FirebaseInstance", token)
-            })
+            val token = it.result
+
+            if (token == null)
+                Log.w("FirebaseInstance", "Token is null")
+            else
+                Log.d("FirebaseInstance", token)
+        }
 
         MobileAds.initialize(this)
     }
@@ -120,12 +122,12 @@ class MainActivity : BaseActivity() {
         setParentToolbar()
 
         navigationController.addOnDestinationChangedListener { _, destination, _ ->
-            bnv?.menu?.forEach {
+            binding.bnv.menu.forEach {
                 if (destination.matchMenuDestination(it.itemId))
                     it.isChecked = true
             }
         }
-        bnv?.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+        binding.bnv.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 if (navigationController.currentDestination?.id == item.itemId)
                     return false
@@ -135,9 +137,9 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    fun setParentToolbar(parentToolbar: Toolbar = toolbar) {
+    fun setParentToolbar(parentToolbar: Toolbar = binding.toolbar) {
         setSupportActionBar(parentToolbar)
-        NavigationUI.setupWithNavController(toolbar, navigationController)
+        NavigationUI.setupWithNavController(binding.toolbar, navigationController)
         supportActionBar?.show()
     }
 

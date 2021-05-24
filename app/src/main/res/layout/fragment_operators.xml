@@ -7,13 +7,20 @@
     tools:context=".ui.fragments.OperatorsFragment"
     android:background="@color/colorBackground">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_coming_soon_placeholder"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_operators"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_5_dp" />
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/clpb_operators"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/AppTheme.TitleStyle"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/coming_soon" />
+        android:layout_margin="@dimen/margin_3_dp"
+        android:layout_gravity="end|top"
+        style="?android:progressBarStyleSmall"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>

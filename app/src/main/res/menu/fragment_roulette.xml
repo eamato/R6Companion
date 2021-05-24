@@ -16,7 +16,7 @@
         android:orderInCategory="101"
         android:icon="@drawable/ic_sort_24dp"
         android:title="@string/sort"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
 
         <menu>
             <item

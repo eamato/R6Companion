@@ -247,7 +247,7 @@ fun <T> String.getFirebaseRemoteConfigEntity(entityClass: Class<T>): T? {
 }
 
 fun LocalizedRemoteConfigEntity.getText(context: Context): String {
-    return if (context.getString(R.string.language) == RUSSIAN_LANGUAGE_CODE)
+    return if (context.getString(R.string.lang) == RUSSIAN_LANGUAGE_CODE)
         ru ?: ""
     else
         en ?: ""
@@ -433,5 +433,18 @@ fun String.contentToView(): IContentView? {
             }
         }
         else -> ContentTextView(this)
+    }
+}
+
+fun ArrayList<R6StatsOperators.R6StatsOperatorsItem>.toCompositeOperators(operators: Operators): List<CompositeOperator> {
+    return filter { it.role != CompositeOperator.ROLE_RECRUIT }
+        .map {
+        val innerOperator = operators.operators?.filterNotNull()?.find { innerOperator ->
+            innerOperator.id == it.id
+        }
+        CompositeOperator(
+            it.armorRating, it.id, it.name, it.role, it.speedRating, innerOperator?.imgLink,
+            it.ctu?.name
+        )
     }
 }

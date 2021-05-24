@@ -5,6 +5,6 @@ import androidx.lifecycle.ViewModel
 
 class RouletteResultPacketOpeningCommonViewModel : ViewModel() {
 
-    val isOpenPackDone = MutableLiveData<Boolean>(false)
+    val isOpenPackDone = MutableLiveData(false)
 
 }

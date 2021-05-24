@@ -9,15 +9,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.recycler_view_adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
-import eamato.funn.r6companion.firebase.things.*
-import eamato.funn.r6companion.firebase.things.OUR_MISSION_KEY
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
@@ -25,8 +22,6 @@ import eamato.funn.r6companion.viewmodels.RouletteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_about.*
-import kotlinx.android.synthetic.main.fragment_roulette.*
 
 private const val SCREEN_NAME = "Roulette screen"
 
@@ -37,7 +32,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private val compositeDisposable = CompositeDisposable()
 
     private val rouletteViewModel: RouletteViewModel by lazy {
-        ViewModelProviders.of(this).get(RouletteViewModel::class.java)
+        ViewModelProvider(this).get(RouletteViewModel::class.java)
     }
 
     private var binding: FragmentRouletteBinding? = null
@@ -46,16 +41,18 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         RouletteOperatorsAdapter()
     }
 
-    private val allOperatorsRouletteClickListener: RecyclerViewItemClickListener by lazy {
-        RecyclerViewItemClickListener(context, rv_all_roulette_operators, object : RecyclerViewItemClickListener.OnItemClickListener {
-            override fun onItemClicked(view: View, position: Int) {
-                rouletteViewModel.selectUnSelectRouletteOperator(rouletteOperatorsAdapter.getItemAtPosition(position))
-            }
+    private val allOperatorsRouletteClickListener: RecyclerViewItemClickListener? by lazy {
+        binding?.rvAllRouletteOperators?.let {
+            RecyclerViewItemClickListener(context, it, object : RecyclerViewItemClickListener.OnItemClickListener {
+                override fun onItemClicked(view: View, position: Int) {
+                    rouletteViewModel.selectUnSelectRouletteOperator(rouletteOperatorsAdapter.getItemAtPosition(position))
+                }
 
-            override fun onItemLongClicked(view: View, position: Int) {
+                override fun onItemLongClicked(view: View, position: Int) {
 
-            }
-        })
+                }
+            })
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,16 +74,18 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         binding?.lifecycleOwner = this
         binding?.rouletteViewModel = rouletteViewModel
 
-        rv_all_roulette_operators.setHasFixedSize(true)
+        binding?.rvAllRouletteOperators?.setHasFixedSize(true)
         var layoutManager = GridLayoutManager(context, 3)
         activity?.resources?.configuration?.orientation?.takeIf { it == ORIENTATION_LANDSCAPE }?.run {
             layoutManager = GridLayoutManager(context, 5)
         }
-        rv_all_roulette_operators.layoutManager = layoutManager
-        rv_all_roulette_operators.adapter = rouletteOperatorsAdapter
-        rv_all_roulette_operators.setOnItemClickListener(allOperatorsRouletteClickListener)
+        binding?.rvAllRouletteOperators?.layoutManager = layoutManager
+        binding?.rvAllRouletteOperators?.adapter = rouletteOperatorsAdapter
+        allOperatorsRouletteClickListener?.let {
+            binding?.rvAllRouletteOperators?.setOnItemClickListener(it)
+        }
 
-        btn_roll.setOnClickListener {
+        binding?.btnRoll?.setOnClickListener {
             context?.let { nonNullContext ->
                 val inputManager = ContextCompat.getSystemService(nonNullContext, InputMethodManager::class.java)
                 inputManager?.hideSoftInputFromWindow(it.windowToken, 0)
@@ -158,19 +157,19 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         return when (item.itemId) {
             R.id.alphabetic_sort_ascending -> {
                 rouletteViewModel.sortByNameAscending {
-                    rv_all_roulette_operators.smoothScrollToPosition(0)
+                    binding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
                 }
                 true
             }
             R.id.alphabetic_sort_descending -> {
                 rouletteViewModel.sortByNameDescending {
-                    rv_all_roulette_operators.smoothScrollToPosition(0)
+                    binding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
                 }
                 true
             }
             R.id.sort_selected -> {
                 rouletteViewModel.sortSelected {
-                    rv_all_roulette_operators.smoothScrollToPosition(0)
+                    binding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
                 }
                 true
             }
@@ -262,13 +261,13 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     override fun setLiveDataObservers() {
-        rouletteViewModel.visibleRouletteOperators.observe(this, Observer { rouletteOperators ->
+        rouletteViewModel.visibleRouletteOperators.observe(this, { rouletteOperators ->
             rouletteOperators?.let { nonNullRouletteOperators ->
                 rouletteOperatorsAdapter.submitList(nonNullRouletteOperators)
             }
         })
 
-        rouletteViewModel.rollingOperatorsAndWinner.observe(this, Observer { rollingOperatorsAndWinner ->
+        rouletteViewModel.rollingOperatorsAndWinner.observe(this, { rollingOperatorsAndWinner ->
             rollingOperatorsAndWinner?.let { nonNullRollingOperatorsAndWinner ->
                 activity?.run {
                     mainViewModel.winnerCandidates.value = nonNullRollingOperatorsAndWinner.first

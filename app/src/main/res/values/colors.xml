@@ -36,4 +36,8 @@
 
     <color name="colorAdLabelText">#FFFFFF</color>
     <color name="colorAdLabelBackground">#FFCC66</color>
+
+    <color name="colorOperatorArmorSpeedEnabled">#36A9E0</color>
+    <color name="colorOperatorArmorSpeedDisabled">#494D4F</color>
+    <color name="colorOperatorRoleIcon">#24262A</color>
 </resources>

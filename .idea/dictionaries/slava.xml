@@ -2,6 +2,7 @@
   <dictionary name="slava">
     <words>
       <w>firebase</w>
+      <w>retryable</w>
       <w>snackbar</w>
     </words>
   </dictionary>

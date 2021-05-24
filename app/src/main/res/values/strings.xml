@@ -62,7 +62,9 @@
     <string name="retry">Retry</string>
     <string name="scroll_to_top">Scroll to top</string>
 
-    <string name="language">en</string>
+    <string name="lang">en</string>
+
+    <string name="language">Language</string>
 
     <string name="ad_label">Ad</string>
 
@@ -71,7 +73,11 @@
     <string name="notification_channel_description" translatable="false">Notification channel description</string>
     <string name="first_name_last_name_pattern" translatable="false">%1$s %2$s</string>
 
-    <string name="news_request_lang">en-us</string>
+    <string name="operator_armor">Armor</string>
+    <string name="operator_speed">Speed</string>
+
+    <string name="language_en" translatable="false">English</string>
+    <string name="language_ru" translatable="false">Русский</string>
 
     <string name="preference_key_dark_mode" translatable="false">dark_mode</string>
     <string name="preference_key_illumination_threshold" translatable="false">illumination_threshold</string>

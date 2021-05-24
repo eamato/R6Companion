@@ -10,9 +10,9 @@ import android.view.animation.AnimationUtils
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BitmapCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.databinding.FragmentPacketOpeningBinding
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.open_pack.*
 import eamato.funn.r6companion.viewmodels.RouletteResultPacketOpeningCommonViewModel
@@ -20,7 +20,6 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_packet_opening.*
 
 private const val SCREEN_NAME = "Packet opening screen"
 
@@ -29,6 +28,8 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
     companion object {
         const val TAG = "pack_opening_fragment"
     }
+
+    private var fragmentPacketOpeningBinding: FragmentPacketOpeningBinding? = null
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -50,14 +51,15 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     private val rouletteResultPacketOpeningCommonViewModel: RouletteResultPacketOpeningCommonViewModel by lazy {
         requireParentFragment().run {
-            ViewModelProviders.of(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
+            ViewModelProvider(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
         }
     }
 
     private lateinit var canvasSize: MySize
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_packet_opening, container, false)
+        fragmentPacketOpeningBinding = FragmentPacketOpeningBinding.inflate(inflater, container, false)
+        return fragmentPacketOpeningBinding?.root
     }
 
     override fun onStop() {
@@ -65,9 +67,9 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
         compositeDisposable.clear()
 
-        sv_canvas.holder.removeCallback(this)
-        sv_canvas.clearAnimation()
-        sv_canvas.setOnTouchListener(null)
+        fragmentPacketOpeningBinding?.svCanvas?.holder?.removeCallback(this)
+        fragmentPacketOpeningBinding?.svCanvas?.clearAnimation()
+        fragmentPacketOpeningBinding?.svCanvas?.setOnTouchListener(null)
     }
 
     override fun onStart() {
@@ -76,8 +78,8 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
         if (!shouldDispatchTouchEvent)
             onPlaybackFinished()
         else {
-            sv_canvas.holder.addCallback(this)
-            sv_canvas.startAnimation(idlePacketAnimation)
+            fragmentPacketOpeningBinding?.svCanvas?.holder?.addCallback(this)
+            fragmentPacketOpeningBinding?.svCanvas?.startAnimation(idlePacketAnimation)
         }
     }
 
@@ -97,33 +99,33 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap { player2 ->
-                player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this, Observer {
+                player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this, {
                     when (it) {
                         PlaybackStatus.PLAYING -> {
                             shouldDispatchTouchEvent = false
                             player2.topPlayRoadPlayer.isFrameVisible.set(false)
 
-                            sv_canvas.clearAnimation()
+                            fragmentPacketOpeningBinding?.svCanvas?.clearAnimation()
                         }
                         PlaybackStatus.PAUSED -> {
                             player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
                             shouldDispatchTouchEvent = true
                             player2.topPlayRoadPlayer.isFrameVisible.set(true)
 
-                            sv_canvas.startAnimation(idlePacketAnimation)
+                            fragmentPacketOpeningBinding?.svCanvas?.startAnimation(idlePacketAnimation)
                         }
                         PlaybackStatus.STOPPED -> {
                             player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
                             shouldDispatchTouchEvent = true
                             player2.topPlayRoadPlayer.isFrameVisible.set(true)
 
-                            sv_canvas.startAnimation(idlePacketAnimation)
+                            fragmentPacketOpeningBinding?.svCanvas?.startAnimation(idlePacketAnimation)
                         }
                         PlaybackStatus.PLAYINGFBF -> {
                             shouldDispatchTouchEvent = true
                             player2.topPlayRoadPlayer.isFrameVisible.set(false)
 
-                            sv_canvas.clearAnimation()
+                            fragmentPacketOpeningBinding?.svCanvas?.clearAnimation()
                         }
                         else -> {
 
@@ -131,14 +133,14 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
                     }
                 })
 
-                pb_waiting?.hide()
+                fragmentPacketOpeningBinding?.pbWaiting?.hide()
 
                 val myGestureDetectorImplementation2 =
                     MyGestureDetectorImplementation2(player2, canvasSize)
                 val gestureDetector =
                     GestureDetector(context, myGestureDetectorImplementation2)
 
-                sv_canvas.setOnTouchListener { _, event ->
+                fragmentPacketOpeningBinding?.svCanvas?.setOnTouchListener { _, event ->
                     if (shouldDispatchTouchEvent) {
                         gestureDetector.onTouchEvent(event)
                         if (event.action == MotionEvent.ACTION_UP && myGestureDetectorImplementation2.isScrollDetected) {
@@ -173,8 +175,8 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     }
 
-    private fun preparePlayer(surfaceHolder: SurfaceHolder): Player2? {
-        runOnUiThread { pb_waiting?.show() }
+    private fun preparePlayer(surfaceHolder: SurfaceHolder): Player2 {
+        runOnUiThread { fragmentPacketOpeningBinding?.pbWaiting?.show() }
         canvasSize = surfaceHolder.getCanvasMySize()
         draw(
             surfaceHolder,
@@ -189,7 +191,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     private fun onPlaybackFinished() {
         runOnUiThread {
-            sv_canvas.setOnTouchListener(null)
+            fragmentPacketOpeningBinding?.svCanvas?.setOnTouchListener(null)
             compositeDisposable.clear()
             rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.value = true
         }

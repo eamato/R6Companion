@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.databinding.FragmentNewsDetailsBinding
 import eamato.funn.r6companion.entities.Updates
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseInnerToolbarFragment
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
 import eamato.funn.r6companion.utils.contentToViewList
 import eamato.funn.r6companion.utils.glide.GlideApp
-import kotlinx.android.synthetic.main.fragment_news_details.*
 
 private const val SCREEN_NAME = "News details screen"
 
 class NewsDetailsFragment : BaseInnerToolbarFragment() {
+
+    private var fragmentNewsDetailsBinding: FragmentNewsDetailsBinding? = null
 
     private var selectedNews: Updates.Item? = null
 
@@ -30,13 +31,14 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_news_details, container, false)
+        fragmentNewsDetailsBinding = FragmentNewsDetailsBinding.inflate(inflater, container, false)
+        return fragmentNewsDetailsBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        clpb_news_image?.hide()
+        fragmentNewsDetailsBinding?.clpbNewsImage?.hide()
     }
 
     override fun logScreenView() {
@@ -52,13 +54,15 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
     }
 
     override fun initViewWithInnerToolbar() {
-        initViewWithInnerToolbar(toolbar)
+        fragmentNewsDetailsBinding?.toolbar?.let {
+            initViewWithInnerToolbar(it)
+        }
 
         selectedNews?.let {
-            ctl?.title = it.title ?: getString(R.string.news_details_label)
+            fragmentNewsDetailsBinding?.ctl?.title = it.title ?: getString(R.string.news_details_label)
 
-            iv_news_image?.let { nonNullImageView ->
-                clpb_news_image?.show()
+            fragmentNewsDetailsBinding?.ivNewsImage?.let { nonNullImageView ->
+                fragmentNewsDetailsBinding?.clpbNewsImage?.show()
                 GlideApp.with(nonNullImageView)
                     .load(it.thumbnail?.url)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -66,7 +70,7 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     .error(R.drawable.no_data_placeholder)
                     .listener(object : IDoAfterTerminateGlide {
                         override fun doAfterTerminate() {
-                            clpb_news_image?.hide()
+                            fragmentNewsDetailsBinding?.clpbNewsImage?.hide()
                         }
                     })
                     .dontAnimate()
@@ -77,7 +81,7 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                 it.content?.contentToViewList()?.map { contentView ->
                     contentView.createView(nonNullContext)
                 }?.forEach { nonNullView ->
-                    ll_content?.addView(nonNullView)
+                    fragmentNewsDetailsBinding?.llContent?.addView(nonNullView)
                 }
             }
         }

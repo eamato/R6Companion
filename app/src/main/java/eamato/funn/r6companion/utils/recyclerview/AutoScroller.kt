@@ -14,7 +14,7 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 abstract class AutoScroller<out L: RecyclerView.LayoutManager, T, WH: RecyclerView.ViewHolder>(
-    private val recyclerView: RecyclerView,
+    private val recyclerView: RecyclerView?,
     protected val adapter: ListAdapter<T, WH>,
     protected val layoutManager: L
 ) {
@@ -47,7 +47,7 @@ abstract class AutoScroller<out L: RecyclerView.LayoutManager, T, WH: RecyclerVi
     ) {
         if (!isScrollable())
             return
-        recyclerView.setOnTouchListener(MyOnTouchListener(::startAutoScrollSTETS, scrollToPeriod, initialDelay))
+        recyclerView?.setOnTouchListener(MyOnTouchListener(::startAutoScrollSTETS, scrollToPeriod, initialDelay))
         disposable?.let { nonNullDisposable ->
             if (!nonNullDisposable.isDisposed)
                 return
@@ -66,7 +66,7 @@ abstract class AutoScroller<out L: RecyclerView.LayoutManager, T, WH: RecyclerVi
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                recyclerView.smoothScrollToPosition(it)
+                recyclerView?.smoothScrollToPosition(it)
             }, {
                 it.printStackTrace()
             })
@@ -81,7 +81,7 @@ abstract class AutoScroller<out L: RecyclerView.LayoutManager, T, WH: RecyclerVi
     ) {
         if (!isScrollable())
             return
-        recyclerView.setOnTouchListener(MyOnTouchListener(::startAutoScrollSTEEndless, scrollToPeriod, initialDelay))
+        recyclerView?.setOnTouchListener(MyOnTouchListener(::startAutoScrollSTEEndless, scrollToPeriod, initialDelay))
         disposable?.let { nonNullDisposable ->
             if (!nonNullDisposable.isDisposed)
                 return
@@ -92,7 +92,7 @@ abstract class AutoScroller<out L: RecyclerView.LayoutManager, T, WH: RecyclerVi
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                recyclerView.smoothScrollToPosition(it)
+                recyclerView?.smoothScrollToPosition(it)
             }, {
                 it.printStackTrace()
             })
@@ -112,16 +112,16 @@ abstract class AutoScroller<out L: RecyclerView.LayoutManager, T, WH: RecyclerVi
         val recyclerViewScrollListener = RecyclerViewStopListener(doOnActionUp, fParam, sParam)
 
         private fun startAutoScrollWhenScrollFinishes() {
-            if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE)
+            if (recyclerView?.scrollState == RecyclerView.SCROLL_STATE_IDLE)
                 doOnActionUp.invoke(fParam, sParam, getCurrentPosition())
             else
-                recyclerView.addOnScrollListener(recyclerViewScrollListener)
+                recyclerView?.addOnScrollListener(recyclerViewScrollListener)
         }
 
         override fun onTouch(v: View?, event: MotionEvent?): Boolean {
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    recyclerView.removeOnScrollListener(recyclerViewScrollListener)
+                    recyclerView?.removeOnScrollListener(recyclerViewScrollListener)
                     stopAutoScroll()
                 }
                 MotionEvent.ACTION_UP -> {
@@ -151,7 +151,7 @@ abstract class AutoScroller<out L: RecyclerView.LayoutManager, T, WH: RecyclerVi
 }
 
 class LinearAutoScroller<T, WH: RecyclerView.ViewHolder>(
-    recyclerView: RecyclerView,
+    recyclerView: RecyclerView?,
     adapter: ListAdapter<T, WH>,
     layoutManager: LinearLayoutManager
 ) : AutoScroller<LinearLayoutManager, T, WH>(recyclerView, adapter, layoutManager) {
@@ -162,7 +162,7 @@ class LinearAutoScroller<T, WH: RecyclerView.ViewHolder>(
 }
 
 class GridAutoScroller<T, WH: RecyclerView.ViewHolder>(
-    recyclerView: RecyclerView,
+    recyclerView: RecyclerView?,
     adapter: ListAdapter<T, WH>,
     layoutManager: GridLayoutManager
 ) : AutoScroller<GridLayoutManager, T, WH>(recyclerView, adapter, layoutManager) {

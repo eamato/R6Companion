@@ -9,14 +9,13 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import eamato.funn.r6companion.adapters.recycler_view_adapters.SimpleOperatorsAdapter
-import kotlinx.android.synthetic.main.fragment_roulette_result.*
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.databinding.FragmentRouletteResultBinding
 import eamato.funn.r6companion.entities.RouletteOperator
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
@@ -26,12 +25,13 @@ import eamato.funn.r6companion.utils.recyclerview.*
 import eamato.funn.r6companion.viewmodels.RouletteResultPacketOpeningCommonViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_roulette_result.pb_waiting
 import java.io.File
 
 private const val SCREEN_NAME = "Roulette result screen"
 
 class RouletteResultFragment : BaseFragment() {
+
+    private var fragmentRouletteResultBinding: FragmentRouletteResultBinding? = null
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -42,7 +42,7 @@ class RouletteResultFragment : BaseFragment() {
     private val packetOpeningFragment = PacketOpeningFragment()
 
     private val rouletteResultPacketOpeningCommonViewModel: RouletteResultPacketOpeningCommonViewModel by lazy {
-        ViewModelProviders.of(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
+        ViewModelProvider(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
     }
 
     private var autoScroller: AutoScroller<RecyclerView.LayoutManager, RouletteOperator, SimpleOperatorsAdapter.SimpleOperatorsViewHolder>? = null
@@ -54,7 +54,8 @@ class RouletteResultFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_roulette_result, container, false)
+        fragmentRouletteResultBinding = FragmentRouletteResultBinding.inflate(inflater, container, false)
+        return fragmentRouletteResultBinding?.root
     }
 
     override fun onPause() {
@@ -97,37 +98,37 @@ class RouletteResultFragment : BaseFragment() {
                         ?.getMetrics(displayMetrics)
 
                     val window = activity?.window
-                    val view = window?.decorView ?: cl_root
-
-                    compositeDisposable.add(
-                        createScreenshotAndGetItsUri(view, window, screen, displayMetrics)
-                            .subscribeOn(AndroidSchedulers.from(backgroundLooper))
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .doAfterTerminate {
-                                handlerThread.quit()
-                                item.isVisible = true
-                            }
-                            .subscribe({
-                                try {
-                                    val screenUri = FileProvider.getUriForFile(
-                                        nonNullContext,
-                                        nonNullContext.applicationContext.packageName + ".provider",
-                                        it
-                                    )
-                                    val shareIntent = Intent().apply {
-                                        action = Intent.ACTION_SEND
-                                        type = "image/jpeg"
-                                        putExtra(Intent.EXTRA_STREAM, screenUri)
-                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    }
-                                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_with)))
-                                } catch (e: Exception) {
-                                    Toast.makeText(context, "Share error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    window?.decorView ?: fragmentRouletteResultBinding?.clRoot?.let { nonNullView ->
+                        compositeDisposable.add(
+                            createScreenshotAndGetItsUri(nonNullView, window, screen, displayMetrics)
+                                .subscribeOn(AndroidSchedulers.from(backgroundLooper))
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .doAfterTerminate {
+                                    handlerThread.quit()
+                                    item.isVisible = true
                                 }
-                            }, {
-                                Toast.makeText(context, "Create screenshot error: ${it.message}", Toast.LENGTH_SHORT).show()
-                            })
-                    )
+                                .subscribe({
+                                    try {
+                                        val screenUri = FileProvider.getUriForFile(
+                                            nonNullContext,
+                                            nonNullContext.applicationContext.packageName + ".provider",
+                                            it
+                                        )
+                                        val shareIntent = Intent().apply {
+                                            action = Intent.ACTION_SEND
+                                            type = "image/jpeg"
+                                            putExtra(Intent.EXTRA_STREAM, screenUri)
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        }
+                                        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_with)))
+                                    } catch (e: Exception) {
+                                        Toast.makeText(context, "Share error: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }, {
+                                    Toast.makeText(context, "Create screenshot error: ${it.message}", Toast.LENGTH_SHORT).show()
+                                })
+                        )
+                    }
                 }
                 true
             }
@@ -140,18 +141,18 @@ class RouletteResultFragment : BaseFragment() {
     }
 
     override fun setLiveDataObservers() {
-        rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.observe(this, Observer {
+        rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.observe(this, {
             it?.let {
                 activity?.invalidateOptionsMenu()
                 changePacketOpeningVisibility(!it)
                 if (it)
-                    cl_winner.visibility = View.VISIBLE
+                    fragmentRouletteResultBinding?.clWinner?.visibility = View.VISIBLE
                 else
-                    cl_winner.visibility = View.GONE
+                    fragmentRouletteResultBinding?.clWinner?.visibility = View.GONE
             }
         })
 
-        mainViewModel.winnerCandidates.observe(this, Observer {
+        mainViewModel.winnerCandidates.observe(this, {
             it?.let {
                 initSimpleOperatorsList(it.toMutableList())
             }
@@ -172,16 +173,16 @@ class RouletteResultFragment : BaseFragment() {
     }
 
     private fun initSimpleOperatorsList(winnerCandidates: MutableList<RouletteOperator>) {
-        pb_waiting?.show()
+        fragmentRouletteResultBinding?.pbWaiting?.show()
 
         arguments?.let { nonNullArguments ->
             val arguments = RouletteResultFragmentArgs.fromBundle(nonNullArguments)
             val winner = arguments.rollingWinner
 
-            tv_winner_name.text = winner.name
+            fragmentRouletteResultBinding?.tvWinnerName?.text = winner.name
 
-            context?.let { nonNullContext ->
-                GlideApp.with(nonNullContext)
+            fragmentRouletteResultBinding?.ivWinnerImage?.let { nonNullImageView ->
+                GlideApp.with(nonNullImageView)
                     .load(winner.imgLink)
                     .override(WINNER_OPERATOR_IMAGE_WIDTH, WINNER_OPERATOR_IMAGE_HEIGHT)
                     .transform(ImageResizeTransformation(WINNER_OPERATOR_IMAGE_WIDTH, WINNER_OPERATOR_IMAGE_HEIGHT))
@@ -191,15 +192,15 @@ class RouletteResultFragment : BaseFragment() {
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .listener(object : IDoAfterTerminateGlide {
                         override fun doAfterTerminate() {
-                            pb_waiting?.hide()
+                            fragmentRouletteResultBinding?.pbWaiting?.hide()
                         }
                     })
                     .dontAnimate()
-                    .into(iv_winner_image)
+                    .into(nonNullImageView)
             }
 
-            rv_rolling_operators.setHasFixedSize(true)
-            rv_rolling_operators.adapter = simpleOperatorsAdapter
+            fragmentRouletteResultBinding?.rvRollingOperators?.setHasFixedSize(true)
+            fragmentRouletteResultBinding?.rvRollingOperators?.adapter = simpleOperatorsAdapter
 
             when (activity?.resources?.configuration?.orientation) {
                 Configuration.ORIENTATION_PORTRAIT -> {
@@ -216,7 +217,7 @@ class RouletteResultFragment : BaseFragment() {
                     )
                     val autoScroller =
                         LinearAutoScroller(
-                            rv_rolling_operators,
+                            fragmentRouletteResultBinding?.rvRollingOperators,
                             simpleOperatorsAdapter,
                             layoutManager
                         )
@@ -235,7 +236,7 @@ class RouletteResultFragment : BaseFragment() {
                         winnerCandidates
                     )
                     val autoScroller = GridAutoScroller(
-                        rv_rolling_operators,
+                        fragmentRouletteResultBinding?.rvRollingOperators,
                         simpleOperatorsAdapter,
                         layoutManager
                     )
@@ -256,7 +257,7 @@ class RouletteResultFragment : BaseFragment() {
                     )
                     val autoScroller =
                         LinearAutoScroller(
-                            rv_rolling_operators,
+                            fragmentRouletteResultBinding?.rvRollingOperators,
                             simpleOperatorsAdapter,
                             layoutManager
                         )
@@ -265,16 +266,16 @@ class RouletteResultFragment : BaseFragment() {
                 }
             }.also {
                 autoScroller = it.third
-                rv_rolling_operators.layoutManager = it.first
+                fragmentRouletteResultBinding?.rvRollingOperators?.layoutManager = it.first
                 simpleOperatorsAdapter.submitList(winnerCandidates)
-                rv_rolling_operators.setMyOnScrollListener(it.second)
-                rv_rolling_operators?.post {
+                fragmentRouletteResultBinding?.rvRollingOperators.setMyOnScrollListener(it.second)
+                fragmentRouletteResultBinding?.rvRollingOperators?.post {
                     it.second.prepareData()
                     it.third.startAutoScrollSTEEndless(startPosition = it.third.getCurrentPosition()/*, initialDelay = 500L*/)
                 }
             }
 
-        } ?: pb_waiting?.hide()
+        } ?: fragmentRouletteResultBinding?.pbWaiting?.hide()
     }
 
 }

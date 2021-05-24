@@ -2,9 +2,7 @@ package eamato.funn.r6companion.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,17 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import eamato.funn.r6companion.R
-import eamato.funn.r6companion.adapters.recycler_view_adapters.NewsAdapterV2
+import eamato.funn.r6companion.adapters.recycler_view_adapters.NewsAdapter
 import eamato.funn.r6companion.databinding.FragmentHomeBinding
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
+import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
-import eamato.funn.r6companion.utils.setMyOnScrollListener
-import eamato.funn.r6companion.utils.setOnItemClickListener
-import eamato.funn.r6companion.viewmodels.HomeViewModelV2
+import eamato.funn.r6companion.viewmodels.HomeViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 private const val SCREEN_NAME = "Home screen"
 
@@ -33,11 +29,17 @@ class HomeFragment : BaseFragment() {
     private var job: Job? = null
     private var wasErrorOccurred: Boolean = false
 
-    private val newsAdapter = NewsAdapterV2()
+    private val newsAdapter = NewsAdapter()
 
-    private val homeViewModel: HomeViewModelV2? by viewModels()
+    private val homeViewModel: HomeViewModel? by viewModels()
 
     private var binding: FragmentHomeBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,10 +110,29 @@ class HomeFragment : BaseFragment() {
             binding?.rvNews?.scrollToPosition(0)
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenResumed {
             newsAdapter.loadStateFlow.collectLatest {
                 loadListener(it)
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_home, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.language_en -> {
+                getUpdates(ENGLISH_NEWS_LOCALE)
+                true
+            }
+            R.id.language_ru -> {
+                getUpdates(RUSSIAN_NEWS_LOCALE)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -120,7 +141,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun setLiveDataObservers() {
-        getUpdates(getString(R.string.news_request_lang))
+        getUpdates(DEFAULT_NEWS_LOCALE)
     }
 
     override fun onLiveDataObserversSet() {
@@ -129,7 +150,7 @@ class HomeFragment : BaseFragment() {
 
     private fun getUpdates(newsLocale: String) {
         job?.cancel()
-        job = lifecycleScope.launch {
+        job = lifecycleScope.launchWhenCreated {
             homeViewModel?.getUpdates(newsLocale)?.collect {
                 newsAdapter.submitData(it)
             }

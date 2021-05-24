@@ -88,6 +88,12 @@
         <item name="android:textColor">@color/colorDefaultText</item>
     </style>
 
+    <style name="AppTheme.CTUTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorDefaultText</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="AppTheme.PopupOverlayTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/colorWhite</item>
     </style>
