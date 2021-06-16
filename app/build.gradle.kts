@@ -24,8 +24,8 @@ android {
         minSdkVersion(21)
         targetSdkVersion(30)
         multiDexEnabled = true
-        versionCode = 4
-        versionName = "4.0"
+        versionCode = 5
+        versionName = "5.0"
         testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -59,10 +59,6 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-
-//    androidExtensions {
-//        experimental = true
-//    }
 
     buildFeatures {
         viewBinding = true
@@ -104,14 +100,11 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.0")
 
-    implementation("com.google.android.material:material:1.4.0-beta01")
-//    implementation("com.google.android.exoplayer:exoplayer-core:2.14.0")
-//    implementation("com.google.android.exoplayer:exoplayer-dash:2.14.0")
-//    implementation("com.google.android.exoplayer:exoplayer-ui:2.14.0")
+    implementation("com.google.android.material:material:1.4.0-rc01")
 
     /* AndroidX dependencies */
     implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("androidx.core:core-ktx:1.6.0-beta01")
+    implementation("androidx.core:core-ktx:1.6.0-beta02")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.preference:preference-ktx:1.1.1")
@@ -145,14 +138,14 @@ dependencies {
 
     /* Firebase dependencies */
     implementation("com.google.firebase:firebase-core:19.0.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.0.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.0.1")
     implementation("com.google.firebase:firebase-analytics:19.0.0")
     implementation("com.google.firebase:firebase-analytics:19.0.0")
     implementation("com.google.firebase:firebase-config:21.0.0")
     implementation("com.google.firebase:firebase-messaging:22.0.0")
-    implementation("com.google.firebase:firebase-perf:20.0.0")
+    implementation("com.google.firebase:firebase-perf:20.0.1")
     implementation("com.google.firebase:firebase-inappmessaging-display:20.0.0")
-    implementation("com.google.firebase:firebase-ads:20.1.0")
+    implementation("com.google.firebase:firebase-ads:20.2.0")
 
     /* Test dependencies */
     implementation("androidx.legacy:legacy-support-v4:1.0.0")

@@ -33,6 +33,4 @@ abstract class RetryableViewModel : ViewModel() {
         errorAction = null
     }
 
-    // errorAction = Completable.fromAction { action() }
-
 }

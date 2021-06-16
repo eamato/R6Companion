@@ -66,3 +66,5 @@ const val ENGLISH_LANGUAGE_CODE = "en"
 const val ENGLISH_NEWS_LOCALE = "en-us"
 const val RUSSIAN_NEWS_LOCALE = "ru-ru"
 const val DEFAULT_NEWS_LOCALE = ENGLISH_NEWS_LOCALE
+
+const val YOUTUBE_API_KEY = "AIzaSyDEX14GWMffqOGbR9uSmraoL5P8OjrCnk8"

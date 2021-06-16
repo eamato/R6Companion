@@ -32,6 +32,7 @@ import com.google.gson.Gson
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.*
 import eamato.funn.r6companion.entities.content_view.*
+import eamato.funn.r6companion.entities.content_view.abstracts.ContentView
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
 import eamato.funn.r6companion.utils.glide.GlideDynamicDrawableSpan
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
@@ -372,11 +373,11 @@ fun Regex.replace(spannableStringBuilder: SpannableStringBuilder) {
         }
 }
 
-fun String.contentToViewList(): List<IContentView> {
+fun String.contentToViewList(): List<ContentView> {
     val mainContentSplitter = "\n\n"
     val innerContentSplitter = "\n"
     val mainContent = split(mainContentSplitter)
-    val contentViewList = mutableListOf<IContentView>()
+    val contentViewList = mutableListOf<ContentView>()
     mainContent.forEach {
         if (it.contains(innerContentSplitter))
             it.split(innerContentSplitter)
@@ -393,7 +394,7 @@ fun String.contentToViewList(): List<IContentView> {
     return contentViewList
 }
 
-fun String.contentToView(): IContentView? {
+fun String.contentToView(): ContentView? {
     val header1 = "(?<=[^#]|^)# (.*)".toRegex()
     val header2 = "(?<=[^#]|^)#{2} (.*)".toRegex()
     val imagePrefix = "(/{2}.*?\\.(?:jpg|gif|png|jpeg))".toRegex()

@@ -9,8 +9,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.databinding.FragmentNewsDetailsBinding
 import eamato.funn.r6companion.entities.Updates
+import eamato.funn.r6companion.entities.content_view.abstracts.AVideoContentView
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseInnerToolbarFragment
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
+import eamato.funn.r6companion.utils.VideoInitializer
 import eamato.funn.r6companion.utils.contentToViewList
 import eamato.funn.r6companion.utils.glide.GlideApp
 
@@ -77,11 +79,13 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     .into(nonNullImageView)
             }
 
-            context?.let { nonNullContext ->
-                it.content?.contentToViewList()?.map { contentView ->
-                    contentView.createView(nonNullContext)
-                }?.forEach { nonNullView ->
-                    fragmentNewsDetailsBinding?.llContent?.addView(nonNullView)
+            fragmentNewsDetailsBinding?.llContent?.let { nonNullParent ->
+                it.content?.contentToViewList()?.forEach { nonNullContentView ->
+                    val view = nonNullContentView.createView(nonNullParent)
+                    fragmentNewsDetailsBinding?.llContent?.addView(view)
+
+                    if (nonNullContentView is AVideoContentView)
+                        VideoInitializer(nonNullContentView).initializeYoutubeVideo(childFragmentManager)
                 }
             }
         }
