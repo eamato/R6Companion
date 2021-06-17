@@ -4,26 +4,18 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Handler
-import android.text.Spannable
+import android.os.Looper
 import android.text.SpannableStringBuilder
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.util.DisplayMetrics
 import android.view.PixelCopy
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginEnd
-import androidx.core.view.marginStart
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDestination
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,13 +26,11 @@ import eamato.funn.r6companion.entities.*
 import eamato.funn.r6companion.entities.content_view.*
 import eamato.funn.r6companion.entities.content_view.abstracts.ContentView
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
-import eamato.funn.r6companion.utils.glide.GlideDynamicDrawableSpan
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
 import okhttp3.internal.toImmutableList
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.math.round
 
 fun RecyclerView?.setOnItemClickListener(listener: RecyclerViewItemClickListener) {
     if (this == null)
@@ -181,12 +171,6 @@ fun ConnectivityManager.isCurrentConnectedNetworkWIFI(): Boolean {
     return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
 }
 
-@Suppress("DEPRECATION")
-fun ConnectivityManager.isCurrentConnectedToInternetLegacy(): Boolean {
-    val activeNetworkInfo = activeNetworkInfo ?: return false
-    return activeNetworkInfo.isConnected
-}
-
 @TargetApi(Build.VERSION_CODES.M)
 fun ConnectivityManager.isCurrentConnectedToInternet(): Boolean {
     val network = activeNetwork
@@ -196,7 +180,7 @@ fun ConnectivityManager.isCurrentConnectedToInternet(): Boolean {
 
 @TargetApi(Build.VERSION_CODES.O)
 fun Window.createScreenshot(displayMetrics: DisplayMetrics): Single<Bitmap> {
-    return Single.create<Bitmap> {
+    return Single.create {
         val bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888)
         PixelCopy.request(this, bitmap,
             { copyResult ->
@@ -204,7 +188,7 @@ fun Window.createScreenshot(displayMetrics: DisplayMetrics): Single<Bitmap> {
                     it.onSuccess(bitmap)
                 else
                     it.tryOnError(Throwable("Screenshot wasn't made"))
-            }, Handler()
+            }, Handler(Looper.getMainLooper())
         )
     }
 }
@@ -218,17 +202,13 @@ fun View.createScreenshot(): Single<Bitmap> {
 }
 
 fun Bitmap.toFileInInternalStorage(file: File): Single<File> {
-    return Single.create<File> {
+    return Single.create {
         val fileOutputStream = FileOutputStream(file)
         compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.flush()
         fileOutputStream.close()
         it.onSuccess(file)
     }
-}
-
-fun Int.pixelToDensityPixel(density: Float): Int {
-    return round(this / density).toInt()
 }
 
 fun NavDestination.matchMenuDestination(menuItemId: Int): Boolean {
@@ -254,14 +234,6 @@ fun LocalizedRemoteConfigEntity.getText(context: Context): String {
         en ?: ""
 }
 
-fun FragmentActivity?.getDisplayMetrics(): DisplayMetrics {
-    val displayMetrics = DisplayMetrics()
-    if (this == null)
-        return displayMetrics
-    windowManager.defaultDisplay.getMetrics(displayMetrics)
-    return displayMetrics
-}
-
 fun List<Updates.Item?>.toNewsMixedWithAds(): List<NewsDataMixedWithAds> {
     return map { NewsDataMixedWithAds(it) }.let {
         it
@@ -282,80 +254,6 @@ fun <T> MutableList<T>.insertItemAtEveryStep(item: T, step: Int): MutableList<T>
         iteration += step
     }
     return this
-}
-
-fun String.toSpannableContent(displayMetrics: DisplayMetrics, textView: TextView): SpannableStringBuilder {
-    val headerPrefix = "(?<=[^#]|^)#{3} (.*?)[\\n]".toRegex()
-    val biggerHeaderPrefix = "(?<=[^#]|^)# (.*?)[\\n]".toRegex()
-    val imagePrefix = "(/{2}.*?\\.(?:jpg|gif|png|jpeg))".toRegex()
-    val captionPrefix2 = "(__)(.*)(__)".toRegex()
-    val videoPrefix = "\\[video\\]\\((.*)\\)".toRegex()
-
-    val imageWidth = textView.parent
-        .takeIf { it is ViewGroup }
-        ?.let { it as ViewGroup }
-        ?.let {
-            displayMetrics.widthPixels - (it.marginStart + it.marginEnd)
-        } ?: displayMetrics.widthPixels
-
-    var spannable = SpannableStringBuilder(this)
-
-    headerPrefix.findAll(this)
-        .map { it.value }
-        .forEach {
-            val start = indexOf(it)
-            spannable.setSpan(
-                RelativeSizeSpan(1.5f),
-                start,
-                start + it.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-
-    biggerHeaderPrefix.findAll(this)
-        .map { it.value }
-        .forEach {
-            val start = indexOf(it)
-            spannable.setSpan(
-                RelativeSizeSpan(2f),
-                start,
-                start + it.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-
-    imagePrefix.findAll(this)
-        .map { it.value }
-        .forEach {
-            val start = indexOf(it)
-            spannable = spannable.insert(start, "\n")
-            spannable.setSpan(
-                GlideDynamicDrawableSpan(textView, imageWidth, url = "http:$it"),
-                start,
-                start + it.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-
-    captionPrefix2.findAll(this)
-        .map { it.value }
-        .forEach {
-            val start = indexOf(it)
-            spannable.setSpan(
-                StyleSpan(Typeface.BOLD_ITALIC),
-                start,
-                start + it.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-
-    captionPrefix2.findAll(this)
-        .map { it.groups }
-        .forEach { _ ->
-            captionPrefix2.replace(spannable)
-        }
-
-    return spannable
 }
 
 fun Regex.replace(spannableStringBuilder: SpannableStringBuilder) {
@@ -400,40 +298,42 @@ fun String.contentToView(): ContentView? {
     val imagePrefix = "(/{2}.*?\\.(?:jpg|gif|png|jpeg))".toRegex()
     val captionPrefix = "(?<=__)(.*?)(?=__)".toRegex()
     val italicPrefix = "(?<=\\*)(.*?)(?=\\*)".toRegex()
-    val videoPrefix = "\\[video\\]\\((.*)\\)".toRegex()
+    val videoPrefix = "\\[video]\\((.*)\\)".toRegex()
+
+    val text = replace("<br>", "\n")
 
     return when {
-        this.startsWith("##") -> {
-            header2.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+        text.startsWith("##") -> {
+            header2.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 HeaderTextView(nonNullValue, R.style.AppTheme_ContentHeader2Style)
             }
         }
-        this.startsWith("#") -> {
-            header1.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+        text.startsWith("#") -> {
+            header1.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 HeaderTextView(nonNullValue)
             }
         }
-        this.startsWith("![") || this.startsWith("[![") -> {
-            imagePrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+        text.startsWith("![") || this.startsWith("[![") -> {
+            imagePrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentImageView("http:$nonNullValue")
             }
         }
-        this.startsWith("__") -> {
-            captionPrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+        text.startsWith("__") -> {
+            captionPrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentTextView(nonNullValue, R.style.AppTheme_ContentCaptionStyle)
             }
         }
-        this.startsWith("*") -> {
-            italicPrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+        text.startsWith("*") -> {
+            italicPrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentTextView(nonNullValue, R.style.AppTheme_ContentItalicStyle)
             }
         }
-        this.startsWith("[video]") -> {
-            videoPrefix.find(this)?.groups?.get(1)?.value?.let { nonNullValue ->
+        text.startsWith("[video]") -> {
+            videoPrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentVideoView(nonNullValue)
             }
         }
-        else -> ContentTextView(this)
+        else -> ContentTextView(text)
     }
 }
 

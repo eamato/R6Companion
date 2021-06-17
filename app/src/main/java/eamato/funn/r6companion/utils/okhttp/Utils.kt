@@ -10,24 +10,22 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
-fun getWifiOnlyRequestInterceptor(context: Context) = object : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        return if (
-            context.isCurrentlyConnectedNetworkWIFI() ||
-            PreferenceManager.getDefaultSharedPreferences(context).getIsImageDownloadingViaMobileNetworkAllowed()
-        )
-            chain.proceed(chain.request())
-        else
-            chain
-                .withConnectTimeout(1, TimeUnit.SECONDS)
-                .proceed(
-                    chain
-                        .request()
-                        .newBuilder()
-                        .url(UN_EXISTENT_HOST)
-                        .build()
-                )
-    }
+fun getWifiOnlyRequestInterceptor(context: Context) = Interceptor { chain ->
+    if (
+        context.isCurrentlyConnectedNetworkWIFI() ||
+        PreferenceManager.getDefaultSharedPreferences(context).getIsImageDownloadingViaMobileNetworkAllowed()
+    )
+        chain.proceed(chain.request())
+    else
+        chain
+            .withConnectTimeout(1, TimeUnit.SECONDS)
+            .proceed(
+                chain
+                    .request()
+                    .newBuilder()
+                    .url(UN_EXISTENT_HOST)
+                    .build()
+            )
 }
 
 val loginInterceptor = HttpLoggingInterceptor()
@@ -35,24 +33,22 @@ val loginInterceptor = HttpLoggingInterceptor()
         it.level = HttpLoggingInterceptor.Level.BODY
     }
 
-val requestInterceptor = object : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val oldRequest = chain.request()
+val requestInterceptor = Interceptor { chain ->
+    val oldRequest = chain.request()
 
-        val url = oldRequest
-            .url
-            .newBuilder()
+    val url = oldRequest
+        .url
+        .newBuilder()
 //            .addQueryParameter()
-            .build()
+        .build()
 
-        val newRequest = oldRequest
-            .newBuilder()
-            .url(url)
+    val newRequest = oldRequest
+        .newBuilder()
+        .url(url)
 //            .addHeader("Test-Header", "Test")
-            .build()
+        .build()
 
-        return chain.proceed(newRequest)
-    }
+    chain.proceed(newRequest)
 }
 
 val defaultOkHttpClient = OkHttpClient

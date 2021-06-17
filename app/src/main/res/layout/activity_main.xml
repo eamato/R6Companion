@@ -21,7 +21,7 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"
         tools:title="Title" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"

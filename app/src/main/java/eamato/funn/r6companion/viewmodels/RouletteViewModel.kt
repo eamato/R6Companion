@@ -1,20 +1,18 @@
 package eamato.funn.r6companion.viewmodels
 
 import android.content.SharedPreferences
-import android.content.res.AssetManager
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.entities.RouletteOperator
-import eamato.funn.r6companion.firebase.things.*
-import eamato.funn.r6companion.repositories.OperatorsRepository
 import eamato.funn.r6companion.utils.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
 class RouletteViewModel : ViewModel() {
 
@@ -27,6 +25,9 @@ class RouletteViewModel : ViewModel() {
 
     private val pRollingOperatorsAndWinner = MutableLiveData<Pair<List<RouletteOperator>, RouletteOperator>>()
     val rollingOperatorsAndWinner: LiveData<Pair<List<RouletteOperator>, RouletteOperator>> = pRollingOperatorsAndWinner
+
+    private val pIsRequestActive = MutableLiveData(false)
+    val isRequestActive: LiveData<Boolean> = pIsRequestActive
 
     private val pCanRoll = MutableLiveData<Boolean>()
     val canRoll: LiveData<Boolean> = pCanRoll
@@ -42,41 +43,20 @@ class RouletteViewModel : ViewModel() {
         super.onCleared()
     }
 
-    fun getAllOperators(assetManager: AssetManager, preferences: SharedPreferences) {
-        compositeDisposable.add(
-            OperatorsRepository.getOperators(assetManager)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map { it.toRouletteOperators() }
-                .subscribe({
+    fun getAllOperators(iRepository: IRepository<List<Operators.Operator>?>, preferences: SharedPreferences) {
+        pIsRequestActive.value = true
+
+        viewModelScope.launch {
+            iRepository.getRepository()
+                ?.toRouletteOperators()
+                ?.let {
                     immutableOperators = ArrayList(it.map { operator -> operator.copy() })
                     pVisibleRouletteOperators.value = ArrayList(it.map { operator -> operator.copy() })
                     selectPreviouslySelectedOperators(preferences)
-                }, {
-                    it.printStackTrace()
-                    immutableOperators = emptyList()
-                    pVisibleRouletteOperators.value = emptyList()
-                })
-        )
-    }
+                }
 
-    fun getAllOperators(
-        mainViewModel: MainViewModel,
-        lifeCycleOwner: LifecycleOwner,
-        preferences: SharedPreferences
-    ) {
-        mainViewModel.observableFirebaseRemoteConfig.observe(lifeCycleOwner, {
-            it?.let { nonNullFirebaseRemoteConfig ->
-                nonNullFirebaseRemoteConfig.getString(OPERATORS)
-                    .getFirebaseRemoteConfigEntity(Operators::class.java)?.let { nonNullOperators ->
-                        nonNullOperators.operators?.filterNotNull()?.toRouletteOperators()?.let { nonNullRouletteOperators ->
-                            immutableOperators = ArrayList(nonNullRouletteOperators.map { operator -> operator.copy() })
-                            pVisibleRouletteOperators.value = ArrayList(nonNullRouletteOperators.map { operator -> operator.copy() })
-                            selectPreviouslySelectedOperators(preferences)
-                        }
-                    }
-            }
-        })
+            pIsRequestActive.value = false
+        }
     }
 
     fun roll() {

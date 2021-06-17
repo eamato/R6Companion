@@ -24,8 +24,8 @@ android {
         minSdkVersion(21)
         targetSdkVersion(30)
         multiDexEnabled = true
-        versionCode = 5
-        versionName = "5.0"
+        versionCode = 6
+        versionName = "6.0"
         testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -62,7 +62,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-        dataBinding = true
     }
 
     compileOptions {

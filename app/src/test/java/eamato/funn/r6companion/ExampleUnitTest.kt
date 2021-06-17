@@ -174,7 +174,7 @@ class ExampleUnitTest {
     @Test
     fun sequence() {
         val countDownLatch = CountDownLatch(1)
-        var currentPosition = 0
+        val currentPosition = 0
         Flowable
             .interval(1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())

@@ -68,3 +68,5 @@ const val RUSSIAN_NEWS_LOCALE = "ru-ru"
 const val DEFAULT_NEWS_LOCALE = ENGLISH_NEWS_LOCALE
 
 const val YOUTUBE_API_KEY = "AIzaSyDEX14GWMffqOGbR9uSmraoL5P8OjrCnk8"
+
+const val OPERATORS_CACHE_FILE_NAME = "operators.txt"

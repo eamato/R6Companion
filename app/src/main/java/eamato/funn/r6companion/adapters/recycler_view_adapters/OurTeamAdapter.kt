@@ -69,8 +69,8 @@ class OurTeamAdapter : ListAdapter<LocalizedOurTeamRemoteConfigEntity.Position, 
 
             tv_first_last_name?.text = itemView.context.getString(
                 R.string.first_name_last_name_pattern,
-                position.firstName?.capitalize(Locale.getDefault()) ?: "",
-                position.lastName?.capitalize(Locale.getDefault()) ?: ""
+                position.firstName?.replaceFirstChar { it.uppercaseChar() } ?: "",
+                position.lastName?.replaceFirstChar { it.uppercaseChar() }  ?: ""
             )
             tv_positions?.text = position.positions?.filterNotNull()?.joinToString()
         }

@@ -8,13 +8,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.recycler_view_adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
+import eamato.funn.r6companion.repositories.OperatorsRepository
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
@@ -31,21 +31,19 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val rouletteViewModel: RouletteViewModel by lazy {
-        ViewModelProvider(this).get(RouletteViewModel::class.java)
-    }
+    private val rouletteViewModel: RouletteViewModel? by viewModels()
 
-    private var binding: FragmentRouletteBinding? = null
+    private var fragmentRouletteBinding: FragmentRouletteBinding? = null
 
     private val rouletteOperatorsAdapter: RouletteOperatorsAdapter by lazy {
         RouletteOperatorsAdapter()
     }
 
     private val allOperatorsRouletteClickListener: RecyclerViewItemClickListener? by lazy {
-        binding?.rvAllRouletteOperators?.let {
+        fragmentRouletteBinding?.rvAllRouletteOperators?.let {
             RecyclerViewItemClickListener(context, it, object : RecyclerViewItemClickListener.OnItemClickListener {
                 override fun onItemClicked(view: View, position: Int) {
-                    rouletteViewModel.selectUnSelectRouletteOperator(rouletteOperatorsAdapter.getItemAtPosition(position))
+                    rouletteViewModel?.selectUnSelectRouletteOperator(rouletteOperatorsAdapter.getItemAtPosition(position))
                 }
 
                 override fun onItemLongClicked(view: View, position: Int) {
@@ -64,46 +62,42 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_roulette, container, false)
-        return binding?.root
+        fragmentRouletteBinding = FragmentRouletteBinding.inflate(inflater, container, false)
+        return fragmentRouletteBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.lifecycleOwner = this
-        binding?.rouletteViewModel = rouletteViewModel
-
-        binding?.rvAllRouletteOperators?.setHasFixedSize(true)
+        fragmentRouletteBinding?.rvAllRouletteOperators?.setHasFixedSize(true)
         var layoutManager = GridLayoutManager(context, 3)
         activity?.resources?.configuration?.orientation?.takeIf { it == ORIENTATION_LANDSCAPE }?.run {
             layoutManager = GridLayoutManager(context, 5)
         }
-        binding?.rvAllRouletteOperators?.layoutManager = layoutManager
-        binding?.rvAllRouletteOperators?.adapter = rouletteOperatorsAdapter
+        fragmentRouletteBinding?.rvAllRouletteOperators?.layoutManager = layoutManager
+        fragmentRouletteBinding?.rvAllRouletteOperators?.adapter = rouletteOperatorsAdapter
         allOperatorsRouletteClickListener?.let {
-            binding?.rvAllRouletteOperators?.setOnItemClickListener(it)
+            fragmentRouletteBinding?.rvAllRouletteOperators?.setOnItemClickListener(it)
         }
 
-        binding?.btnRoll?.setOnClickListener {
+        fragmentRouletteBinding?.btnRoll?.setOnClickListener {
             context?.let { nonNullContext ->
                 val inputManager = ContextCompat.getSystemService(nonNullContext, InputMethodManager::class.java)
                 inputManager?.hideSoftInputFromWindow(it.windowToken, 0)
             }
-            rouletteViewModel.roll()
+            rouletteViewModel?.roll()
         }
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (rouletteViewModel.visibleRouletteOperators.value.isNullOrEmpty()) {
+        if (rouletteViewModel?.visibleRouletteOperators?.value?.isNullOrEmpty() == true) {
             context?.let { nonNullContext ->
-                if (nonNullContext.isCurrentlyConnectedToInternet()) {
-                    rouletteViewModel.getAllOperators(mainViewModel, viewLifecycleOwner, PreferenceManager.getDefaultSharedPreferences(nonNullContext))
-                } else {
-                    rouletteViewModel.getAllOperators(nonNullContext.assets, PreferenceManager.getDefaultSharedPreferences(nonNullContext))
-                }
+                rouletteViewModel?.getAllOperators(
+                    OperatorsRepository(nonNullContext, FirebaseRemoteConfigDataFetcher()),
+                    PreferenceManager.getDefaultSharedPreferences(nonNullContext)
+                )
             }
         }
     }
@@ -135,7 +129,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
 
-        menu.findItem(R.id.save_selected)?.isVisible = rouletteViewModel.areThereAnySelectedOperators()
+        menu.findItem(R.id.save_selected)?.isVisible = rouletteViewModel?.areThereAnySelectedOperators() ?: false
 
         val disposable = PreferenceManager.getDefaultSharedPreferences(context).areThereSavedSelectedOperators()
             .subscribeOn(Schedulers.io())
@@ -156,29 +150,29 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.alphabetic_sort_ascending -> {
-                rouletteViewModel.sortByNameAscending {
-                    binding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
+                rouletteViewModel?.sortByNameAscending {
+                    fragmentRouletteBinding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
                 }
                 true
             }
             R.id.alphabetic_sort_descending -> {
-                rouletteViewModel.sortByNameDescending {
-                    binding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
+                rouletteViewModel?.sortByNameDescending {
+                    fragmentRouletteBinding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
                 }
                 true
             }
             R.id.sort_selected -> {
-                rouletteViewModel.sortSelected {
-                    binding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
+                rouletteViewModel?.sortSelected {
+                    fragmentRouletteBinding?.rvAllRouletteOperators?.smoothScrollToPosition(0)
                 }
                 true
             }
             R.id.select_all -> {
-                rouletteViewModel.selectAll()
+                rouletteViewModel?.selectAll()
                 true
             }
             R.id.un_select_all -> {
-                rouletteViewModel.unSelectAll()
+                rouletteViewModel?.unSelectAll()
                 true
             }
             R.id.save_selected -> {
@@ -189,7 +183,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                             .setTitle(R.string.attention)
                             .setMessage(R.string.save_confirmation_message)
                             .setPositiveButton(R.string.yes) { _, _ ->
-                                rouletteViewModel.saveSelectedOperators(
+                                rouletteViewModel?.saveSelectedOperators(
                                     PreferenceManager.getDefaultSharedPreferences(nonNullContext)
                                 ) {
                                     activity?.invalidateOptionsMenu()
@@ -210,7 +204,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                             .setTitle(R.string.attention)
                             .setMessage(R.string.delete_saved_confirmation_message)
                             .setPositiveButton(R.string.yes) { _, _ ->
-                                rouletteViewModel.deleteSavedSelectedOperators(
+                                rouletteViewModel?.deleteSavedSelectedOperators(
                                     PreferenceManager.getDefaultSharedPreferences(nonNullContext)
                                 ) {
                                     activity?.invalidateOptionsMenu()
@@ -225,7 +219,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
             }
             R.id.restore_saved -> {
                 context?.let { nonNullContext ->
-                    rouletteViewModel.selectPreviouslySelectedOperators(
+                    rouletteViewModel?.selectPreviouslySelectedOperators(
                         PreferenceManager.getDefaultSharedPreferences(nonNullContext)
                     )
                 }
@@ -243,16 +237,16 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(newText: String?): Boolean {
         searchQuery = newText
         newText?.let { nonNullNewText ->
-            rouletteViewModel.filter(nonNullNewText)
-        } ?: rouletteViewModel.restore()
+            rouletteViewModel?.filter(nonNullNewText)
+        } ?: rouletteViewModel?.restore()
         return true
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         searchQuery = query
         query?.let { nonNullQuery ->
-            rouletteViewModel.filter(nonNullQuery)
-        } ?: rouletteViewModel.restore()
+            rouletteViewModel?.filter(nonNullQuery)
+        } ?: rouletteViewModel?.restore()
         return true
     }
 
@@ -261,13 +255,24 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     override fun setLiveDataObservers() {
-        rouletteViewModel.visibleRouletteOperators.observe(this, { rouletteOperators ->
+        rouletteViewModel?.canRoll?.observe(this, {
+            fragmentRouletteBinding?.btnRoll?.isEnabled = it
+        })
+
+        rouletteViewModel?.isRequestActive?.observe(this, {
+            if (it)
+                fragmentRouletteBinding?.clpbWaiting?.show()
+            else
+                fragmentRouletteBinding?.clpbWaiting?.hide()
+        })
+
+        rouletteViewModel?.visibleRouletteOperators?.observe(this, { rouletteOperators ->
             rouletteOperators?.let { nonNullRouletteOperators ->
                 rouletteOperatorsAdapter.submitList(nonNullRouletteOperators)
             }
         })
 
-        rouletteViewModel.rollingOperatorsAndWinner.observe(this, { rollingOperatorsAndWinner ->
+        rouletteViewModel?.rollingOperatorsAndWinner?.observe(this, { rollingOperatorsAndWinner ->
             rollingOperatorsAndWinner?.let { nonNullRollingOperatorsAndWinner ->
                 activity?.run {
                     mainViewModel.winnerCandidates.value = nonNullRollingOperatorsAndWinner.first

@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.view.SurfaceHolder
 import android.graphics.Matrix
 import androidx.lifecycle.MutableLiveData
+import kotlin.math.roundToInt
 
 data class PlayRoad(
     val slides: List<Bitmap>,
@@ -102,7 +103,7 @@ private fun createCenterCropMatrix(canvasSize: MySize, image: Bitmap): Matrix {
 
     val matrix = Matrix()
     matrix.setScale(scale, scale)
-    matrix.postTranslate(Math.round(dx).toFloat(), Math.round(dy).toFloat())
+    matrix.postTranslate(dx.roundToInt().toFloat(), dy.roundToInt().toFloat())
 
     return matrix
 }
@@ -110,21 +111,17 @@ private fun createCenterCropMatrix(canvasSize: MySize, image: Bitmap): Matrix {
 private fun createCenterInsideMatrix(canvasSize: MySize, image: Bitmap): Matrix {
     val (viewWidth, viewHeight) = run { canvasSize.width to canvasSize.height }
     val (imageWidth, imageHeight) = run { image.width to image.height }
-    val scale: Float
     val dx: Float
     val dy: Float
 
-    scale = if (imageWidth <= viewWidth && imageHeight <= viewHeight) {
+    val scale: Float = if (imageWidth <= viewWidth && imageHeight <= viewHeight) {
         1.0f
     } else {
-        Math.min(
-            viewWidth.toFloat() / imageWidth.toFloat(),
-            viewHeight.toFloat() / imageHeight.toFloat()
-        )
+        (viewWidth.toFloat() / imageWidth.toFloat()).coerceAtMost(viewHeight.toFloat() / imageHeight.toFloat())
     }
 
-    dx = Math.round((viewWidth - imageWidth * scale) * 0.5f).toFloat()
-    dy = Math.round((viewHeight - imageHeight * scale) * 0.5f).toFloat()
+    dx = ((viewWidth - imageWidth * scale) * 0.5f).roundToInt().toFloat()
+    dy = ((viewHeight - imageHeight * scale) * 0.5f).roundToInt().toFloat()
 
     val matrix = Matrix()
     matrix.setScale(scale, scale)
@@ -134,14 +131,14 @@ private fun createCenterInsideMatrix(canvasSize: MySize, image: Bitmap): Matrix 
 
 private fun Bitmap.resizeByWidth(width:Int): Bitmap {
     val ratio: Float = this.width.toFloat() / height.toFloat()
-    val height: Int = Math.round(width / ratio)
+    val height: Int = (width / ratio).roundToInt()
 
     return Bitmap.createScaledBitmap(this, width, height, false)
 }
 
 private fun Bitmap.resizeByHeight(height:Int): Bitmap {
     val ratio: Float = this.height.toFloat() / width.toFloat()
-    val width: Int = Math.round(height / ratio)
+    val width: Int = (height / ratio).roundToInt()
 
     return Bitmap.createScaledBitmap(this, width, height, false)
 }

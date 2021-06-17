@@ -3,8 +3,8 @@ package eamato.funn.r6companion.entities
 import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 data class Updates(
     @SerializedName("categoriesFilter")

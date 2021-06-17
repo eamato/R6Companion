@@ -33,7 +33,7 @@ class HomeFragment : BaseFragment() {
 
     private val homeViewModel: HomeViewModel? by viewModels()
 
-    private var binding: FragmentHomeBinding? = null
+    private var fragmentHomeBinding: FragmentHomeBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +46,8 @@ class HomeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding?.root
+        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        return fragmentHomeBinding?.root
     }
 
     private val myScrollListener = object : RecyclerView.OnScrollListener() {
@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment() {
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            binding?.fabScrollToTop?.let { nonNullFabScrollToTop ->
+            fragmentHomeBinding?.fabScrollToTop?.let { nonNullFabScrollToTop ->
                 if (dy >= 0 && nonNullFabScrollToTop.isShown)
                     nonNullFabScrollToTop.hide()
                 else if (!recyclerView.canScrollVertically(-1))
@@ -73,7 +73,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private val onNewsClickListener: RecyclerViewItemClickListener? by lazy {
-        binding?.rvNews?.let { nonNullView ->
+        fragmentHomeBinding?.rvNews?.let { nonNullView ->
             RecyclerViewItemClickListener(context, nonNullView, object : RecyclerViewItemClickListener.OnItemClickListener {
                 override fun onItemClicked(view: View, position: Int) {
                     newsAdapter.getItemAtPosition(position)?.let { nonNullSelectedNews ->
@@ -93,21 +93,21 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.srlNews?.setOnRefreshListener {
+        fragmentHomeBinding?.srlNews?.setOnRefreshListener {
             newsAdapter.refresh()
         }
-        binding?.rvNews?.setHasFixedSize(true)
+        fragmentHomeBinding?.rvNews?.setHasFixedSize(true)
         context?.let { nonNullContext ->
-            binding?.rvNews?.layoutManager = LinearLayoutManager(nonNullContext)
+            fragmentHomeBinding?.rvNews?.layoutManager = LinearLayoutManager(nonNullContext)
         }
-        binding?.rvNews?.adapter = newsAdapter
-        binding?.rvNews.setMyOnScrollListener(myScrollListener)
+        fragmentHomeBinding?.rvNews?.adapter = newsAdapter
+        fragmentHomeBinding?.rvNews.setMyOnScrollListener(myScrollListener)
         onNewsClickListener?.let { nonNullListener ->
-            binding?.rvNews.setOnItemClickListener(nonNullListener)
+            fragmentHomeBinding?.rvNews.setOnItemClickListener(nonNullListener)
         }
 
-        binding?.fabScrollToTop?.setOnClickListener {
-            binding?.rvNews?.scrollToPosition(0)
+        fragmentHomeBinding?.fabScrollToTop?.setOnClickListener {
+            fragmentHomeBinding?.rvNews?.scrollToPosition(0)
         }
 
         lifecycleScope.launchWhenResumed {
@@ -160,11 +160,11 @@ class HomeFragment : BaseFragment() {
     private fun loadListener(combinedLoadStates: CombinedLoadStates) {
         Log.d("listener", "$combinedLoadStates")
         if (combinedLoadStates.source.refresh is LoadState.Loading) {
-            binding?.clpbNews?.show()
-            binding?.fabScrollToTop?.hide()
+            fragmentHomeBinding?.clpbNews?.show()
+            fragmentHomeBinding?.fabScrollToTop?.hide()
         } else {
-            binding?.clpbNews?.hide()
-            binding?.srlNews?.isRefreshing = false
+            fragmentHomeBinding?.clpbNews?.hide()
+            fragmentHomeBinding?.srlNews?.isRefreshing = false
         }
 
         val error = combinedLoadStates.source.append as? LoadState.Error
@@ -183,13 +183,13 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun onDataSourceErrorOccurred() {
-        binding?.rvNews?.let { nonNullView ->
-            Snackbar.make(nonNullView, R.string.an_error_occurred, Snackbar.LENGTH_SHORT)
-                .setAction(R.string.retry) {
+        fragmentHomeBinding?.rvNews?.let { nonNullView ->
+            val snackbar = Snackbar.make(nonNullView, R.string.an_error_occurred, Snackbar.LENGTH_SHORT)
+            snackbar.setAction(R.string.retry) {
                     newsAdapter.retry()
                 }
-                .setAnchorView(mainActivity?.findViewById(R.id.bnv))
-                .show()
+            snackbar.anchorView = mainActivity?.findViewById(R.id.bnv)
+            snackbar.show()
         }
     }
 
