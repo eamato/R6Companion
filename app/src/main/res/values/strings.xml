@@ -17,6 +17,7 @@
 
     <string name="coming_soon">Coming soon</string>
     <string name="roll">Roll</string>
+    <string name="roll_counted_pattern">Roll %1$d/%2$d</string>
 
     <string name="search">Search</string>
     <string name="sort">Sort</string>
@@ -76,6 +77,13 @@
     <string name="operator_armor">Armor</string>
     <string name="operator_speed">Speed</string>
 
+    <string name="news_category_all">All</string>
+    <string name="news_category_esport">ESport</string>
+    <string name="news_category_game_updates">Game updates</string>
+    <string name="news_category_community">Community</string>
+    <string name="news_category_patch_notes">Patch notes</string>
+    <string name="news_category_store">Store</string>
+
     <string name="language_en" translatable="false">English</string>
     <string name="language_ru" translatable="false">Русский</string>
 
@@ -85,6 +93,7 @@
     <string name="preference_key_about" translatable="false">about</string>
 
     <string name="ad_mod_app_id" translatable="false">ca-app-pub-6576243137966846~4299148913</string>
+    <string name="youtube_api_key" translatable="false">AIzaSyDEX14GWMffqOGbR9uSmraoL5P8OjrCnk8</string>
 <!--    <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-3940256099942544/2247696110</string> &lt;!&ndash; TEST &ndash;&gt;-->
     <string name="ad_mod_first_ad_unit" translatable="false">ca-app-pub-6576243137966846/6466340777</string> <!-- REAL -->
 </resources>

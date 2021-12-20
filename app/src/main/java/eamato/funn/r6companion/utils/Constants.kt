@@ -1,5 +1,7 @@
 package eamato.funn.r6companion.utils
 
+import eamato.funn.r6companion.R
+
 const val SIMPLE_OPERATOR_IMAGE_WIDTH = 100
 const val SIMPLE_OPERATOR_IMAGE_HEIGHT = 100
 
@@ -22,16 +24,23 @@ const val UN_EXISTENT_HOST = "https://unexisting.host.mne/"
 
 const val ROULETTE_SEARCH_QUERY_KEY = "searchViewQuery"
 
-const val NEWS_HOST = "https://www.ubisoft.com/"
+const val NEWS_HOST = " https://nimbus.ubisoft.com/"
 const val R6STATS_HOST = "https://r6stats.com/"
-const val NEWS_PATH = "api/updates/items"
+const val NEWS_PATH = "api/v1/items"
 const val NEWS_TAG_PARAM_KEY = "tags"
 const val NEWS_COUNT_PARAM_KEY = "limit"
 const val NEWS_SKIP_PARAM_KEY = "skip"
 const val NEWS_CATEGORIES_FILTER_PARAM_KEY = "categoriesFilter"
 const val NEWS_LOCALE_PARAM_KEY = "locale"
 const val NEWS_TAG_PARAM_R6_VALUE = "BR-rainbow-six GA-siege"
+
 const val NEWS_CATEGORIES_FILTER_PARAM_NEWS_VALUE = "news"
+const val NEWS_CATEGORIES_FILTER_PARAM_ESPORTS_VALUE = "esports"
+const val NEWS_CATEGORIES_FILTER_PARAM_GAME_UPDATES_VALUE = "game-updates"
+const val NEWS_CATEGORIES_FILTER_PARAM_COMMUNITY_VALUE = "community"
+const val NEWS_CATEGORIES_FILTER_PARAM_PATCH_NOTES_VALUE = "patch-notes"
+const val NEWS_CATEGORIES_FILTER_PARAM_STORE_VALUE = "store"
+
 const val OPERATORS_PATH = "api/database/operators"
 const val NEWS_COUNT_MAX_VALUE = 100
 const val NEWS_COUNT_DEFAULT_VALUE = 30
@@ -67,6 +76,15 @@ const val ENGLISH_NEWS_LOCALE = "en-us"
 const val RUSSIAN_NEWS_LOCALE = "ru-ru"
 const val DEFAULT_NEWS_LOCALE = ENGLISH_NEWS_LOCALE
 
-const val YOUTUBE_API_KEY = "AIzaSyDEX14GWMffqOGbR9uSmraoL5P8OjrCnk8"
-
 const val OPERATORS_CACHE_FILE_NAME = "operators.txt"
+
+const val NEWS_AUTHORIZATION_TOKEN_HEADER = "authorization: 3u0FfSBUaTSew-2NVfAOSYWevVQHWtY9q3VM8Xx9Lto"
+
+val NEWS_CATEGORIES = listOf(
+    R.string.news_category_all to null,
+    R.string.news_category_esport to NEWS_CATEGORIES_FILTER_PARAM_ESPORTS_VALUE,
+    R.string.news_category_game_updates to NEWS_CATEGORIES_FILTER_PARAM_GAME_UPDATES_VALUE,
+    R.string.news_category_community to NEWS_CATEGORIES_FILTER_PARAM_COMMUNITY_VALUE,
+    R.string.news_category_patch_notes to NEWS_CATEGORIES_FILTER_PARAM_PATCH_NOTES_VALUE,
+    R.string.news_category_store to NEWS_CATEGORIES_FILTER_PARAM_STORE_VALUE
+)

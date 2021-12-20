@@ -98,7 +98,8 @@ class RouletteResultFragment : BaseFragment() {
                         ?.getMetrics(displayMetrics)
 
                     val window = activity?.window
-                    window?.decorView ?: fragmentRouletteResultBinding?.clRoot?.let { nonNullView ->
+                    val screenshotView = window?.decorView ?: fragmentRouletteResultBinding?.clRoot
+                    screenshotView?.let { nonNullView ->
                         compositeDisposable.add(
                             createScreenshotAndGetItsUri(nonNullView, window, screen, displayMetrics)
                                 .subscribeOn(AndroidSchedulers.from(backgroundLooper))

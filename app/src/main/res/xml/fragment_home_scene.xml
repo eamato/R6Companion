@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+
+        <OnSwipe
+            motion:onTouchUp="autoComplete"
+            motion:dragDirection="dragUp"
+            motion:touchAnchorSide="top"
+            motion:nestedScrollFlags="supportScrollUp"
+            motion:touchAnchorId="@+id/srl_news" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/clpb_news">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/fab_scroll_to_top">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/flow_news_categories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:constraint_referenced_ids="btn_news_category_all,btn_news_category_esport,btn_news_category_game_updates,btn_news_category_community,btn_news_category_patch_notes,btn_news_category_store"
+            motion:flow_horizontalAlign="center"
+            motion:flow_wrapMode="chain"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/clpb_news">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/fab_scroll_to_top">
+            <PropertySet motion:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/flow_news_categories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:constraint_referenced_ids="btn_news_category_all,btn_news_category_esport,btn_news_category_game_updates,btn_news_category_community,btn_news_category_patch_notes,btn_news_category_store"
+            motion:flow_horizontalAlign="center"
+            motion:flow_wrapMode="chain"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toTopOf="parent" />
+    </ConstraintSet>
+</MotionScene>

@@ -101,9 +101,9 @@ class NewsAdapter : PagingDataAdapter<NewsDataMixedWithAds, NewsAdapter.ViewHold
                     }
                     tv_news_title?.text = nonNullNewsData.title
                     tv_news_subtitle?.text = nonNullNewsData.abstract
-                    tv_news_date?.text = nonNullNewsData.date?.let { inputFormatter.parse(it) }?.let {
-                        newsDateFormat.format(it)
-                    } ?: ""
+//                    tv_news_date?.text = nonNullNewsData.date?.let { inputFormatter.parse(it) }?.let {
+//                        newsDateFormat.format(it)
+//                    } ?: ""
                 }
             }
         }

@@ -3,6 +3,7 @@ package eamato.funn.r6companion.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,12 @@ private const val SCREEN_NAME = "Home screen"
 
 class HomeFragment : BaseFragment() {
 
+    private var buttonsAndValues: List<Pair<View?, String?>>? = null
+    private val newsCategories = NEWS_CATEGORIES
+        .map {
+            val toggled = it.second == null
+            TogglingObject(it, toggled)
+        }
     private var job: Job? = null
     private var wasErrorOccurred: Boolean = false
 
@@ -48,6 +55,15 @@ class HomeFragment : BaseFragment() {
     ): View? {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
         return fragmentHomeBinding?.root
+    }
+
+    private val newsCategoriesClickListener = View.OnClickListener { view ->
+        buttonsAndValues
+            ?.find { it.first == view }
+            ?.second
+            .let { value ->
+                changeNewsCategory(value)
+            }
     }
 
     private val myScrollListener = object : RecyclerView.OnScrollListener() {
@@ -93,6 +109,20 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        buttonsAndValues = listOf(
+            fragmentHomeBinding?.btnNewsCategoryAll to null,
+            fragmentHomeBinding?.btnNewsCategoryEsport to NEWS_CATEGORIES_FILTER_PARAM_ESPORTS_VALUE,
+            fragmentHomeBinding?.btnNewsCategoryGameUpdates to NEWS_CATEGORIES_FILTER_PARAM_GAME_UPDATES_VALUE,
+            fragmentHomeBinding?.btnNewsCategoryCommunity to NEWS_CATEGORIES_FILTER_PARAM_COMMUNITY_VALUE,
+            fragmentHomeBinding?.btnNewsCategoryPatchNotes to NEWS_CATEGORIES_FILTER_PARAM_PATCH_NOTES_VALUE,
+            fragmentHomeBinding?.btnNewsCategoryStore to NEWS_CATEGORIES_FILTER_PARAM_STORE_VALUE
+        )
+
+        updateButtonsWithNewsCategory()
+
+        fragmentHomeBinding?.flowNewsCategories?.referencedIds?.forEach {
+            view.findViewById<Button>(it).setOnClickListener(newsCategoriesClickListener)
+        }
         fragmentHomeBinding?.srlNews?.setOnRefreshListener {
             newsAdapter.refresh()
         }
@@ -125,11 +155,23 @@ class HomeFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.language_en -> {
-                getUpdates(ENGLISH_NEWS_LOCALE)
+                getUpdates(
+                    ENGLISH_NEWS_LOCALE,
+                    newsCategories
+                        .find { togglingObject -> togglingObject.toggled }
+                        ?.data
+                        ?.second
+                )
                 true
             }
             R.id.language_ru -> {
-                getUpdates(RUSSIAN_NEWS_LOCALE)
+                getUpdates(
+                    RUSSIAN_NEWS_LOCALE,
+                    newsCategories
+                        .find { togglingObject -> togglingObject.toggled }
+                        ?.data
+                        ?.second
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -141,17 +183,23 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun setLiveDataObservers() {
-        getUpdates(DEFAULT_NEWS_LOCALE)
+        getUpdates(
+            DEFAULT_NEWS_LOCALE,
+            newsCategories
+                .find { togglingObject -> togglingObject.toggled }
+                ?.data
+                ?.second
+        )
     }
 
     override fun onLiveDataObserversSet() {
 
     }
 
-    private fun getUpdates(newsLocale: String) {
+    private fun getUpdates(newsLocale: String, newsCategory: String?) {
         job?.cancel()
         job = lifecycleScope.launchWhenCreated {
-            homeViewModel?.getUpdates(newsLocale)?.collect {
+            homeViewModel?.getUpdates(newsLocale, newsCategory)?.collect {
                 newsAdapter.submitData(it)
             }
         }
@@ -162,9 +210,11 @@ class HomeFragment : BaseFragment() {
         if (combinedLoadStates.source.refresh is LoadState.Loading) {
             fragmentHomeBinding?.clpbNews?.show()
             fragmentHomeBinding?.fabScrollToTop?.hide()
+            buttonsAndValues?.forEach { it.first?.isEnabled = false }
         } else {
             fragmentHomeBinding?.clpbNews?.hide()
             fragmentHomeBinding?.srlNews?.isRefreshing = false
+            buttonsAndValues?.forEach { it.first?.isEnabled = true }
         }
 
         val error = combinedLoadStates.source.append as? LoadState.Error
@@ -193,4 +243,37 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun changeNewsCategory(newCategory: String?) {
+        val currentNewsCategory = newsCategories
+            .find { togglingObject -> togglingObject.toggled }
+            ?.data
+            ?.second
+
+        if (currentNewsCategory == newCategory)
+            return
+
+        newsCategories.forEach {
+            it.toggled = it.data.second == newCategory
+        }
+
+        val newNewsCategory = newsCategories
+            .find { togglingObject -> togglingObject.toggled }
+            ?.data
+            ?.second
+
+        updateButtonsWithNewsCategory()
+
+        getUpdates(homeViewModel?.currentNewsLocale ?: DEFAULT_NEWS_LOCALE, newNewsCategory)
+    }
+
+    private fun updateButtonsWithNewsCategory() {
+        val currentNewsCategory = newsCategories
+            .find { togglingObject -> togglingObject.toggled }
+            ?.data
+            ?.second
+
+        buttonsAndValues?.forEach {
+            it.first?.isSelected = it.second == currentNewsCategory
+        }
+    }
 }

@@ -17,6 +17,7 @@
 
     <string name="coming_soon">Скоро</string>
     <string name="roll">Крутить</string>
+    <string name="roll_counted_pattern">Крутить %1$d/%2$d</string>
 
     <string name="search">Поиск</string>
     <string name="sort">Сортировка</string>
@@ -70,4 +71,11 @@
 
     <string name="operator_armor">Броня</string>
     <string name="operator_speed">Скорость</string>
+
+    <string name="news_category_all">Все</string>
+    <string name="news_category_esport">Киберспорт</string>
+    <string name="news_category_game_updates">Обновления</string>
+    <string name="news_category_community">Сообщество</string>
+    <string name="news_category_patch_notes">Заметки о исправлениях</string>
+    <string name="news_category_store">Магазин</string>
 </resources>

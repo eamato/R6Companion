@@ -15,14 +15,10 @@ data class Updates(
     val limit: Int?,
     @SerializedName("mediaFilter")
     val mediaFilter: String?,
-    @SerializedName("placementFilter")
-    val placementFilter: String?,
     @SerializedName("skip")
     val skip: Int?,
     @SerializedName("startIndex")
     val startIndex: Int?,
-    @SerializedName("tags")
-    val tags: String?,
     @SerializedName("total")
     val total: Int?
 ) {

@@ -42,7 +42,6 @@ class OperatorsViewModel : RetryableViewModel() {
                     pRequestError.value = null
                     errorAction = null
                     pOperators.value = it
-                    Result
                 }
         }
     }

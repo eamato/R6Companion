@@ -40,4 +40,8 @@
     <color name="colorOperatorArmorSpeedEnabled">#36A9E0</color>
     <color name="colorOperatorArmorSpeedDisabled">#494D4F</color>
     <color name="colorOperatorRoleIcon">#24262A</color>
+
+    <color name="colorNewsCategorySelected">#36A9E0</color>
+    <color name="colorNewsCategory">#797A7A</color>
+    <color name="colorNewsDisabled">#979EA1</color>
 </resources>

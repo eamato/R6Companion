@@ -95,7 +95,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         if (rouletteViewModel?.visibleRouletteOperators?.value?.isNullOrEmpty() == true) {
             context?.let { nonNullContext ->
                 rouletteViewModel?.getAllOperators(
-                    OperatorsRepository(nonNullContext, FirebaseRemoteConfigDataFetcher()),
+                    OperatorsRepository(nonNullContext, FirebaseRemoteConfigDataFetcher(mainViewModel)),
                     PreferenceManager.getDefaultSharedPreferences(nonNullContext)
                 )
             }
@@ -257,6 +257,20 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun setLiveDataObservers() {
         rouletteViewModel?.canRoll?.observe(this, {
             fragmentRouletteBinding?.btnRoll?.isEnabled = it
+
+            if (it) {
+                val allOperators = rouletteViewModel?.visibleRouletteOperators?.value?.size ?: 0
+                var selectedOperators = 0
+                rouletteViewModel?.visibleRouletteOperators?.value?.forEach { operator ->
+                    if (operator.isSelected)
+                        selectedOperators++
+                }
+                fragmentRouletteBinding?.btnRoll?.text = getString(
+                    R.string.roll_counted_pattern, selectedOperators, allOperators
+                )
+            } else {
+                fragmentRouletteBinding?.btnRoll?.text = getString(R.string.roll)
+            }
         })
 
         rouletteViewModel?.isRequestActive?.observe(this, {

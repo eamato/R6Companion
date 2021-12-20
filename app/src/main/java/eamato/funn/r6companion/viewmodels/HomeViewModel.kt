@@ -16,7 +16,8 @@ import kotlinx.coroutines.flow.Flow
 class HomeViewModel : ViewModel() {
 
     private var currentUpdates: Flow<PagingData<NewsDataMixedWithAds>>? = null
-    private var currentNewsLocale: String? = null
+    var currentNewsLocale: String? = null
+    private var currentNewsCategory: String? = null
     private var currentPager = Pager(
         config = PagingConfig(
             pageSize = NEWS_COUNT_DEFAULT_VALUE / 2,
@@ -25,14 +26,18 @@ class HomeViewModel : ViewModel() {
         ),
         pagingSourceFactory = {
             NewsDataSource(
-                NewsRequests.getNewsRequestCoroutines(),
-                currentNewsLocale ?: DEFAULT_NEWS_LOCALE
+                newsRequests = NewsRequests.getNewsRequestCoroutines(),
+                newsLocale = currentNewsLocale ?: DEFAULT_NEWS_LOCALE,
+                newsCategory = currentNewsCategory
             )
         }
     )
 
-    private fun getPager(newsLocale: String): Pager<Int, NewsDataMixedWithAds> {
-        if (currentNewsLocale != newsLocale) {
+    private fun getPager(
+        newsLocale: String,
+        newsCategory: String?
+    ): Pager<Int, NewsDataMixedWithAds> {
+        if (currentNewsLocale != newsLocale || currentNewsCategory != newsCategory) {
             currentPager = Pager(
                 config = PagingConfig(
                     pageSize = NEWS_COUNT_DEFAULT_VALUE / 2,
@@ -41,23 +46,33 @@ class HomeViewModel : ViewModel() {
                 ),
                 pagingSourceFactory = {
                     NewsDataSource(
-                        NewsRequests.getNewsRequestCoroutines(),
-                        newsLocale
+                        newsRequests = NewsRequests.getNewsRequestCoroutines(),
+                        newsLocale = newsLocale,
+                        newsCategory = newsCategory
                     )
                 }
             )
+
             currentNewsLocale = newsLocale
+            currentNewsCategory = newsCategory
         }
+
         return currentPager
     }
 
-    fun getUpdates(newsLocale: String): Flow<PagingData<NewsDataMixedWithAds>> {
+    fun getUpdates(
+        newsLocale: String,
+        newsCategory: String?
+    ): Flow<PagingData<NewsDataMixedWithAds>> {
         val lastResult = currentUpdates
-        if (currentNewsLocale == newsLocale && lastResult != null)
+
+        if (currentNewsLocale == newsLocale && currentNewsCategory == newsCategory && lastResult != null)
             return lastResult
-        val updates = getPager(newsLocale).flow.cachedIn(viewModelScope)
+
+        val updates = getPager(newsLocale, newsCategory).flow.cachedIn(viewModelScope)
+
         currentUpdates = updates
+
         return updates
     }
-
 }

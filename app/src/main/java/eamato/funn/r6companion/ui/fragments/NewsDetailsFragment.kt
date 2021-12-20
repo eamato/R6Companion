@@ -85,7 +85,7 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
                     fragmentNewsDetailsBinding?.llContent?.addView(view)
 
                     if (nonNullContentView is AVideoContentView)
-                        VideoInitializer(nonNullContentView).initializeYoutubeVideo(childFragmentManager)
+                        VideoInitializer(nonNullContentView, context).initializeYoutubeVideo(childFragmentManager)
                 }
             }
         }

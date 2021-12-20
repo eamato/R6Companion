@@ -12,7 +12,8 @@ import kotlinx.coroutines.withContext
 
 class NewsDataSource(
     private val newsRequests: NewsRequests,
-    private val newsLocale: String
+    private val newsLocale: String,
+    private val newsCategory: String? = null
 ) : PagingSource<Int, NewsDataMixedWithAds>() {
 
     override fun getRefreshKey(state: PagingState<Int, NewsDataMixedWithAds>): Int {
@@ -26,12 +27,15 @@ class NewsDataSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NewsDataMixedWithAds> {
         val skip = params.key ?: 0
         return try {
-            val response = newsRequests.getUpdatesCoroutines(skip = skip, newsLocale = newsLocale)
+            val response = newsRequests.getUpdatesCoroutines(
+                skip = skip, newsLocale = newsLocale, newsCategoriesFilter = newsCategory
+            )
             val result = parseResult(response)
             val position = response.skip ?: 0
             val nextItemsCount = response.limit ?: NEWS_COUNT_DEFAULT_VALUE
             LoadResult.Page(result, null, position + nextItemsCount)
         } catch (e: Exception) {
+            e.printStackTrace()
             return LoadResult.Error(e)
         }
     }

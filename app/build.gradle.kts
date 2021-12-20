@@ -16,45 +16,45 @@ val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties().apply { load(FileInputStream(keystorePropertiesFile)) }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.3")
+    compileSdk = 31
+    buildToolsVersion = "31.0.0"
 
     defaultConfig {
         applicationId = "eamato.funn.r6companion"
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 31
         multiDexEnabled = true
-        versionCode = 6
-        versionName = "6.0"
+        versionCode = 10
+        versionName = "10.0"
         testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         create("release") {
-            storeFile(file(keystoreProperties["storeFile"] ?: ""))
-            keyAlias(keystoreProperties["keyAlias"] as String?)
-            keyPassword(keystoreProperties["keyPassword"] as String?)
-            storePassword(keystoreProperties["storePassword"] as String?)
+            storeFile = file(keystoreProperties["storeFile"] ?: "")
+            keyAlias = keystoreProperties["keyAlias"] as String?
+            keyPassword = keystoreProperties["keyPassword"] as String?
+            storePassword = keystoreProperties["storePassword"] as String?
         }
     }
     buildTypes {
         getByName("debug") {
-            minifyEnabled(false)
-            debuggable(true)
+            isMinifyEnabled = false
+            isDebuggable = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("release") {
-            minifyEnabled(true)
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
         create("alpha") {
-            minifyEnabled(true)
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
         create("beta") {
-            minifyEnabled(true)
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
@@ -97,17 +97,17 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
 
-    implementation("com.google.android.material:material:1.4.0-rc01")
+    implementation("com.google.android.material:material:1.4.0")
 
     /* AndroidX dependencies */
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("androidx.core:core-ktx:1.6.0-beta02")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.paging:paging-runtime-ktx:3.0.0")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.0")
 
     /* Lifecycle dependencies */
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -116,8 +116,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     /* Glide dependencies */
-    implementation("com.github.bumptech.glide:annotations:4.10.0")
-    implementation("com.github.bumptech.glide:glide:4.10.0")
+    implementation("com.github.bumptech.glide:annotations:4.11.0")
+    implementation("com.github.bumptech.glide:glide:4.11.0")
     implementation("com.github.bumptech.glide:okhttp3-integration:4.10.0")
     kapt("com.github.bumptech.glide:compiler:4.10.0")
 
@@ -136,20 +136,18 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
     /* Firebase dependencies */
-    implementation("com.google.firebase:firebase-core:19.0.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.0.1")
-    implementation("com.google.firebase:firebase-analytics:19.0.0")
-    implementation("com.google.firebase:firebase-analytics:19.0.0")
-    implementation("com.google.firebase:firebase-config:21.0.0")
-    implementation("com.google.firebase:firebase-messaging:22.0.0")
-    implementation("com.google.firebase:firebase-perf:20.0.1")
-    implementation("com.google.firebase:firebase-inappmessaging-display:20.0.0")
-    implementation("com.google.firebase:firebase-ads:20.2.0")
+    implementation("com.google.firebase:firebase-core:20.0.2")
+    implementation("com.google.firebase:firebase-crashlytics:18.2.6")
+    implementation("com.google.firebase:firebase-analytics:20.0.2")
+    implementation("com.google.firebase:firebase-config:21.0.1")
+    implementation("com.google.firebase:firebase-messaging:23.0.0")
+    implementation("com.google.firebase:firebase-perf:20.0.4")
+    implementation("com.google.firebase:firebase-inappmessaging-display:20.1.1")
+    implementation("com.google.firebase:firebase-ads:20.5.0")
 
     /* Test dependencies */
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test:runner:1.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
