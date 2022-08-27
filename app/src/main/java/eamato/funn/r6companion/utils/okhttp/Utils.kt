@@ -1,6 +1,7 @@
 package eamato.funn.r6companion.utils.okhttp
 
 import android.content.Context
+import android.util.Log
 import androidx.preference.PreferenceManager
 import eamato.funn.r6companion.BuildConfig
 import eamato.funn.r6companion.utils.*
@@ -28,7 +29,14 @@ fun getWifiOnlyRequestInterceptor(context: Context) = Interceptor { chain ->
             )
 }
 
-val loginInterceptor = HttpLoggingInterceptor()
+val defaultLoggingInterceptor = HttpLoggingInterceptor()
+    .also {
+        it.level = HttpLoggingInterceptor.Level.BODY
+    }
+
+val imageLoggingInterceptor = HttpLoggingInterceptor {
+    Log.d(IMAGE_LOGGER_TAG, it)
+}
     .also {
         it.level = HttpLoggingInterceptor.Level.BODY
     }
@@ -59,7 +67,7 @@ val defaultOkHttpClient = OkHttpClient
     .addInterceptor(requestInterceptor)
     .also {
         if (BuildConfig.DEBUG)
-            it.addInterceptor(loginInterceptor)
+            it.addInterceptor(defaultLoggingInterceptor)
     }
     .build()
 
@@ -68,6 +76,6 @@ fun getImageOkHttpClient(context: Context) = defaultOkHttpClient
     .addInterceptor(getWifiOnlyRequestInterceptor(context))
     .also {
         if (BuildConfig.DEBUG)
-            it.addInterceptor(loginInterceptor)
+            it.addInterceptor(imageLoggingInterceptor)
     }
     .build()

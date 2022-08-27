@@ -1,9 +1,6 @@
 package eamato.funn.r6companion.entities
 
-import android.os.Parcelable
-import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 data class Updates(
@@ -22,7 +19,7 @@ data class Updates(
     @SerializedName("total")
     val total: Int?
 ) {
-    @Parcelize
+
     data class Item(
         @SerializedName("abstract")
         val `abstract`: String?,
@@ -56,8 +53,7 @@ data class Updates(
         val trackingPageValue: String?,
         @SerializedName("type")
         val type: String?
-    ): Parcelable {
-        @Parcelize
+    ) {
         data class Button(
             @SerializedName("buttonType")
             val buttonType: String?,
@@ -69,36 +65,20 @@ data class Updates(
             val trackingCategoryValue: String?,
             @SerializedName("trackingValue")
             val trackingValue: String?
-        ): Parcelable
+        )
 
-        @Parcelize
         data class FeaturedThumbnail(
             @SerializedName("description")
             val description: @RawValue Any?,
             @SerializedName("url")
             val url: @RawValue Any?
-        ): Parcelable
+        )
 
-        @Parcelize
         data class Thumbnail(
             @SerializedName("description")
             val description: @RawValue Any?,
             @SerializedName("url")
             val url: String?
-        ): Parcelable
-
-        companion object {
-            val UPDATES_ITEM_DIFF_ITEM_CALLBACK = object : DiffUtil.ItemCallback<Updates.Item>() {
-                override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
-                    return oldItem.id == newItem.id
-                }
-
-                override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
-                    return oldItem.id == newItem.id && oldItem.title == newItem.title &&
-                            oldItem.content == newItem.content && oldItem.date == newItem.date &&
-                            oldItem.type == newItem.type && oldItem.abstract == newItem.abstract
-                }
-            }
-        }
+        )
     }
 }

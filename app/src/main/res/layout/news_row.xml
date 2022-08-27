@@ -59,11 +59,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_4_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/ib_favourite"
+            app:layout_constraintEnd_toStartOf="@+id/ib_favourite"
             app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_news_subtitle"
+            app:layout_constraintTop_toTopOf="@+id/ib_favourite"
             tools:text="31.12.2020" />
 
         <androidx.core.widget.ContentLoadingProgressBar
@@ -73,6 +75,19 @@
             app:layout_constraintTop_toTopOf="@+id/iv_news_image"
             app:layout_constraintEnd_toEndOf="@+id/iv_news_image"
             style="?android:progressBarStyleSmall" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5_dp"
+            android:padding="@dimen/margin_5_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_news_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_news_subtitle"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_favourite_unchecked" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

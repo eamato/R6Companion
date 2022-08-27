@@ -21,10 +21,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.entities.*
 import eamato.funn.r6companion.entities.content_view.*
 import eamato.funn.r6companion.entities.content_view.abstracts.ContentView
+import eamato.funn.r6companion.entities.dto.UpdateDTO
 import eamato.funn.r6companion.firebase.things.LocalizedRemoteConfigEntity
 import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import io.reactivex.Single
@@ -77,6 +79,53 @@ fun SharedPreferences.getIsImageDownloadingViaMobileNetworkAllowed(): Boolean {
         PREFERENCE_USE_MOBILE_NETWORK_FOR_IMAGE_DOWNLOAD_KEY,
         PREFERENCE_USE_MOBILE_NETWORK_FOR_IMAGE_DOWNLOAD_DEFAULT_VALUE
     )
+}
+
+fun SharedPreferences.saveFavouriteUpdate(updateDTO: UpdateDTO) {
+    getFavouriteUpdates().run {
+        forEach { update ->
+            if (update.id == updateDTO.id)
+                return
+        }
+        toMutableList()
+            .apply { add(updateDTO) }
+            .also { updatedList ->
+                edit()
+                    .putString(PREFERENCE_FAVOURITE_UPDATES_KEY, Gson().toJson(updatedList))
+                    .apply()
+            }
+    }
+}
+
+fun SharedPreferences.removeFavouriteUpdate(updateDTO: UpdateDTO) {
+    getFavouriteUpdates().run {
+        toMutableList()
+            .apply {
+                val iterator = iterator()
+                while (iterator.hasNext()) {
+                    if (iterator.next().id == updateDTO.id)
+                        iterator.remove()
+                }
+            }
+            .also { updatedList ->
+                edit()
+                    .putString(PREFERENCE_FAVOURITE_UPDATES_KEY, Gson().toJson(updatedList))
+                    .apply()
+            }
+    }
+}
+
+fun SharedPreferences.getFavouriteUpdates(): List<UpdateDTO> {
+    return getString(PREFERENCE_FAVOURITE_UPDATES_KEY, null)?.let {
+        try {
+            val favouriteUpdatesListType = object : TypeToken<List<UpdateDTO>?>() {}.type
+            Gson().fromJson<List<UpdateDTO>?>(it, favouriteUpdatesListType) ?: emptyList()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+        ?: emptyList()
 }
 
 fun String.setDarkMode(): Boolean {
@@ -234,15 +283,37 @@ fun LocalizedRemoteConfigEntity.getText(context: Context): String {
         en ?: ""
 }
 
-fun List<Updates.Item?>.toNewsMixedWithAds(): List<NewsDataMixedWithAds> {
-    return map { NewsDataMixedWithAds(it) }.let {
+fun List<Updates.Item?>.toNewsMixedWithAds(pref: SharedPreferences): List<NewsDataMixedWithAds> {
+    val favPref = pref.getFavouriteUpdates()
+    return map {
+        val id = it?.id ?: return@map null
+        val title = it.title ?: return@map null
+        val subtitle = it.abstract ?: ""
+        val content = it.content ?: return@map null
+        val date = it.date ?: return@map null
+        val type = it.type ?: return@map null
+        val thumbnail = it.thumbnail?.url?.run {
+            UpdateDTO.Thumbnail(this)
+        } ?: return@map null
+        val isFavourite = favPref.find { savedUpdate ->
+            savedUpdate.id == id
+        }
+            ?.let { true }
+            ?: false
+
+        val updateDTO = UpdateDTO(id, title, subtitle, content, date, type, thumbnail, isFavourite)
+
+        NewsDataMixedWithAds(updateDTO)
+    }.let {
         it
             .takeIf { it.size >= AD_INSERTION_COUNT }
             ?.toMutableList()
             ?.also { mutableList ->
                 mutableList.insertItemAtEveryStep(NewsDataMixedWithAds(null, true), AD_INSERTION_COUNT)
             }
-            ?.toImmutableList() ?: it
+            ?.filterNotNull()
+            ?.toImmutableList()
+            ?: it.filterNotNull()
     }
 }
 

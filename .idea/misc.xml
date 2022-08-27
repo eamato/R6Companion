@@ -8,9 +8,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/ic_favourite.xml" value="0.45855855855855854" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/ic_favourite_checked.xml" value="0.45855855855855854" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/ic_outline_favorite_24.xml" value="0.45855855855855854" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/operator_speed_armor_drawable.xml" value="0.21770833333333334" />
-        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/fragment_home.xml" value="0.67" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/fragment_about.xml" value="0.38858695652173914" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/fragment_home.xml" value="0.19343696027633853" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/fragment_roulette.xml" value="0.17502532928064843" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/fragment_roulette_result.xml" value="0.218018018018018" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/news_row.xml" value="0.440990990990991" />
       </map>
     </option>
   </component>

@@ -4,11 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import androidx.core.widget.ContentLoadingProgressBar
+import android.widget.*
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -20,6 +16,7 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.databinding.NewsRowBinding
 import eamato.funn.r6companion.utils.IDoAfterTerminateGlide
 import eamato.funn.r6companion.utils.NewsDataMixedWithAds
 import eamato.funn.r6companion.utils.glide.GlideApp
@@ -27,7 +24,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 
-class NewsAdapter : PagingDataAdapter<NewsDataMixedWithAds, NewsAdapter.ViewHolder>(NewsDataMixedWithAds.NEWS_DATA_DIFF_CALLBACK) {
+class NewsAdapter(
+    private val onUpdateClicked: (NewsDataMixedWithAds) -> Unit,
+    private val onFavouriteClicked: (NewsDataMixedWithAds, Int) -> Unit
+) : PagingDataAdapter<NewsDataMixedWithAds, NewsAdapter.ViewHolder>(
+    NewsDataMixedWithAds.NEWS_DATA_DIFF_CALLBACK
+) {
 
     private val NEWS_ITEM_VIEW_TYPE = 1
     private val AD_ITEM_VIEW_TYPE = 2
@@ -35,7 +37,15 @@ class NewsAdapter : PagingDataAdapter<NewsDataMixedWithAds, NewsAdapter.ViewHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            NEWS_ITEM_VIEW_TYPE -> NewsItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_row, parent, false))
+            NEWS_ITEM_VIEW_TYPE -> {
+                NewsItemViewHolder(
+                    NewsRowBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             AD_ITEM_VIEW_TYPE -> AdItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.ad_view, parent, false))
             else -> EmptyDataPlaceHolder(LayoutInflater.from(parent.context).inflate(R.layout.empty_row, parent, false))
         }
@@ -56,58 +66,62 @@ class NewsAdapter : PagingDataAdapter<NewsDataMixedWithAds, NewsAdapter.ViewHold
         }
     }
 
-    fun getItemAtPosition(position: Int): NewsDataMixedWithAds? = getItem(position)
-
     abstract class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun bindView(data: NewsDataMixedWithAds?)
     }
 
-    class NewsItemViewHolder(itemView: View) : ViewHolder(itemView) {
-
-        private var iv_news_image: ImageView? = null
-        private var tv_news_title: TextView? = null
-        private var tv_news_subtitle: TextView? = null
-        private var tv_news_date: TextView? = null
-        private var clpb_news_image: ContentLoadingProgressBar? = null
+    inner class NewsItemViewHolder(private val binding: NewsRowBinding) : ViewHolder(binding.root) {
 
         private val newsDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         private val inputFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
 
-        init {
-            iv_news_image = itemView.findViewById(R.id.iv_news_image)
-            tv_news_title = itemView.findViewById(R.id.tv_news_title)
-            tv_news_subtitle = itemView.findViewById(R.id.tv_news_subtitle)
-            tv_news_date = itemView.findViewById(R.id.tv_news_date)
-            clpb_news_image = itemView.findViewById(R.id.clpb_news_image)
-        }
-
         override fun bindView(data: NewsDataMixedWithAds?) {
-            data?.let { nonNullData ->
-                nonNullData.newsData?.let { nonNullNewsData ->
-                    iv_news_image?.let {
-                        clpb_news_image?.show()
-                        GlideApp.with(itemView.context)
-                            .load(nonNullNewsData.thumbnail?.url)
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .transition(DrawableTransitionOptions.withCrossFade(500))
-                            .error(R.drawable.no_data_placeholder)
-                            .listener(object : IDoAfterTerminateGlide {
-                                override fun doAfterTerminate() {
-                                    clpb_news_image?.hide()
-                                }
-                            })
-                            .dontAnimate()
-                            .into(it)
+            itemView.setOnClickListener {
+                data?.run {
+                    onUpdateClicked.invoke(this)
+                }
+            }
+            with (binding) {
+                if (data == null) {
+                    clpbNewsImage.show()
+                    ibFavourite.visibility = View.GONE
+                    ivNewsImage.setImageResource(R.drawable.no_data_placeholder)
+                    tvNewsTitle.text = ""
+                    tvNewsSubtitle.text = ""
+
+                    return
+                }
+
+                data.newsData?.run {
+                    ibFavourite.visibility = View.VISIBLE
+                    ibFavourite.setOnClickListener {
+                        onFavouriteClicked.invoke(data, absoluteAdapterPosition)
                     }
-                    tv_news_title?.text = nonNullNewsData.title
-                    tv_news_subtitle?.text = nonNullNewsData.abstract
-//                    tv_news_date?.text = nonNullNewsData.date?.let { inputFormatter.parse(it) }?.let {
-//                        newsDateFormat.format(it)
-//                    } ?: ""
+                    if (this.isFavourite)
+                        ibFavourite.setImageResource(R.drawable.ic_favourite_checked)
+                    else
+                        ibFavourite.setImageResource(R.drawable.ic_favourite_unchecked)
+
+                    clpbNewsImage.show()
+
+                    GlideApp.with(itemView.context)
+                        .load(this.thumbnail.url)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .transition(DrawableTransitionOptions.withCrossFade(500))
+                        .error(R.drawable.no_data_placeholder)
+                        .listener(object : IDoAfterTerminateGlide {
+                            override fun doAfterTerminate() {
+                                clpbNewsImage.hide()
+                            }
+                        })
+                        .dontAnimate()
+                        .into(ivNewsImage)
+
+                    tvNewsTitle.text = this.title
+                    tvNewsSubtitle.text = this.subtitle
                 }
             }
         }
-
     }
 
     class AdItemViewHolder(itemView: View) : ViewHolder(itemView) {
@@ -239,5 +253,4 @@ class NewsAdapter : PagingDataAdapter<NewsDataMixedWithAds, NewsAdapter.ViewHold
         }
 
     }
-
 }

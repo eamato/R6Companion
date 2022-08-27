@@ -1,6 +1,8 @@
 package eamato.funn.r6companion.ui.fragments
 
+import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.net.Uri
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import android.view.*
@@ -10,7 +12,15 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ShortDynamicLink
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
+import com.google.firebase.ktx.Firebase
+import eamato.funn.r6companion.BuildConfig
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.recycler_view_adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
@@ -53,6 +63,8 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         }
     }
 
+    private val argument: RouletteFragmentArgs by navArgs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -80,12 +92,32 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
             fragmentRouletteBinding?.rvAllRouletteOperators?.setOnItemClickListener(it)
         }
 
-        fragmentRouletteBinding?.btnRoll?.setOnClickListener {
-            context?.let { nonNullContext ->
-                val inputManager = ContextCompat.getSystemService(nonNullContext, InputMethodManager::class.java)
-                inputManager?.hideSoftInputFromWindow(it.windowToken, 0)
+        fragmentRouletteBinding?.btnRoll?.run {
+            val canRoll = rouletteViewModel?.canRoll?.value ?: false
+
+            fragmentRouletteBinding?.btnRoll?.isEnabled = canRoll
+
+            if (canRoll) {
+                val allOperators = rouletteViewModel?.visibleRouletteOperators?.value?.size ?: 0
+                var selectedOperators = 0
+                rouletteViewModel?.visibleRouletteOperators?.value?.forEach { operator ->
+                    if (operator.isSelected)
+                        selectedOperators++
+                }
+                fragmentRouletteBinding?.btnRoll?.text = getString(
+                    R.string.roll_counted_pattern, selectedOperators, allOperators
+                )
+            } else {
+                fragmentRouletteBinding?.btnRoll?.text = getString(R.string.roll)
             }
-            rouletteViewModel?.roll()
+
+            setOnClickListener {
+                context?.let { nonNullContext ->
+                    val inputManager = ContextCompat.getSystemService(nonNullContext, InputMethodManager::class.java)
+                    inputManager?.hideSoftInputFromWindow(it.windowToken, 0)
+                }
+                rouletteViewModel?.roll()
+            }
         }
     }
 
@@ -96,7 +128,8 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
             context?.let { nonNullContext ->
                 rouletteViewModel?.getAllOperators(
                     OperatorsRepository(nonNullContext, FirebaseRemoteConfigDataFetcher(mainViewModel)),
-                    PreferenceManager.getDefaultSharedPreferences(nonNullContext)
+                    PreferenceManager.getDefaultSharedPreferences(nonNullContext),
+                    argument.rouletteFragmentArgument?.operatorNames
                 )
             }
         }
@@ -131,20 +164,23 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
         menu.findItem(R.id.save_selected)?.isVisible = rouletteViewModel?.areThereAnySelectedOperators() ?: false
 
-        val disposable = PreferenceManager.getDefaultSharedPreferences(context).areThereSavedSelectedOperators()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    menu.findItem(R.id.delete_saved)?.isVisible = it
-                    menu.findItem(R.id.restore_saved)?.isVisible = it
-                },
-                {
-                    menu.findItem(R.id.delete_saved)?.isVisible = false
-                    menu.findItem(R.id.restore_saved)?.isVisible = false
-                }
-            )
-        compositeDisposable.add(disposable)
+        context?.run {
+            val disposable = PreferenceManager.getDefaultSharedPreferences(this).areThereSavedSelectedOperators()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        menu.findItem(R.id.delete_saved)?.isVisible = it
+                        menu.findItem(R.id.restore_saved)?.isVisible = it
+                    },
+                    {
+                        menu.findItem(R.id.delete_saved)?.isVisible = false
+                        menu.findItem(R.id.restore_saved)?.isVisible = false
+                    }
+                )
+
+            compositeDisposable.add(disposable)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -225,6 +261,10 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                 }
                 true
             }
+            R.id.share_roll -> {
+                rouletteViewModel?.createShortDynamicLink()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -296,6 +336,23 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                 }
             }
         })
+
+        rouletteViewModel?.rollLink?.observe(this) {
+            it?.run uri@ {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, this@uri.toString())
+                    type = "text/plain"
+                }
+
+                try {
+                    val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_with))
+                    startActivity(shareIntent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     override fun onLiveDataObserversSet() {
@@ -305,5 +362,4 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun Bundle.restoreStateIfNeed() {
         searchQuery = this.getString(ROULETTE_SEARCH_QUERY_KEY, null)
     }
-
 }

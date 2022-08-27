@@ -11,11 +11,11 @@ import eamato.funn.r6companion.entities.content_view.abstracts.AVideoContentView
 class VideoInitializer(
     private val aVideoContentView: AVideoContentView,
     private val context: Context?
-    ) {
+) {
 
     fun initializeYoutubeVideo(childFragmentManager: FragmentManager) {
         val youtubePlayerFragment = YouTubePlayerSupportFragmentX()
-        val apiKey = context?.getString(R.string.youtube_api_key) ?: return
+        val apiKey = context?.getString(R.string.google_api_key) ?: return
         youtubePlayerFragment.initialize(apiKey, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
                 provider: YouTubePlayer.Provider?,

@@ -78,4 +78,8 @@
     <string name="news_category_community">Сообщество</string>
     <string name="news_category_patch_notes">Заметки о исправлениях</string>
     <string name="news_category_store">Магазин</string>
+
+    <string name="in_app_update_downloaded">Обновление скачано</string>
+    <string name="in_app_update_installed">Обновление установлено</string>
+    <string name="in_app_update_failed">Ошибка обновления</string>
 </resources>

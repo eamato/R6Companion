@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -17,10 +19,8 @@ import eamato.funn.r6companion.adapters.recycler_view_adapters.NewsAdapter
 import eamato.funn.r6companion.databinding.FragmentHomeBinding
 import eamato.funn.r6companion.ui.fragments.abstracts.BaseFragment
 import eamato.funn.r6companion.utils.*
-import eamato.funn.r6companion.utils.recyclerview.RecyclerViewItemClickListener
 import eamato.funn.r6companion.viewmodels.HomeViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 
 private const val SCREEN_NAME = "Home screen"
@@ -36,26 +36,21 @@ class HomeFragment : BaseFragment() {
     private var job: Job? = null
     private var wasErrorOccurred: Boolean = false
 
-    private val newsAdapter = NewsAdapter()
+    private val newsAdapter = NewsAdapter(::onUpdateClicked, ::onUpdateFavouriteToggle)
 
-    private val homeViewModel: HomeViewModel? by viewModels()
+    private val homeViewModel: HomeViewModel? by lazy {
+        val pref = context?.let { PreferenceManager.getDefaultSharedPreferences(it) } ?: return@lazy null
+        ViewModelProvider(
+            this,
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return HomeViewModel(pref) as T
+                }
+            }
+        ).get(HomeViewModel::class.java)
+    }
 
     private var fragmentHomeBinding: FragmentHomeBinding? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-        return fragmentHomeBinding?.root
-    }
 
     private val newsCategoriesClickListener = View.OnClickListener { view ->
         buttonsAndValues
@@ -88,22 +83,24 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private val onNewsClickListener: RecyclerViewItemClickListener? by lazy {
-        fragmentHomeBinding?.rvNews?.let { nonNullView ->
-            RecyclerViewItemClickListener(context, nonNullView, object : RecyclerViewItemClickListener.OnItemClickListener {
-                override fun onItemClicked(view: View, position: Int) {
-                    newsAdapter.getItemAtPosition(position)?.let { nonNullSelectedNews ->
-                        nonNullSelectedNews.newsData?.let {
-                            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNewsDetailsFragment(it))
-                        }
-                    }
-                }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-                override fun onItemLongClicked(view: View, position: Int) {
+        setHasOptionsMenu(true)
+    }
 
-                }
-            })
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        homeViewModel?.additionalData?.observe(viewLifecycleOwner) { data ->
+            Log.d("Ola", "Additional data = $data")
         }
+
+        return fragmentHomeBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -132,9 +129,6 @@ class HomeFragment : BaseFragment() {
         }
         fragmentHomeBinding?.rvNews?.adapter = newsAdapter
         fragmentHomeBinding?.rvNews.setMyOnScrollListener(myScrollListener)
-        onNewsClickListener?.let { nonNullListener ->
-            fragmentHomeBinding?.rvNews.setOnItemClickListener(nonNullListener)
-        }
 
         fragmentHomeBinding?.fabScrollToTop?.setOnClickListener {
             fragmentHomeBinding?.rvNews?.scrollToPosition(0)
@@ -274,6 +268,28 @@ class HomeFragment : BaseFragment() {
 
         buttonsAndValues?.forEach {
             it.first?.isSelected = it.second == currentNewsCategory
+        }
+    }
+
+    private fun onUpdateFavouriteToggle(update: NewsDataMixedWithAds, position: Int) {
+        context?.run {
+            val newsData = update.newsData ?: return
+            val newIsFavourite = newsData.isFavourite.not()
+            val pref = PreferenceManager.getDefaultSharedPreferences(this)
+            if (newIsFavourite)
+                pref.saveFavouriteUpdate(newsData)
+            else
+                pref.removeFavouriteUpdate(newsData)
+        }
+
+        newsAdapter.refresh()
+    }
+
+    private fun onUpdateClicked(update: NewsDataMixedWithAds) {
+        update.newsData?.run {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToNewsDetailsFragment(this)
+            )
         }
     }
 }

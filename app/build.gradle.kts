@@ -16,16 +16,16 @@ val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties().apply { load(FileInputStream(keystorePropertiesFile)) }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
     buildToolsVersion = "31.0.0"
 
     defaultConfig {
         applicationId = "eamato.funn.r6companion"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 32
         multiDexEnabled = true
-        versionCode = 11
-        versionName = "11.0"
+        versionCode = 14
+        versionName = "14"
         testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,6 +37,7 @@ android {
             storePassword = keystoreProperties["storePassword"] as String?
         }
     }
+
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
@@ -97,53 +98,57 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 
-    implementation("com.google.android.material:material:1.4.0")
+    implementation("com.google.android.play:core:1.10.3")
+    implementation("com.google.android.material:material:1.6.1")
 
     /* AndroidX dependencies */
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
+    implementation("androidx.appcompat:appcompat:1.5.0")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.paging:paging-runtime-ktx:3.1.0")
+    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 
     /* Lifecycle dependencies */
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
     /* GSON dependencies */
-    implementation("com.google.code.gson:gson:2.8.6")
+    implementation("com.google.code.gson:gson:2.9.0")
 
     /* Glide dependencies */
-    implementation("com.github.bumptech.glide:annotations:4.11.0")
-    implementation("com.github.bumptech.glide:glide:4.11.0")
+    implementation("com.github.bumptech.glide:annotations:4.12.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.github.bumptech.glide:okhttp3-integration:4.10.0")
     kapt("com.github.bumptech.glide:compiler:4.10.0")
 
     /* Navigation dependencies */
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
 
     /* Rx dependencies */
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("io.reactivex.rxjava2:rxjava:2.2.12")
 
     /* Retrofit dependencies */
-    implementation("com.squareup.retrofit2:retrofit:2.6.2")
-    implementation("com.squareup.retrofit2:converter-gson:2.6.2")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.6.2")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
     /* Firebase dependencies */
-    implementation("com.google.firebase:firebase-core:20.0.2")
-    implementation("com.google.firebase:firebase-crashlytics:18.2.6")
-    implementation("com.google.firebase:firebase-analytics:20.0.2")
-    implementation("com.google.firebase:firebase-config:21.0.1")
-    implementation("com.google.firebase:firebase-messaging:23.0.0")
-    implementation("com.google.firebase:firebase-perf:20.0.4")
-    implementation("com.google.firebase:firebase-inappmessaging-display:20.1.1")
-    implementation("com.google.firebase:firebase-ads:20.5.0")
+    implementation("com.google.firebase:firebase-core:21.1.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.2.12")
+    implementation("com.google.firebase:firebase-analytics:21.1.0")
+    implementation("com.google.firebase:firebase-config-ktx:21.1.1")
+    implementation("com.google.firebase:firebase-messaging:23.0.7")
+    implementation("com.google.firebase:firebase-perf:20.1.0")
+    implementation("com.google.firebase:firebase-inappmessaging-display:20.1.2")
+    implementation("com.google.firebase:firebase-ads:21.1.0")
+    implementation("com.google.firebase:firebase-dynamic-links-ktx:21.0.1")
+
+    implementation("com.github.beksomega:loopinglayout:0.4.1")
 
     /* Test dependencies */
     implementation("androidx.legacy:legacy-support-v4:1.0.0")

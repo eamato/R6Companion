@@ -1,10 +1,17 @@
 package eamato.funn.r6companion.viewmodels
 
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
+import com.google.firebase.ktx.Firebase
+import eamato.funn.r6companion.BuildConfig
 import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.entities.RouletteOperator
 import eamato.funn.r6companion.utils.*
@@ -23,14 +30,17 @@ class RouletteViewModel : ViewModel() {
     private val pVisibleRouletteOperators = MutableLiveData<List<RouletteOperator>>()
     val visibleRouletteOperators: LiveData<List<RouletteOperator>> = pVisibleRouletteOperators
 
-    private val pRollingOperatorsAndWinner = MutableLiveData<Pair<List<RouletteOperator>, RouletteOperator>>()
-    val rollingOperatorsAndWinner: LiveData<Pair<List<RouletteOperator>, RouletteOperator>> = pRollingOperatorsAndWinner
+    private val pRollingOperatorsAndWinner = MutableLiveData<Pair<List<RouletteOperator>, RouletteOperator>?>()
+    val rollingOperatorsAndWinner: LiveData<Pair<List<RouletteOperator>, RouletteOperator>?> = pRollingOperatorsAndWinner
 
     private val pIsRequestActive = MutableLiveData(false)
     val isRequestActive: LiveData<Boolean> = pIsRequestActive
 
     private val pCanRoll = MutableLiveData<Boolean>()
     val canRoll: LiveData<Boolean> = pCanRoll
+
+    private val pRollLink = MutableLiveData<Uri?>(null)
+    val rollLink: LiveData<Uri?> = pRollLink
 
     init {
         pVisibleRouletteOperators.value = emptyList()
@@ -43,7 +53,11 @@ class RouletteViewModel : ViewModel() {
         super.onCleared()
     }
 
-    fun getAllOperators(iRepository: IRepository<List<Operators.Operator>?>, preferences: SharedPreferences) {
+    fun getAllOperators(
+        iRepository: IRepository<List<Operators.Operator>?>,
+        preferences: SharedPreferences,
+        operatorNames: List<String>?
+    ) {
         pIsRequestActive.value = true
 
         viewModelScope.launch {
@@ -52,7 +66,7 @@ class RouletteViewModel : ViewModel() {
                 ?.let {
                     immutableOperators = ArrayList(it.map { operator -> operator.copy() })
                     pVisibleRouletteOperators.value = ArrayList(it.map { operator -> operator.copy() })
-                    selectPreviouslySelectedOperators(preferences)
+                    selectPreviouslySelectedOperators(preferences, operatorNames)
                 }
 
             pIsRequestActive.value = false
@@ -87,6 +101,32 @@ class RouletteViewModel : ViewModel() {
         }
 
         immutableOperators.find { it.name == rouletteOperator.name }?.isSelected = isSelected
+
+        pCanRoll.value = immutableOperators.any { it.isSelected }
+    }
+
+    // TODO REPLACE NAME WITH UNIQUE INDEX
+    private fun selectRouletteOperatorsByName(operatorNames: List<String>) {
+        operatorNames.forEach { operatorName ->
+            pVisibleRouletteOperators.value?.run {
+                pVisibleRouletteOperators.value = this
+                    .toMutableList()
+                    .also { mutableList ->
+                        mutableList
+                            .find { operator -> operator.name == operatorName }
+                            ?.run {
+                                val index = mutableList.indexOf(this)
+                                if (index >= 0)
+                                    mutableList[index] = copy(isSelected = true)
+                            }
+                    }
+                    .toList()
+            }
+
+            immutableOperators
+                .find { operator -> operator.name == operatorName }
+                ?.isSelected = true
+        }
 
         pCanRoll.value = immutableOperators.any { it.isSelected }
     }
@@ -148,7 +188,39 @@ class RouletteViewModel : ViewModel() {
                     selectUnSelectRouletteOperator(it, true)
                 }, {
                     it.printStackTrace()
-                }, {})
+                }, {
+
+                })
+        )
+    }
+
+    // TODO REPLACE NAME WITH UNIQUE INDEX
+    private fun selectPreviouslySelectedOperators(preferences: SharedPreferences, operatorNames: List<String>?) {
+        compositeDisposable.add(
+            preferences.areThereSavedSelectedOperators()
+                .toObservable()
+                .flatMap {
+                    if (it) {
+                        val savedSelectedOperators = preferences.getStringSet(PREFERENCE_SAVE_SELECTIONS_KEY, emptySet()) ?: emptySet()
+                        Observable.fromIterable(immutableOperators).filter { operator ->
+                            savedSelectedOperators.any { savedSelectedOperator ->
+                                savedSelectedOperator == operator.name
+                            }
+                        }
+                    } else {
+                        Observable.empty()
+                    }
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    selectUnSelectRouletteOperator(it, true)
+                }, {
+                    it.printStackTrace()
+                }, {
+                    if (operatorNames != null)
+                        selectRouletteOperatorsByName(operatorNames)
+                })
         )
     }
 
@@ -179,4 +251,51 @@ class RouletteViewModel : ViewModel() {
         return immutableOperators.filter { it.isSelected }.isNullOrEmpty().not()
     }
 
+    fun createShortDynamicLink() {
+        val candidates = immutableOperators
+            .filter { it.isSelected }
+            .takeIf { it.isNotEmpty() }
+            ?: return
+
+        val longUri = createRollLink(candidates)
+
+        shortenLongLink(longUri)
+    }
+
+    private fun createRollLink(candidates: List<RouletteOperator>): Uri {
+        val uriBuilder = Uri.Builder()
+            .scheme("https")
+            .authority("r6companion.page.link")
+            .path("roll")
+
+        candidates
+            .mapNotNull { operator -> operator.name }
+            .forEach { name ->
+                uriBuilder.appendQueryParameter("operator_name", name)
+            }
+
+        val uri = uriBuilder.build()
+
+        val link = FirebaseDynamicLinks.getInstance()
+            .createDynamicLink()
+            .setLink(uri)
+            .setDomainUriPrefix("https://r6companion.page.link")
+            .setIosParameters(DynamicLink.IosParameters.Builder(BuildConfig.APPLICATION_ID).build())
+            .setAndroidParameters(DynamicLink.AndroidParameters.Builder(BuildConfig.APPLICATION_ID).build())
+            .buildDynamicLink()
+
+        return link.uri
+    }
+
+    private fun shortenLongLink(uri: Uri) {
+        Firebase.dynamicLinks.shortLinkAsync {
+            longLink = uri
+        }.addOnSuccessListener { shortDynamicLink ->
+            shortDynamicLink.shortLink?.run {
+                pRollLink.value = this
+            }
+        }.addOnFailureListener {
+            pRollLink.value = null
+        }
+    }
 }

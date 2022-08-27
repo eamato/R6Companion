@@ -12,8 +12,15 @@
         app:showAsAction="always|collapseActionView" />
 
     <item
-        android:id="@+id/sort"
+        android:id="@+id/share_roll"
+        android:icon="@drawable/ic_share"
         android:orderInCategory="101"
+        android:title="@string/share_with"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/sort"
+        android:orderInCategory="102"
         android:icon="@drawable/ic_sort_24dp"
         android:title="@string/sort"
         app:showAsAction="always">

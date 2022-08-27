@@ -30,8 +30,8 @@ class SettingsFragment : BasePreferenceFragment() {
         }
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        return when (preference?.key) {
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        return when (preference.key) {
             PREFERENCE_ABOUT_KEY -> {
                 findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAboutFragment())
                 true
@@ -45,10 +45,9 @@ class SettingsFragment : BasePreferenceFragment() {
             ?.let { nonNullIlluminationCalibration ->
                 nonNullIlluminationCalibration.isVisible = preferenceManager
                     .sharedPreferences
-                    .getString(
+                    ?.getString(
                         PREFERENCE_DARK_MODE_KEY, PREFERENCE_DARK_MODE_DEFAULT_VALUE
                     ) == PREFERENCE_DARK_MODE_VALUE_ADAPTIVE
             }
     }
-
 }

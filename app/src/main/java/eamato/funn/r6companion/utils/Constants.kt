@@ -43,7 +43,9 @@ const val NEWS_CATEGORIES_FILTER_PARAM_STORE_VALUE = "store"
 
 const val OPERATORS_PATH = "api/database/operators"
 const val NEWS_COUNT_MAX_VALUE = 100
-const val NEWS_COUNT_DEFAULT_VALUE = 30
+const val NEWS_COUNT_DEFAULT_VALUE = 60
+const val NEWS_PREFETCH_DISTANCE = NEWS_COUNT_DEFAULT_VALUE / 4
+const val NEWS_MAX_PAGE_SIZE = 3 * NEWS_COUNT_DEFAULT_VALUE
 const val AD_INSERTION_COUNT = 15
 
 const val CONNECTION_TIME_OUT = 5 * 1000L
@@ -63,6 +65,7 @@ const val PREFERENCE_DARK_MODE_DEFAULT_VALUE = PREFERENCE_DARK_MODE_VALUE_OFF
 const val PREFERENCE_ILLUMINATION_THRESHOLD_KEY = "illumination_threshold"
 const val PREFERENCE_USE_MOBILE_NETWORK_FOR_IMAGE_DOWNLOAD_KEY = "use_mobile_network_for_image_downloading"
 const val PREFERENCE_USE_MOBILE_NETWORK_FOR_IMAGE_DOWNLOAD_DEFAULT_VALUE = false
+const val PREFERENCE_FAVOURITE_UPDATES_KEY = "favourite_updates"
 const val PREFERENCE_ABOUT_KEY = "about"
 
 const val DARK_MODE_ADAPTIVE_THRESHOLD = 1000
@@ -79,6 +82,8 @@ const val DEFAULT_NEWS_LOCALE = ENGLISH_NEWS_LOCALE
 const val OPERATORS_CACHE_FILE_NAME = "operators.txt"
 
 const val NEWS_AUTHORIZATION_TOKEN_HEADER = "authorization: 3u0FfSBUaTSew-2NVfAOSYWevVQHWtY9q3VM8Xx9Lto"
+
+const val IMAGE_LOGGER_TAG = "ImageRequest"
 
 val NEWS_CATEGORIES = listOf(
     R.string.news_category_all to null,
