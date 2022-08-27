@@ -15,11 +15,35 @@
       },
       "oauth_client": [
         {
+          "client_id": "164570248480-16dhc00b04p2ipmbhjnr2mecfpopglmu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eamato.funn.r6companion",
+            "certificate_hash": "e50e9e9856baf89e0610e3b2d42221854c00a6ad"
+          }
+        },
+        {
+          "client_id": "164570248480-656p2ti1pq1iohii2rq1f60g0stevgc4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eamato.funn.r6companion",
+            "certificate_hash": "5f2d0226019560783a0153dcff17112930142e13"
+          }
+        },
+        {
           "client_id": "164570248480-9tns0qnnd6qsrvk7cgtprlnur3gcpsvd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "eamato.funn.r6companion",
             "certificate_hash": "9e7313d1532a00aa81763de9990bb34876fa884e"
+          }
+        },
+        {
+          "client_id": "164570248480-hlbl07t1q70kkf89v1i73sdq5psos4br.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eamato.funn.r6companion",
+            "certificate_hash": "8090a73f058097adb094ff23896f9782d0e2b3c1"
           }
         },
         {
@@ -41,7 +65,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-6576243137966846~4299148913"
     }
   ],
   "configuration_version": "1"
