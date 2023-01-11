@@ -14,15 +14,20 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.forEach
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.initialization.InitializationStatus
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
@@ -31,18 +36,17 @@ import eamato.funn.r6companion.R
 import eamato.funn.r6companion.databinding.ActivityMainBinding
 import eamato.funn.r6companion.entities.dto.RouletteFragmentArgument
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
+import eamato.funn.r6companion.ui.fragments.HomeFragmentDirections
 import eamato.funn.r6companion.ui.fragments.RouletteFragmentArgs
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.notifications.R6NotificationManager
 import eamato.funn.r6companion.viewmodels.MainViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
-
-    private val inAppUpdate: InAppUpdate by lazy {
-        InAppUpdate(this)
-    }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -68,7 +72,9 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkLink(intent)
+        installSplashScreen().apply {
+            setKeepOnScreenCondition { mainViewModel.isLoadingSplash.value }
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -79,20 +85,21 @@ class MainActivity : BaseActivity() {
                     it.isChecked = true
             }
         }
-        binding.bnv.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
-            override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                if (navigationController.currentDestination?.id == item.itemId)
-                    return false
-                item.onNavDestinationSelected(navigationController)
-                return true
-            }
-        })
+
+//        binding.bnv.setOnItemSelectedListener { item ->
+//            if (navigationController.currentDestination?.id == item.itemId)
+//                return@setOnItemSelectedListener false
+//            item.onNavDestinationSelected(navigationController)
+//            return@setOnItemSelectedListener true
+//        }
+
+        binding.bnv.setupWithNavController(navigationController)
 
         setParentToolbar()
 
-        mainViewModel.illuminationLevel.observe(this, {
+        mainViewModel.illuminationLevel.observe(this) {
             it?.let { nonNullIlluminationLevel ->
-                with (PreferenceManager.getDefaultSharedPreferences(this)) {
+                with(PreferenceManager.getDefaultSharedPreferences(this)) {
                     getDarkMode()
                         .takeIf { darkMode -> darkMode == PREFERENCE_DARK_MODE_VALUE_ADAPTIVE }
                         ?.let {
@@ -110,7 +117,7 @@ class MainActivity : BaseActivity() {
                         }
                 }
             }
-        })
+        }
 
         R6NotificationManager.createNotificationChannel(
             context = this,
@@ -132,7 +139,13 @@ class MainActivity : BaseActivity() {
                 Log.d("FirebaseInstance", token)
         }
 
-        MobileAds.initialize(this)
+        checkLink(intent)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+
     }
 
     override fun onResume() {
@@ -141,25 +154,11 @@ class MainActivity : BaseActivity() {
         sensorManager?.getDefaultSensor(Sensor.TYPE_LIGHT)?.let { nonNullSensor ->
             sensorManager?.registerListener(sensorEventListener, nonNullSensor, SensorManager.SENSOR_DELAY_UI)
         }
-
-        inAppUpdate.onResume()
     }
 
     override fun onPause() {
         super.onPause()
         sensorManager?.unregisterListener(sensorEventListener)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        inAppUpdate.onDestroy()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        inAppUpdate.onActivityResult(requestCode,resultCode, data)
     }
 
     fun setParentToolbar(parentToolbar: Toolbar = binding.toolbar) {
@@ -187,7 +186,16 @@ class MainActivity : BaseActivity() {
                                 .build()
                                 .toBundle()
 
-                            navigationController.navigate(R.id.rouletteFragment, bundle)
+                            navigationController.navigate(
+                                R.id.rouletteFragment,
+                                bundle,
+                                navOptions {
+                                    popUpTo(R.id.homeFragment) {
+                                        inclusive = false
+                                        saveState = true
+                                    }
+                                }
+                            )
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

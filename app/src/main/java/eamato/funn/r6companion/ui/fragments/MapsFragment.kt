@@ -23,21 +23,29 @@ class MapsFragment : BaseCompanionFragment() {
         return fragmentMapsBinding?.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        fragmentMapsBinding = null
+    }
+
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
     override fun setLiveDataObservers() {
-        mainViewModel.observableFirebaseRemoteConfig.observe(this, {
+        mainViewModel.observableFirebaseRemoteConfig.observe(this) {
             it?.let { nonNullFirebaseRemoteConfig ->
                 nonNullFirebaseRemoteConfig.getString(COMING_SOON_KEY)
-                    .getFirebaseRemoteConfigEntity(ComingSoon::class.java)?.let { nonNullComingSoon ->
+                    .getFirebaseRemoteConfigEntity(ComingSoon::class.java)
+                    ?.let { nonNullComingSoon ->
                         context?.let { nonNullContext ->
-                            fragmentMapsBinding?.tvComingSoonPlaceholder?.text = nonNullComingSoon.getText(nonNullContext)
+                            fragmentMapsBinding?.tvComingSoonPlaceholder?.text =
+                                nonNullComingSoon.getText(nonNullContext)
                         }
                     }
             }
-        })
+        }
     }
 
     override fun onLiveDataObserversSet() {

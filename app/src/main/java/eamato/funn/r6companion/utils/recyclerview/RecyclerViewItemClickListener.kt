@@ -14,16 +14,14 @@ class RecyclerViewItemClickListener(
 
     private val gestureDetector =
         GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapUp(e: MotionEvent?) = true
-            override fun onLongPress(e: MotionEvent?) {
-                e?.let { nonNullMotionEvent ->
-                    recyclerView.findChildViewUnder(nonNullMotionEvent.x, nonNullMotionEvent.y)
-                        ?.run {
-                            val position = recyclerView.getChildAdapterPosition(this)
-                            if (position != RecyclerView.NO_POSITION)
-                                onItemClickListener.onItemLongClicked(this, position)
-                        }
-                }
+            override fun onSingleTapUp(e: MotionEvent) = true
+            override fun onLongPress(e: MotionEvent) {
+                recyclerView.findChildViewUnder(e.x, e.y)
+                    ?.run {
+                        val position = recyclerView.getChildAdapterPosition(this)
+                        if (position != RecyclerView.NO_POSITION)
+                            onItemClickListener.onItemLongClicked(this, position)
+                    }
             }
         })
 

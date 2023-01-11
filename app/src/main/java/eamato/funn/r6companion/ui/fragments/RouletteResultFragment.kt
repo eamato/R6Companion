@@ -42,7 +42,7 @@ class RouletteResultFragment : BaseFragment() {
     private val packetOpeningFragment = PacketOpeningFragment()
 
     private val rouletteResultPacketOpeningCommonViewModel: RouletteResultPacketOpeningCommonViewModel by lazy {
-        ViewModelProvider(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
+        ViewModelProvider(this)[RouletteResultPacketOpeningCommonViewModel::class.java]
     }
 
     private var autoScroller: AutoScroller<RecyclerView.LayoutManager, RouletteOperator, SimpleOperatorsAdapter.SimpleOperatorsViewHolder>? = null
@@ -62,6 +62,14 @@ class RouletteResultFragment : BaseFragment() {
         autoScroller?.stopAutoScroll()
 
         super.onPause()
+    }
+
+    override fun onDestroyView() {
+        fragmentRouletteResultBinding?.rvRollingOperators?.adapter = null
+        super.onDestroyView()
+
+        fragmentRouletteResultBinding = null
+        autoScroller = null
     }
 
     override fun onDestroy() {
@@ -142,7 +150,7 @@ class RouletteResultFragment : BaseFragment() {
     }
 
     override fun setLiveDataObservers() {
-        rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.observe(this, {
+        rouletteResultPacketOpeningCommonViewModel.isOpenPackDone.observe(this) {
             it?.let {
                 activity?.invalidateOptionsMenu()
                 changePacketOpeningVisibility(!it)
@@ -151,13 +159,13 @@ class RouletteResultFragment : BaseFragment() {
                 else
                     fragmentRouletteResultBinding?.clWinner?.visibility = View.GONE
             }
-        })
+        }
 
-        mainViewModel.winnerCandidates.observe(this, {
+        mainViewModel.winnerCandidates.observe(this) {
             it?.let {
                 initSimpleOperatorsList(it.toMutableList())
             }
-        })
+        }
     }
 
     override fun onLiveDataObserversSet() {

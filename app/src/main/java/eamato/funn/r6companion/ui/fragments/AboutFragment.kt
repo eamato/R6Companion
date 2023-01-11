@@ -115,6 +115,14 @@ class AboutFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        fragmentAboutBinding?.rvTeam?.adapter = null
+
+        super.onDestroyView()
+
+        fragmentAboutBinding = null
+    }
+
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }

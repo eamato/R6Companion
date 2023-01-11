@@ -11,10 +11,8 @@ class FirebaseRemoteConfigDataFetcher(
     private val mainViewModel: MainViewModel
 ) : IRemoteDataFetcher {
 
-    override suspend fun fetch(): String? {
-        return withContext(Dispatchers.IO) {
-            mainViewModel.observableFirebaseRemoteConfig.value?.getString(OPERATORS)
-                ?: mainViewModel.observableFirebaseRemoteConfig.asFlow().firstOrNull()?.getString(OPERATORS)
-        }
+    override suspend fun fetch(): String? = withContext(Dispatchers.IO) {
+        mainViewModel.observableFirebaseRemoteConfig.value?.getString(OPERATORS)
+            ?: mainViewModel.observableFirebaseRemoteConfig.asFlow().firstOrNull()?.getString(OPERATORS)
     }
 }

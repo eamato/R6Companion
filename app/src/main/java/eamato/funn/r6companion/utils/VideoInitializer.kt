@@ -1,6 +1,7 @@
 package eamato.funn.r6companion.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.fragment.app.FragmentManager
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -30,12 +31,12 @@ class VideoInitializer(
                 provider: YouTubePlayer.Provider?,
                 result: YouTubeInitializationResult?
             ) {
-
+                Log.e("VideoInitializer", "onInitializationFailure: ${result?.toString()}")
+                childFragmentManager.beginTransaction().remove(youtubePlayerFragment).commit()
             }
         })
         childFragmentManager.beginTransaction()
             .add(R.id.youtube_fragment, youtubePlayerFragment)
             .commit()
     }
-
 }

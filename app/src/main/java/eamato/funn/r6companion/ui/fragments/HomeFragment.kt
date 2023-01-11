@@ -47,7 +47,7 @@ class HomeFragment : BaseFragment() {
                     return HomeViewModel(pref) as T
                 }
             }
-        ).get(HomeViewModel::class.java)
+        )[HomeViewModel::class.java]
     }
 
     private var fragmentHomeBinding: FragmentHomeBinding? = null
@@ -61,27 +61,7 @@ class HomeFragment : BaseFragment() {
             }
     }
 
-    private val myScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            if (
-                newState == RecyclerView.SCROLL_STATE_DRAGGING &&
-                !recyclerView.canScrollVertically(1) &&
-                wasErrorOccurred
-            )
-                onDataSourceErrorOccurred()
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            fragmentHomeBinding?.fabScrollToTop?.let { nonNullFabScrollToTop ->
-                if (dy >= 0 && nonNullFabScrollToTop.isShown)
-                    nonNullFabScrollToTop.hide()
-                else if (!recyclerView.canScrollVertically(-1))
-                    nonNullFabScrollToTop.hide()
-                else
-                    nonNullFabScrollToTop.show()
-            }
-        }
-    }
+    private var myScrollListener: RecyclerView.OnScrollListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +86,30 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (myScrollListener == null) {
+            myScrollListener = object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (
+                        newState == RecyclerView.SCROLL_STATE_DRAGGING &&
+                        !recyclerView.canScrollVertically(1) &&
+                        wasErrorOccurred
+                    )
+                        onDataSourceErrorOccurred()
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    fragmentHomeBinding?.fabScrollToTop?.let { nonNullFabScrollToTop ->
+                        if (dy >= 0 && nonNullFabScrollToTop.isShown)
+                            nonNullFabScrollToTop.hide()
+                        else if (!recyclerView.canScrollVertically(-1))
+                            nonNullFabScrollToTop.hide()
+                        else
+                            nonNullFabScrollToTop.show()
+                    }
+                }
+            }
+        }
+
         buttonsAndValues = listOf(
             fragmentHomeBinding?.btnNewsCategoryAll to null,
             fragmentHomeBinding?.btnNewsCategoryEsport to NEWS_CATEGORIES_FILTER_PARAM_ESPORTS_VALUE,
@@ -128,7 +132,7 @@ class HomeFragment : BaseFragment() {
             fragmentHomeBinding?.rvNews?.layoutManager = LinearLayoutManager(nonNullContext)
         }
         fragmentHomeBinding?.rvNews?.adapter = newsAdapter
-        fragmentHomeBinding?.rvNews.setMyOnScrollListener(myScrollListener)
+        myScrollListener?.run { fragmentHomeBinding?.rvNews.setMyOnScrollListener(this) }
 
         fragmentHomeBinding?.fabScrollToTop?.setOnClickListener {
             fragmentHomeBinding?.rvNews?.scrollToPosition(0)
@@ -139,6 +143,19 @@ class HomeFragment : BaseFragment() {
                 loadListener(it)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        fragmentHomeBinding?.rvNews?.adapter = null
+        myScrollListener?.run { fragmentHomeBinding?.rvNews?.removeOnScrollListener(this) }
+
+        super.onDestroyView()
+
+        fragmentHomeBinding = null
+
+        buttonsAndValues = null
+
+        myScrollListener = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

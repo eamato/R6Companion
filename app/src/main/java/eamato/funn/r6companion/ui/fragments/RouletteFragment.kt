@@ -2,7 +2,6 @@ package eamato.funn.r6companion.ui.fragments
 
 import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
-import android.net.Uri
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import android.view.*
@@ -14,13 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.firebase.dynamiclinks.ShortDynamicLink
-import com.google.firebase.dynamiclinks.ktx.dynamicLinks
-import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
-import com.google.firebase.ktx.Firebase
-import eamato.funn.r6companion.BuildConfig
 import eamato.funn.r6companion.R
 import eamato.funn.r6companion.adapters.recycler_view_adapters.RouletteOperatorsAdapter
 import eamato.funn.r6companion.databinding.FragmentRouletteBinding
@@ -49,19 +41,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         RouletteOperatorsAdapter()
     }
 
-    private val allOperatorsRouletteClickListener: RecyclerViewItemClickListener? by lazy {
-        fragmentRouletteBinding?.rvAllRouletteOperators?.let {
-            RecyclerViewItemClickListener(context, it, object : RecyclerViewItemClickListener.OnItemClickListener {
-                override fun onItemClicked(view: View, position: Int) {
-                    rouletteViewModel?.selectUnSelectRouletteOperator(rouletteOperatorsAdapter.getItemAtPosition(position))
-                }
-
-                override fun onItemLongClicked(view: View, position: Int) {
-
-                }
-            })
-        }
-    }
+    private var allOperatorsRouletteClickListener: RecyclerViewItemClickListener? = null
 
     private val argument: RouletteFragmentArgs by navArgs()
 
@@ -81,6 +61,18 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (allOperatorsRouletteClickListener == null)
+            allOperatorsRouletteClickListener = fragmentRouletteBinding?.rvAllRouletteOperators?.let {
+            RecyclerViewItemClickListener(context, it, object : RecyclerViewItemClickListener.OnItemClickListener {
+                override fun onItemClicked(view: View, position: Int) {
+                    rouletteViewModel?.selectUnSelectRouletteOperator(rouletteOperatorsAdapter.getItemAtPosition(position))
+                }
+
+                override fun onItemLongClicked(view: View, position: Int) {
+
+                }
+            })
+        }
         fragmentRouletteBinding?.rvAllRouletteOperators?.setHasFixedSize(true)
         var layoutManager = GridLayoutManager(context, 3)
         activity?.resources?.configuration?.orientation?.takeIf { it == ORIENTATION_LANDSCAPE }?.run {
@@ -133,6 +125,15 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
                 )
             }
         }
+    }
+
+    override fun onDestroyView() {
+        fragmentRouletteBinding?.rvAllRouletteOperators?.adapter = null
+
+        super.onDestroyView()
+
+        fragmentRouletteBinding = null
+        allOperatorsRouletteClickListener = null
     }
 
     override fun onDestroy() {

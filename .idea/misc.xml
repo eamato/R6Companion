@@ -8,10 +8,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/background.xml" value="0.45855855855855854" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/ic_favourite.xml" value="0.45855855855855854" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/ic_favourite_checked.xml" value="0.45855855855855854" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/ic_outline_favorite_24.xml" value="0.45855855855855854" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/operator_speed_armor_drawable.xml" value="0.21770833333333334" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/splash_screen_background.xml" value="0.45855855855855854" />
+        <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/drawable/splash_screen_gradient_background.xml" value="0.45855855855855854" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/fragment_about.xml" value="0.38858695652173914" />
         <entry key="..\:/development/AndroidStudioProjects/gitProjects/r6/R6Companion/app/src/main/res/layout/fragment_home.xml" value="0.19343696027633853" />

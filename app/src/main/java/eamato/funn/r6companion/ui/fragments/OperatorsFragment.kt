@@ -28,6 +28,7 @@ class OperatorsFragment : BaseCompanionFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentOperatorsBinding = FragmentOperatorsBinding.inflate(inflater, container, false)
+
         return fragmentOperatorsBinding?.root
     }
 
@@ -40,39 +41,47 @@ class OperatorsFragment : BaseCompanionFragment() {
         fragmentOperatorsBinding?.rvOperators?.addItemDecoration(LinearMarginItemDecoration())
     }
 
+    override fun onDestroyView() {
+        fragmentOperatorsBinding?.rvOperators?.adapter = null
+
+        super.onDestroyView()
+
+        fragmentOperatorsBinding = null
+    }
+
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }
 
     override fun setLiveDataObservers() {
-        mainViewModel.observableFirebaseRemoteConfig.observe(this, {
+        mainViewModel.observableFirebaseRemoteConfig.observe(this) {
             it?.let { nonNullFirebaseRemoteConfig ->
                 nonNullFirebaseRemoteConfig.getString(OPERATORS)
                     .getFirebaseRemoteConfigEntity(Operators::class.java)?.let { nonNullOperators ->
                         operatorsViewModel?.requestOperators(nonNullOperators)
                     }
             }
-        })
+        }
 
-        operatorsViewModel?.operators?.observe(this, {
+        operatorsViewModel?.operators?.observe(this) {
             it?.let { nonNullOperators ->
                 operatorsAdapter.submitList(nonNullOperators)
             }
-        })
+        }
 
-        operatorsViewModel?.isRequestActive?.observe(this, {
+        operatorsViewModel?.isRequestActive?.observe(this) {
             if (it) {
                 fragmentOperatorsBinding?.clpbOperators?.show()
             } else {
                 fragmentOperatorsBinding?.clpbOperators?.hide()
             }
-        })
+        }
 
-        operatorsViewModel?.requestError?.observe(this, {
+        operatorsViewModel?.requestError?.observe(this) {
             it?.let { nonNullError ->
 
             }
-        })
+        }
     }
 
     override fun onLiveDataObserversSet() {

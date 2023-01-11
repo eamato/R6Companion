@@ -39,7 +39,7 @@ class RouletteViewModel : ViewModel() {
     private val pCanRoll = MutableLiveData<Boolean>()
     val canRoll: LiveData<Boolean> = pCanRoll
 
-    private val pRollLink = MutableLiveData<Uri?>(null)
+    private val pRollLink = SingleLiveEvent<Uri?>(null)
     val rollLink: LiveData<Uri?> = pRollLink
 
     init {

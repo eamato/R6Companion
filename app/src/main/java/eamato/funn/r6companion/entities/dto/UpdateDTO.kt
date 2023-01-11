@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class UpdateDTO(
+data class UpdateDTO constructor(
     val id: String, val title: String, val subtitle: String,
     val content: String, val date: String, val type: String,
     val thumbnail: Thumbnail, var isFavourite: Boolean

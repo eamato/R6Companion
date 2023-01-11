@@ -9,6 +9,7 @@ import eamato.funn.r6companion.utils.OPERATORS_CACHE_FILE_NAME
 import eamato.funn.r6companion.utils.isCurrentlyConnectedToInternet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -37,12 +38,16 @@ class OperatorsRepository(
         return parseResult(result)
     }
 
-    private suspend fun getRemoteOperators(context: Context, remoteDataFetcher: IRemoteDataFetcher): String? {
-        return withContext(Dispatchers.IO) {
-            val result = remoteDataFetcher.fetch()
-            if (result != null)
-                changeLocalDataIfNeeded(context, result)
-            result
+    private suspend fun getRemoteOperators(context: Context, remoteDataFetcher: IRemoteDataFetcher): String? = withContext(Dispatchers.IO) {
+        try {
+            var fetchedOperators = withTimeout(5 * 1_000L) { remoteDataFetcher.fetch() }
+            if (fetchedOperators != null)
+                changeLocalDataIfNeeded(context, fetchedOperators)
+            else
+                fetchedOperators = getLocalOperators(context)
+            return@withContext fetchedOperators
+        } catch (e: Exception) {
+            getLocalOperators(context)
         }
     }
 
@@ -71,10 +76,9 @@ class OperatorsRepository(
     }
 
     private suspend fun changeLocalDataIfNeeded(context: Context, data: String) {
-        getLocalOperators(context)?.let { nonNullLocalData ->
-            if (nonNullLocalData != data)
-                getLocalFile(context)?.writeText(data)
-        }
+        val localOperators = getLocalOperators(context)
+        if (localOperators == null || localOperators != data)
+            getLocalFile(context)?.writeText(data)
     }
 
     private suspend fun parseResult(result: String): List<Operators.Operator> {

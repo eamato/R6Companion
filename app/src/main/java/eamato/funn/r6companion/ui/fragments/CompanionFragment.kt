@@ -20,31 +20,42 @@ class CompanionFragment : BaseFragment() {
         CompanionAdapter(this)
     }
 
-    private val tabLayoutMediator: TabLayoutMediator? by lazy {
-        val tabs = fragmentCompanionBinding?.tlCompanionTabs
-        val screens = fragmentCompanionBinding?.vpCompanionScreens
-        if (tabs != null && screens != null) {
-            TabLayoutMediator(tabs, screens) { tab, position ->
-                context?.let { nonNullContext ->
-                    tab.icon = ContextCompat.getDrawable(
-                        nonNullContext, companionAdapter.fragments[position].getFragmentsIcon()
-                    )
-                    tab.text = getString(companionAdapter.fragments[position].getFragmentsTitle())
-                }
-            }
-        } else {
-            null
-        }
-    }
+    private var tabLayoutMediator: TabLayoutMediator? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentCompanionBinding = FragmentCompanionBinding.inflate(inflater, container, false)
+
         return fragmentCompanionBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (tabLayoutMediator == null) {
+            val tabs = fragmentCompanionBinding?.tlCompanionTabs
+            val screens = fragmentCompanionBinding?.vpCompanionScreens
+            if (tabs != null && screens != null) {
+                tabLayoutMediator = TabLayoutMediator(tabs, screens) { tab, position ->
+                    context?.let { nonNullContext ->
+                        tab.icon = ContextCompat.getDrawable(
+                            nonNullContext, companionAdapter.fragments[position].getFragmentsIcon()
+                        )
+                        tab.text = getString(companionAdapter.fragments[position].getFragmentsTitle())
+                    }
+                }
+            }
+        }
+
         fragmentCompanionBinding?.vpCompanionScreens?.adapter = companionAdapter
         tabLayoutMediator?.attach()
+    }
+
+    override fun onDestroyView() {
+        tabLayoutMediator?.detach()
+        tabLayoutMediator = null
+        fragmentCompanionBinding?.vpCompanionScreens?.adapter = null
+
+        super.onDestroyView()
+
+        fragmentCompanionBinding = null
     }
 
     override fun logScreenView() {
@@ -58,5 +69,4 @@ class CompanionFragment : BaseFragment() {
     override fun onLiveDataObserversSet() {
 
     }
-
 }

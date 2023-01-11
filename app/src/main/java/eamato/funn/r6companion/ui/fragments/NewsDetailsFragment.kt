@@ -44,6 +44,12 @@ class NewsDetailsFragment : BaseInnerToolbarFragment() {
         fragmentNewsDetailsBinding?.clpbNewsImage?.hide()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        fragmentNewsDetailsBinding = null
+    }
+
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }

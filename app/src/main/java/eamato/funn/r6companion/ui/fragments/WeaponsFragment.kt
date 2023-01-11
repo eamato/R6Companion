@@ -20,6 +20,7 @@ class WeaponsFragment : BaseCompanionFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentWeaponsBinding = FragmentWeaponsBinding.inflate(inflater, container, false)
+
         return fragmentWeaponsBinding?.root
     }
 
@@ -28,16 +29,18 @@ class WeaponsFragment : BaseCompanionFragment() {
     }
 
     override fun setLiveDataObservers() {
-        mainViewModel.observableFirebaseRemoteConfig.observe(this, {
+        mainViewModel.observableFirebaseRemoteConfig.observe(this) {
             it?.let { nonNullFirebaseRemoteConfig ->
                 nonNullFirebaseRemoteConfig.getString(COMING_SOON_KEY)
-                    .getFirebaseRemoteConfigEntity(ComingSoon::class.java)?.let { nonNullComingSoon ->
+                    .getFirebaseRemoteConfigEntity(ComingSoon::class.java)
+                    ?.let { nonNullComingSoon ->
                         context?.let { nonNullContext ->
-                            fragmentWeaponsBinding?.tvComingSoonPlaceholder?.text = nonNullComingSoon.getText(nonNullContext)
+                            fragmentWeaponsBinding?.tvComingSoonPlaceholder?.text =
+                                nonNullComingSoon.getText(nonNullContext)
                         }
                     }
             }
-        })
+        }
     }
 
     override fun onLiveDataObserversSet() {
@@ -51,5 +54,4 @@ class WeaponsFragment : BaseCompanionFragment() {
     override fun getFragmentsIcon(): Int {
         return R.drawable.ic_weapons_24dp
     }
-
 }

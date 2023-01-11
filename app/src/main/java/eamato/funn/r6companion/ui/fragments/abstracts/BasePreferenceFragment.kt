@@ -13,7 +13,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(), ILogScreenVi
 
     protected val mainViewModel: MainViewModel by lazy {
         activity?.let { nonNullActivity ->
-            ViewModelProvider(nonNullActivity).get(MainViewModel::class.java)
+            ViewModelProvider(nonNullActivity)[MainViewModel::class.java]
         } ?: throw Exception("Activity is null")
     }
 

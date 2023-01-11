@@ -29,6 +29,8 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
         const val TAG = "pack_opening_fragment"
     }
 
+    private var canDraw = false
+
     private var fragmentPacketOpeningBinding: FragmentPacketOpeningBinding? = null
 
     private val compositeDisposable = CompositeDisposable()
@@ -51,7 +53,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     private val rouletteResultPacketOpeningCommonViewModel: RouletteResultPacketOpeningCommonViewModel by lazy {
         requireParentFragment().run {
-            ViewModelProvider(this).get(RouletteResultPacketOpeningCommonViewModel::class.java)
+            ViewModelProvider(this)[RouletteResultPacketOpeningCommonViewModel::class.java]
         }
     }
 
@@ -59,7 +61,14 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentPacketOpeningBinding = FragmentPacketOpeningBinding.inflate(inflater, container, false)
+
         return fragmentPacketOpeningBinding?.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        fragmentPacketOpeningBinding = null
     }
 
     override fun onStop() {
@@ -89,6 +98,8 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         compositeDisposable.clear()
+
+        canDraw = false
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
@@ -99,7 +110,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap { player2 ->
-                player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this, {
+                player2.middlePlayRoadPlayer.playRoad.playbackStatus.observe(this) {
                     when (it) {
                         PlaybackStatus.PLAYING -> {
                             shouldDispatchTouchEvent = false
@@ -112,14 +123,18 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
                             shouldDispatchTouchEvent = true
                             player2.topPlayRoadPlayer.isFrameVisible.set(true)
 
-                            fragmentPacketOpeningBinding?.svCanvas?.startAnimation(idlePacketAnimation)
+                            fragmentPacketOpeningBinding?.svCanvas?.startAnimation(
+                                idlePacketAnimation
+                            )
                         }
                         PlaybackStatus.STOPPED -> {
                             player2.middlePlayRoadPlayer.playbackMode.set(PlaybackMode.STRAIGHT)
                             shouldDispatchTouchEvent = true
                             player2.topPlayRoadPlayer.isFrameVisible.set(true)
 
-                            fragmentPacketOpeningBinding?.svCanvas?.startAnimation(idlePacketAnimation)
+                            fragmentPacketOpeningBinding?.svCanvas?.startAnimation(
+                                idlePacketAnimation
+                            )
                         }
                         PlaybackStatus.PLAYINGFBF -> {
                             shouldDispatchTouchEvent = true
@@ -131,7 +146,7 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
 
                         }
                     }
-                })
+                }
 
                 fragmentPacketOpeningBinding?.pbWaiting?.hide()
 
@@ -161,6 +176,8 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
                 it.printStackTrace()
             })
         compositeDisposable.add(f)
+
+        canDraw = true
     }
 
     override fun logScreenView() {
@@ -512,9 +529,13 @@ class PacketOpeningFragment : BaseFragment(), SurfaceHolder.Callback {
                         null
                     )
 
-                surfaceHolder.unlockCanvasAndPost(nonNullCanvas)
+                try {
+                    if (canDraw)
+                        surfaceHolder.unlockCanvasAndPost(nonNullCanvas)
+                } catch (e: Exception) {
+
+                }
             }
         }
     }
-
 }
