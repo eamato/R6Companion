@@ -15,6 +15,7 @@ plugins {
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties().apply { load(FileInputStream(keystorePropertiesFile)) }
 
+@Suppress("UnstableApiUsage")
 android {
     compileSdk = 33
     buildToolsVersion = "31.0.0"
@@ -24,8 +25,8 @@ android {
         minSdk = 21
         targetSdk = 33
         multiDexEnabled = true
-        versionCode = 17
-        versionName = "17"
+        versionCode = 19
+        versionName = "19"
         testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -46,6 +47,7 @@ android {
         }
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
@@ -105,7 +107,7 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21") // error?
 
     implementation("com.google.android.play:core:1.10.3")
     implementation("com.google.android.material:material:1.7.0")
@@ -117,8 +119,8 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
-    implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.profileinstaller:profileinstaller:1.2.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.profileinstaller:profileinstaller:1.3.0")
 
     /* Lifecycle dependencies */
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -148,13 +150,13 @@ dependencies {
 
     /* Firebase dependencies */
     implementation("com.google.firebase:firebase-core:21.1.1")
-    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
-    implementation("com.google.firebase:firebase-analytics:21.2.0")
-    implementation("com.google.firebase:firebase-config-ktx:21.2.0")
-    implementation("com.google.firebase:firebase-messaging:23.1.1")
-    implementation("com.google.firebase:firebase-perf:20.3.0")
-    implementation("com.google.firebase:firebase-inappmessaging-display:20.2.0")
-    implementation("com.google.firebase:firebase-ads:21.4.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.3.6")
+    implementation("com.google.firebase:firebase-analytics:21.2.2")
+    implementation("com.google.firebase:firebase-config-ktx:21.3.0")
+    implementation("com.google.firebase:firebase-messaging:23.1.2")
+    implementation("com.google.firebase:firebase-perf:20.3.1")
+    implementation("com.google.firebase:firebase-inappmessaging-display:20.3.1")
+    implementation("com.google.firebase:firebase-ads:22.0.0")
     implementation("com.google.firebase:firebase-dynamic-links-ktx:21.1.0")
 
     implementation("com.github.beksomega:loopinglayout:0.4.1")

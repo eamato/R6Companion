@@ -10,6 +10,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import eamato.funn.r6companion.R
+import eamato.funn.r6companion.api.requests.INotificationRequests
 import eamato.funn.r6companion.entities.RouletteOperator
 import eamato.funn.r6companion.firebase.things.COMING_SOON_KEY
 import kotlinx.coroutines.*
@@ -45,12 +46,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     var applyIlluminationSensorValue = true
 
+    private val notificationRequests: INotificationRequests by lazy {
+        INotificationRequests.getNotificationRequests()
+    }
+
     init {
         initializeApp()
     }
 
     fun updateIlluminationLevel(currentIlluminationLevel: Float?) {
         pIlluminationLevel.value = currentIlluminationLevel
+    }
+
+    fun registerNotificationToken(notificationToken: String) {
+        viewModelScope.launch {
+            registerNotificationTokenRequest(notificationToken)
+        }
     }
 
     private fun initializeApp() {
@@ -78,14 +89,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return@withContext _fetchRemoteConfig()
     }
 
-    private suspend fun _fetchRemoteConfig(): FirebaseRemoteConfig = suspendCancellableCoroutine { continuation ->
-        firebaseRemoteConfig.fetchAndActivate()
-            .addOnCompleteListener {
-                continuation.resume(firebaseRemoteConfig)
-            }
-    }
+    private suspend fun _fetchRemoteConfig(): FirebaseRemoteConfig =
+        suspendCancellableCoroutine { continuation ->
+            firebaseRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener {
+                    continuation.resume(firebaseRemoteConfig)
+                }
+        }
 
     private suspend fun initializeMobilAdsSDK() = withContext(Dispatchers.IO) {
         return@withContext MobileAds.initialize(getApplication())
     }
+
+    private suspend fun registerNotificationTokenRequest(notificationToken: String) =
+        withContext(Dispatchers.IO) {
+            try {
+                notificationRequests.registerNotificationToken(notificationToken)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 }

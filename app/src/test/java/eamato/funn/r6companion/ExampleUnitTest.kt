@@ -735,4 +735,33 @@ class ExampleUnitTest {
         }
     }
 
+    data class User(val userName: String, val rating: Int)
+
+    private fun createListOfUsers(): List<User> = List(500) { index ->
+        User("Username = ${index.inc()}", Random().nextInt(index + index + 40))
+    }
+
+    private fun getRandomWithWeight(users: List<User>): User? {
+        val ratingSum = users.sumOf { it.rating }
+        val randomOffset = (1..ratingSum).random()
+        var offset = 0
+
+        users.forEach { user ->
+            offset += user.rating
+            if (randomOffset <= offset) {
+                return user
+            }
+        }
+
+        return null
+    }
+
+    @Test
+    fun random() {
+        val users = createListOfUsers()
+        println(users.sortedBy { it.rating }.joinToString(separator = "\n"))
+        for (i in 1..50) {
+            getRandomWithWeight(users)?.run { println(message = "RANDOM $this") }
+        }
+    }
 }

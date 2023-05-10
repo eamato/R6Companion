@@ -55,6 +55,8 @@
     <style name="AppTheme.CheckboxStyle" parent="Base.Theme.AppCompat">
         <item name="android:textColorSecondary">@color/colorWhite</item>
         <item name="colorAccent">@color/colorWhite</item>
+        <item name="buttonTint">@color/colorWhite</item>
+        <item name="android:buttonTint">@color/colorWhite</item>
     </style>
 
     <style name="MyDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">

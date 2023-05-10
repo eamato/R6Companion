@@ -1,5 +1,6 @@
 package eamato.funn.r6companion.utils
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
@@ -418,5 +419,16 @@ fun ArrayList<R6StatsOperators.R6StatsOperatorsItem>.toCompositeOperators(operat
             it.armorRating, it.id, it.name, it.role, it.speedRating, innerOperator?.imgLink,
             it.ctu?.name
         )
+    }
+}
+
+@SuppressLint("DiscouragedApi")
+fun Context.getStringResourceByName(name: String): String {
+    return try {
+        val resId = resources.getIdentifier(name, "string", packageName)
+        getString(resId)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        name
     }
 }

@@ -87,20 +87,20 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
         fragmentRouletteBinding?.btnRoll?.run {
             val canRoll = rouletteViewModel?.canRoll?.value ?: false
 
-            fragmentRouletteBinding?.btnRoll?.isEnabled = canRoll
+            isEnabled = canRoll
 
-            if (canRoll) {
+            text = if (canRoll) {
                 val allOperators = rouletteViewModel?.visibleRouletteOperators?.value?.size ?: 0
                 var selectedOperators = 0
                 rouletteViewModel?.visibleRouletteOperators?.value?.forEach { operator ->
                     if (operator.isSelected)
                         selectedOperators++
                 }
-                fragmentRouletteBinding?.btnRoll?.text = getString(
+                getString(
                     R.string.roll_counted_pattern, selectedOperators, allOperators
                 )
             } else {
-                fragmentRouletteBinding?.btnRoll?.text = getString(R.string.roll)
+                getString(R.string.roll)
             }
 
             setOnClickListener {
@@ -296,7 +296,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     override fun setLiveDataObservers() {
-        rouletteViewModel?.canRoll?.observe(this, {
+        rouletteViewModel?.canRoll?.observe(this) {
             fragmentRouletteBinding?.btnRoll?.isEnabled = it
 
             if (it) {
@@ -312,7 +312,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
             } else {
                 fragmentRouletteBinding?.btnRoll?.text = getString(R.string.roll)
             }
-        })
+        }
 
         rouletteViewModel?.isRequestActive?.observe(this, {
             if (it)

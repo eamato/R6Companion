@@ -133,10 +133,12 @@ class MainActivity : BaseActivity() {
 
             val token = it.result
 
-            if (token == null)
+            if (token == null) {
                 Log.w("FirebaseInstance", "Token is null")
-            else
+            } else {
                 Log.d("FirebaseInstance", token)
+                mainViewModel.registerNotificationToken(token)
+            }
         }
 
         checkLink(intent)
@@ -152,7 +154,11 @@ class MainActivity : BaseActivity() {
         super.onResume()
 
         sensorManager?.getDefaultSensor(Sensor.TYPE_LIGHT)?.let { nonNullSensor ->
-            sensorManager?.registerListener(sensorEventListener, nonNullSensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(
+                sensorEventListener,
+                nonNullSensor,
+                SensorManager.SENSOR_DELAY_UI
+            )
         }
     }
 
