@@ -1,6 +1,56 @@
 {
   "operators": [
     {
+      "id": 73,
+      "img_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/336St2UBdDDhJnI1Nbcqo9/845b0822369af2bb64e2ff7f2e7292f9/r6s-operators-list-fenrir.png",
+      "name": "Fenrir",
+      "operator_icon_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/4vtvBhY56S2slW3y0eKsMp/6a0f41807549ad1aa503112d4ad05a52/r6s-operators-badge-fenrir.png",
+      "armor_rating": 2,
+      "speed_rating": 2,
+      "role": "DEFENDER",
+      "wide_img_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/1rWrOkHjxowW37i5UJKcqt/a60e59c16a9b8a9583b9578853a6b15b/r6s-operator-fenrir.png",
+      "squad": {
+        "name": "REDHAMMER",
+        "icon_link": null
+      },
+      "equipment": {
+        "primaries": [
+          {
+            "name": "MP7",
+            "icon_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/3a4dgTWGdiJqALhtRp4pKy/f2568d3de3cfe7e4b53179e8653cd2a2/MP7.png",
+            "type_text": "SUBMACHINE GUN"
+          },
+          {
+            "name": "SASG-12",
+            "icon_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/2Q6mL4CbifmIgifV2yV3Hi/2bb2b323f055b03a2c1ba516c262c24e/SASG-12.png",
+            "type_text": "SHOTGUN"
+          }
+        ],
+        "secondaries": [
+          {
+            "name": "BAILIFF 410",
+            "icon_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/N8FLbo4fsNyBe8msKgRhT/8f403dc0b58087bcafab786dd95ba33f/Bailiff_410.png",
+            "type_text": "HANDGUN"
+          }
+        ],
+        "devices": [
+          {
+            "name": "BARBED WIRE",
+            "icon_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/7igaibxuCcSpWDkZensEJS/6d30514b70a4c8b535bb1c113f9cfce0/barbed-wire__1_.png"
+          },
+          {
+            "name": "BULLETPROOF CAMERA",
+            "icon_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/gZuOXvuTu2i8hQX0B6auy/259f379a6283bae618443d722a896f1a/Bulletproof_camera.png"
+          }
+        ],
+        "skill": {
+          "name": "F-NATT DREAD MINE",
+          "icon_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/5JTPi6uZt58wD0GVQJJf2c/6a0e730e2e6a4a1d1d3c878593df07f3/r6s-operator-ability-fenrir.png",
+          "description": "The F-NATT DREAD MINE is a throwable device that sticks to walls, so it can be hidden in places where fear can fester. Fenrir comes equipped with 5 mines and can activate 3 at a time anywhere on the map."
+        }
+      }
+    },
+    {
       "id": 72,
       "img_link": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/7piw6czbaAsv6NnYXtJZay/02683e035ab9481bbe8cbf669113c84d/r6s-operators-list-brava.png",
       "name": "Brava",
