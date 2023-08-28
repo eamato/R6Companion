@@ -47,6 +47,14 @@
           }
         },
         {
+          "client_id": "164570248480-v41l6egsi07pp0segb83uo2u09ffl10r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eamato.funn.r6companion",
+            "certificate_hash": "1c5a0a6d948e87fdd85f92822401ef9caa3a1a42"
+          }
+        },
+        {
           "client_id": "164570248480-2uud4bn2ltnl5ll4rggrq7rqodf7blq5.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,33 +1,28 @@
 package eamato.funn.r6companion.ui.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.forEach
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.initialization.InitializationStatus
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
@@ -36,27 +31,27 @@ import eamato.funn.r6companion.R
 import eamato.funn.r6companion.databinding.ActivityMainBinding
 import eamato.funn.r6companion.entities.dto.RouletteFragmentArgument
 import eamato.funn.r6companion.ui.activities.abstracts.BaseActivity
-import eamato.funn.r6companion.ui.fragments.HomeFragmentDirections
 import eamato.funn.r6companion.ui.fragments.RouletteFragmentArgs
 import eamato.funn.r6companion.utils.*
 import eamato.funn.r6companion.utils.notifications.R6NotificationManager
 import eamato.funn.r6companion.viewmodels.MainViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity() {
 
+    private val requestPermissionLauncher: ActivityResultLauncher<String> by lazy {
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) {
+                createNotificationChannel()
+                registerNotificationToken()
+            }
+        }
+    }
+
     private val mainViewModel: MainViewModel by viewModels()
 
-    private lateinit var binding: ActivityMainBinding
+    private var binding: ActivityMainBinding? = null
 
-    private val navigationController: NavController by lazy {
-        (supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment).navController
-    }
-
-    private val sensorManager: SensorManager? by lazy {
-        ContextCompat.getSystemService(this, SensorManager::class.java)
-    }
+    private var sensorManager: SensorManager? = null
 
     private val sensorEventListener = object : SensorEventListener {
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -72,19 +67,25 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (sensorManager == null)
+            sensorManager = ContextCompat.getSystemService(this, SensorManager::class.java)
+
         installSplashScreen().apply {
             setKeepOnScreenCondition { mainViewModel.isLoadingSplash.value }
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        navigationController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bnv.menu.forEach {
-                if (destination.matchMenuDestination(it.itemId))
-                    it.isChecked = true
-            }
+        binding?.run {
+            setContentView(root)
+            (supportFragmentManager.findFragmentById(R.id.fragment) as? NavHostFragment)?.navController?.run { bnv.setupWithNavController(this) }
         }
+
+//        navigationController.addOnDestinationChangedListener { _, destination, _ ->
+//            binding.bnv.menu.forEach {
+//                if (destination.matchMenuDestination(it.itemId))
+//                    it.isChecked = true
+//            }
+//        }
 
 //        binding.bnv.setOnItemSelectedListener { item ->
 //            if (navigationController.currentDestination?.id == item.itemId)
@@ -92,8 +93,6 @@ class MainActivity : BaseActivity() {
 //            item.onNavDestinationSelected(navigationController)
 //            return@setOnItemSelectedListener true
 //        }
-
-        binding.bnv.setupWithNavController(navigationController)
 
         setParentToolbar()
 
@@ -119,26 +118,20 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        R6NotificationManager.createNotificationChannel(
-            context = this,
-            notificationChannelName = getString(R.string.notification_channel_name),
-            notificationChannelDescription = getString(R.string.notification_channel_description)
-        )
-
-        FirebaseMessaging.getInstance().token.addOnCompleteListener {
-            if (!it.isSuccessful) {
-                Log.w("FirebaseInstance", "getInstanceId failed", it.exception)
-                return@addOnCompleteListener
-            }
-
-            val token = it.result
-
-            if (token == null) {
-                Log.w("FirebaseInstance", "Token is null")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS,
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             } else {
-                Log.d("FirebaseInstance", token)
-                mainViewModel.registerNotificationToken(token)
+                createNotificationChannel()
+                registerNotificationToken()
             }
+        } else {
+            createNotificationChannel()
+            registerNotificationToken()
         }
 
         checkLink(intent)
@@ -146,8 +139,13 @@ class MainActivity : BaseActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
 
+        sensorManager = null
+        binding = null
     }
 
     override fun onResume() {
@@ -167,9 +165,13 @@ class MainActivity : BaseActivity() {
         sensorManager?.unregisterListener(sensorEventListener)
     }
 
-    fun setParentToolbar(parentToolbar: Toolbar = binding.toolbar) {
+    fun setParentToolbar(parentToolbar: Toolbar? = binding?.toolbar) {
         setSupportActionBar(parentToolbar)
-        NavigationUI.setupWithNavController(binding.toolbar, navigationController)
+        binding?.toolbar?.run toolbar@ {
+            (supportFragmentManager.findFragmentById(R.id.fragment) as? NavHostFragment)?.navController?.run controller@ {
+                NavigationUI.setupWithNavController(this@toolbar, this@controller)
+            }
+        }
         supportActionBar?.show()
     }
 
@@ -192,7 +194,7 @@ class MainActivity : BaseActivity() {
                                 .build()
                                 .toBundle()
 
-                            navigationController.navigate(
+                            (supportFragmentManager.findFragmentById(R.id.fragment) as? NavHostFragment)?.navController?.navigate(
                                 R.id.rouletteFragment,
                                 bundle,
                                 navOptions {
@@ -211,5 +213,31 @@ class MainActivity : BaseActivity() {
             .addOnFailureListener {
                 Log.d("DynamicLinks", "Error")
             }
+    }
+
+    private fun createNotificationChannel() {
+        R6NotificationManager.createNotificationChannel(
+            context = this,
+            notificationChannelName = getString(R.string.notification_channel_name),
+            notificationChannelDescription = getString(R.string.notification_channel_description)
+        )
+    }
+
+    private fun registerNotificationToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FirebaseInstance", "getInstanceId failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            val token = task.result
+
+            if (token == null) {
+                Log.w("FirebaseInstance", "Token is null")
+            } else {
+                Log.d("FirebaseInstance", token)
+                mainViewModel.registerNotificationToken(token)
+            }
+        }
     }
 }

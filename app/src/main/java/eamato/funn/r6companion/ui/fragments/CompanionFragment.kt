@@ -16,10 +16,6 @@ class CompanionFragment : BaseFragment() {
 
     private var fragmentCompanionBinding: FragmentCompanionBinding? = null
 
-    private val companionAdapter: CompanionAdapter by lazy {
-        CompanionAdapter(this)
-    }
-
     private var tabLayoutMediator: TabLayoutMediator? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -29,6 +25,7 @@ class CompanionFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val companionAdapter = CompanionAdapter(this)
         if (tabLayoutMediator == null) {
             val tabs = fragmentCompanionBinding?.tlCompanionTabs
             val screens = fragmentCompanionBinding?.vpCompanionScreens

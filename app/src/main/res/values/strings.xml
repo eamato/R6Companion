@@ -99,4 +99,15 @@
     <string name="in_app_update_downloaded">Update downloaded</string>
     <string name="in_app_update_installed">Update installed</string>
     <string name="in_app_update_failed">Update failed</string>
+
+    <string name="operator_details_organization" translatable="false">Organization</string>
+    <string name="operator_details_role" translatable="false">Role</string>
+    <string name="operator_details_stats" translatable="false">Stats</string>
+    <string name="operator_details_speed" translatable="false">Speed</string>
+    <string name="operator_details_armor" translatable="false">Armor</string>
+    <string name="operator_details_loadout" translatable="false">Loadout</string>
+    <string name="operator_details_primaries" translatable="false">Primaries</string>
+    <string name="operator_details_secondaries" translatable="false">Secondaries</string>
+    <string name="operator_details_gadgets" translatable="false">Gadgets</string>
+    <string name="operator_details_ability" translatable="false">Ability</string>
 </resources>

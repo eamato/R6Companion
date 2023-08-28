@@ -116,7 +116,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onResume() {
         super.onResume()
 
-        if (rouletteViewModel?.visibleRouletteOperators?.value?.isNullOrEmpty() == true) {
+        if (rouletteViewModel?.visibleRouletteOperators?.value?.isEmpty() == true) {
             context?.let { nonNullContext ->
                 rouletteViewModel?.getAllOperators(
                     OperatorsRepository(nonNullContext, FirebaseRemoteConfigDataFetcher(mainViewModel)),
@@ -148,7 +148,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
             val searchView = nonNullSearch.actionView as SearchView
 
             val sq = searchQuery
-            if (sq != null && sq.isNotEmpty()) {
+            if (!sq.isNullOrEmpty()) {
                 searchView.clearFocus()
                 searchView.isIconified = false
                 nonNullSearch.expandActionView()
@@ -256,6 +256,7 @@ class RouletteFragment : BaseFragment(), SearchView.OnQueryTextListener {
             }
             R.id.restore_saved -> {
                 context?.let { nonNullContext ->
+                    rouletteViewModel?.unSelectAll()
                     rouletteViewModel?.selectPreviouslySelectedOperators(
                         PreferenceManager.getDefaultSharedPreferences(nonNullContext)
                     )

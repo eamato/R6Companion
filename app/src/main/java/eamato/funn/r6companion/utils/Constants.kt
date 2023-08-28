@@ -96,3 +96,10 @@ val NEWS_CATEGORIES = listOf(
     R.string.news_category_patch_notes to NEWS_CATEGORIES_FILTER_PARAM_PATCH_NOTES_VALUE,
     R.string.news_category_store to NEWS_CATEGORIES_FILTER_PARAM_STORE_VALUE
 )
+
+val NEGATIVE = floatArrayOf(
+    -1.0f, 0f, 0f, 0f, 255f,  // red
+    0f, -1.0f, 0f, 0f, 255f,  // green
+    0f, 0f, -1.0f, 0f, 255f,  // blue
+    0f, 0f, 0f, 1.0f, 0f // alpha
+)

@@ -1,7 +1,6 @@
 package eamato.funn.r6companion.entities
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.RawValue
 
 data class Updates(
     @SerializedName("categoriesFilter")

@@ -95,6 +95,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 .addOnCompleteListener {
                     continuation.resume(firebaseRemoteConfig)
                 }
+                .addOnFailureListener {
+                    continuation.cancel(it)
+                }
         }
 
     private suspend fun initializeMobilAdsSDK() = withContext(Dispatchers.IO) {

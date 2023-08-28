@@ -44,4 +44,6 @@
     <color name="colorNewsCategorySelected">#36A9E0</color>
     <color name="colorNewsCategory">#797A7A</color>
     <color name="colorNewsDisabled">#979EA1</color>
+
+    <color name="colorOperatorDetailsBackgroundColor">#B8BFBB</color>
 </resources>

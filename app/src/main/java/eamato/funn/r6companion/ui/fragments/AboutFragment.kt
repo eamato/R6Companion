@@ -128,26 +128,29 @@ class AboutFragment : BaseFragment() {
     }
 
     override fun setLiveDataObservers() {
-        mainViewModel.observableFirebaseRemoteConfig.observe(this, {
+        mainViewModel.observableFirebaseRemoteConfig.observe(this) {
             it?.let { nonNullFirebaseRemoteConfig ->
                 nonNullFirebaseRemoteConfig.getString(OUR_MISSION_KEY)
-                    .getFirebaseRemoteConfigEntity(OurMission::class.java)?.let { nonNullOurMission ->
+                    .getFirebaseRemoteConfigEntity(OurMission::class.java)
+                    ?.let { nonNullOurMission ->
                         context?.let { nonNullContext ->
-                            fragmentAboutBinding?.tvOurMission?.text = nonNullOurMission.getText(nonNullContext)
+                            fragmentAboutBinding?.tvOurMission?.text =
+                                nonNullOurMission.getText(nonNullContext)
                         }
                     }
 
                 nonNullFirebaseRemoteConfig.getString(OUR_TEAM)
                     .getFirebaseRemoteConfigEntity(OurTeam::class.java)?.let { nonNullOurTeam ->
-                        val positions = if (context?.getString(R.string.lang) == RUSSIAN_LANGUAGE_CODE)
-                            nonNullOurTeam.ru?.positions?.filterNotNull()
-                        else
-                            nonNullOurTeam.en?.positions?.filterNotNull()
+                        val positions =
+                            if (context?.getString(R.string.lang) == RUSSIAN_LANGUAGE_CODE)
+                                nonNullOurTeam.ru?.positions?.filterNotNull()
+                            else
+                                nonNullOurTeam.en?.positions?.filterNotNull()
 
                         ourTeamAdapter.submitList(positions)
                     }
             }
-        })
+        }
     }
 
     override fun onLiveDataObserversSet() {

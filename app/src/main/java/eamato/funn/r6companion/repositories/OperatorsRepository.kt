@@ -2,6 +2,8 @@ package eamato.funn.r6companion.repositories
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.InstanceCreator
 import eamato.funn.r6companion.entities.Operators
 import eamato.funn.r6companion.utils.IRemoteDataFetcher
 import eamato.funn.r6companion.utils.IRepository
@@ -13,6 +15,8 @@ import kotlinx.coroutines.withTimeout
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
+import java.lang.reflect.Type
+
 
 class OperatorsRepository(
     private val context: Context?,
@@ -38,7 +42,10 @@ class OperatorsRepository(
         return parseResult(result)
     }
 
-    private suspend fun getRemoteOperators(context: Context, remoteDataFetcher: IRemoteDataFetcher): String? = withContext(Dispatchers.IO) {
+    private suspend fun getRemoteOperators(
+        context: Context,
+        remoteDataFetcher: IRemoteDataFetcher
+    ): String? = withContext(Dispatchers.IO) {
         try {
             var fetchedOperators = withTimeout(5 * 1_000L) { remoteDataFetcher.fetch() }
             if (fetchedOperators != null)
@@ -61,7 +68,8 @@ class OperatorsRepository(
                 if (isNewFile)
                     return@withContext null
                 else
-                    return@withContext operatorsFile.readText().takeIf { it.isNotEmpty() && it.isNotBlank() }
+                    return@withContext operatorsFile.readText()
+                        .takeIf { it.isNotEmpty() && it.isNotBlank() }
             } catch (e: Exception) {
                 return@withContext null
             }

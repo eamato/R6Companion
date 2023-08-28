@@ -139,6 +139,7 @@ fun String.setDarkMode(): Boolean {
                 false
             }
         }
+
         PREFERENCE_DARK_MODE_VALUE_ON -> {
             if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -147,6 +148,7 @@ fun String.setDarkMode(): Boolean {
                 false
             }
         }
+
         PREFERENCE_DARK_MODE_VALUE_ADAPTIVE -> {
             if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_UNSPECIFIED) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_UNSPECIFIED)
@@ -155,6 +157,7 @@ fun String.setDarkMode(): Boolean {
                 false
             }
         }
+
         PREFERENCE_DARK_MODE_VALUE_SYSTEM_DEFAULT -> {
             if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -163,6 +166,7 @@ fun String.setDarkMode(): Boolean {
                 false
             }
         }
+
         PREFERENCE_DARK_MODE_VALUE_SET_BY_BATTERY_SAVER -> {
             if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
@@ -171,6 +175,7 @@ fun String.setDarkMode(): Boolean {
                 false
             }
         }
+
         else -> {
             false
         }
@@ -179,6 +184,54 @@ fun String.setDarkMode(): Boolean {
 
 fun List<Operators.Operator>.toRouletteOperators(): List<RouletteOperator> {
     return this.map(::RouletteOperator)
+}
+
+fun List<Operators.Operator>?.toCompanionOperator(): List<CompanionOperator> {
+    if (this == null)
+        return emptyList()
+
+    return this.map { operator ->
+        CompanionOperator(
+            id = operator.id,
+            imgLink = operator.imgLink,
+            wideImgLink = operator.wideImgLink,
+            name = operator.name,
+            operatorIconLink = operator.operatorIconLink,
+            armorRating = operator.armorRating,
+            equipment = CompanionOperator.Equipment(
+                devices = operator.equipment?.devices?.map { device ->
+                    CompanionOperator.Equipment.Device(
+                        iconLink = device?.iconLink,
+                        name = device?.name
+                    )
+                },
+                primaries = operator.equipment?.primaries?.map { primary ->
+                    CompanionOperator.Equipment.Primary(
+                        iconLink = primary?.iconLink,
+                        name = primary?.name,
+                        typeText = primary?.typeText
+                    )
+                },
+                secondaries = operator.equipment?.secondaries?.map { secondary ->
+                    CompanionOperator.Equipment.Secondary(
+                        iconLink = secondary?.iconLink,
+                        name = secondary?.name,
+                        typeText = secondary?.typeText
+                    )
+                },
+                skill = CompanionOperator.Equipment.Skill(
+                    iconLink = operator.equipment?.skill?.iconLink,
+                    name = operator.equipment?.skill?.name
+                )
+            ),
+            speedRating = operator.speedRating,
+            squad = CompanionOperator.Squad(
+                iconLink = operator.squad?.iconLink,
+                name = operator.squad?.name
+            ),
+            role = operator.role
+        )
+    }
 }
 
 fun List<RouletteOperator>.toParcelableList(): ParcelableListOfRouletteOperators {
@@ -202,7 +255,7 @@ fun Context?.isCurrentlyConnectedNetworkWIFI(): Boolean {
         return false
     return ContextCompat.getSystemService(this, ConnectivityManager::class.java)?.let {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-             it.isCurrentConnectedNetworkWIFI()
+            it.isCurrentConnectedNetworkWIFI()
         else
             it.isCurrentConnectedNetworkWIFILegacy()
     } ?: false
@@ -225,14 +278,21 @@ fun ConnectivityManager.isCurrentConnectedNetworkWIFI(): Boolean {
 fun ConnectivityManager.isCurrentConnectedToInternet(): Boolean {
     val network = activeNetwork
     val networkCapabilities = getNetworkCapabilities(network) ?: return false
-    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || networkCapabilities.hasTransport(
+        NetworkCapabilities.TRANSPORT_ETHERNET
+    )
 }
 
 @TargetApi(Build.VERSION_CODES.O)
 fun Window.createScreenshot(displayMetrics: DisplayMetrics): Single<Bitmap> {
     return Single.create {
-        val bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888)
-        PixelCopy.request(this, bitmap,
+        val bitmap = Bitmap.createBitmap(
+            displayMetrics.widthPixels,
+            displayMetrics.heightPixels,
+            Bitmap.Config.ARGB_8888
+        )
+        PixelCopy.request(
+            this, bitmap,
             { copyResult ->
                 if (copyResult == PixelCopy.SUCCESS)
                     it.onSuccess(bitmap)
@@ -266,6 +326,10 @@ fun NavDestination.matchMenuDestination(menuItemId: Int): Boolean {
     while (currentDestination != null && currentDestination.id != menuItemId && currentDestination.parent != null) {
         currentDestination = currentDestination.parent
     }
+//    return this.hierarchy.any { it.id == menuItemId }
+//    if (currentDestination?.id == parent?.id)
+//        return true
+
     return currentDestination?.id == menuItemId
 }
 
@@ -273,6 +337,7 @@ fun <T> String.getFirebaseRemoteConfigEntity(entityClass: Class<T>): T? {
     return try {
         Gson().fromJson(this, entityClass)
     } catch (e: Exception) {
+        e.printStackTrace()
         null
     }
 }
@@ -310,7 +375,10 @@ fun List<Updates.Item?>.toNewsMixedWithAds(pref: SharedPreferences): List<NewsDa
             .takeIf { it.size >= AD_INSERTION_COUNT }
             ?.toMutableList()
             ?.also { mutableList ->
-                mutableList.insertItemAtEveryStep(NewsDataMixedWithAds(null, true), AD_INSERTION_COUNT)
+                mutableList.insertItemAtEveryStep(
+                    NewsDataMixedWithAds(null, true),
+                    AD_INSERTION_COUNT
+                )
             }
             ?.filterNotNull()
             ?.toImmutableList()
@@ -380,31 +448,37 @@ fun String.contentToView(): ContentView? {
                 HeaderTextView(nonNullValue, R.style.AppTheme_ContentHeader2Style)
             }
         }
+
         text.startsWith("#") -> {
             header1.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 HeaderTextView(nonNullValue)
             }
         }
+
         text.startsWith("![") || this.startsWith("[![") -> {
             imagePrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentImageView("http:$nonNullValue")
             }
         }
+
         text.startsWith("__") -> {
             captionPrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentTextView(nonNullValue, R.style.AppTheme_ContentCaptionStyle)
             }
         }
+
         text.startsWith("*") -> {
             italicPrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentTextView(nonNullValue, R.style.AppTheme_ContentItalicStyle)
             }
         }
+
         text.startsWith("[video]") -> {
             videoPrefix.find(text)?.groups?.get(1)?.value?.let { nonNullValue ->
                 ContentVideoView(nonNullValue)
             }
         }
+
         else -> ContentTextView(text)
     }
 }
@@ -412,14 +486,14 @@ fun String.contentToView(): ContentView? {
 fun ArrayList<R6StatsOperators.R6StatsOperatorsItem>.toCompositeOperators(operators: Operators): List<CompositeOperator> {
     return filter { it.role != CompositeOperator.ROLE_RECRUIT }
         .map {
-        val innerOperator = operators.operators?.filterNotNull()?.find { innerOperator ->
-            innerOperator.id == it.id
+            val innerOperator = operators.operators?.filterNotNull()?.find { innerOperator ->
+                innerOperator.id == it.id
+            }
+            CompositeOperator(
+                it.armorRating, it.id, it.name, it.role, it.speedRating, innerOperator?.imgLink,
+                it.ctu?.name
+            )
         }
-        CompositeOperator(
-            it.armorRating, it.id, it.name, it.role, it.speedRating, innerOperator?.imgLink,
-            it.ctu?.name
-        )
-    }
 }
 
 @SuppressLint("DiscouragedApi")

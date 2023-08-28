@@ -25,9 +25,9 @@ android {
         minSdk = 21
         targetSdk = 33
         multiDexEnabled = true
-        versionCode = 19
-        versionName = "19"
-        testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
+        versionCode = 22
+        versionName = "22"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -43,29 +43,41 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isDebuggable = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
         }
         create("alpha") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
         }
         create("beta") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
         }
-        create("benchmark") {
-            signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks += listOf("release")
-            isDebuggable = false
-        }
+//        create("benchmark") {
+//            signingConfig = signingConfigs.getByName("debug")
+//            matchingFallbacks += listOf("release")
+//            isDebuggable = false
+//        }
     }
 
     buildFeatures {
@@ -73,12 +85,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     namespace = "eamato.funn.r6companion"
@@ -107,59 +119,59 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21") // error?
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
 
     implementation("com.google.android.play:core:1.10.3")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("com.google.android.material:material:1.9.0")
 
     /* AndroidX dependencies */
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.profileinstaller:profileinstaller:1.3.0")
+    implementation("androidx.profileinstaller:profileinstaller:1.3.1")
 
     /* Lifecycle dependencies */
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
     /* GSON dependencies */
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     /* Glide dependencies */
-    implementation("com.github.bumptech.glide:annotations:4.12.0")
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    implementation("com.github.bumptech.glide:okhttp3-integration:4.10.0")
-    kapt("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("com.github.bumptech.glide:annotations:4.15.1")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
 
     /* Navigation dependencies */
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
 
     /* Rx dependencies */
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    implementation("io.reactivex.rxjava2:rxjava:2.2.12")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
 
     /* Retrofit dependencies */
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:2.6.2")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 
     /* Firebase dependencies */
     implementation("com.google.firebase:firebase-core:21.1.1")
-    implementation("com.google.firebase:firebase-crashlytics:18.3.6")
-    implementation("com.google.firebase:firebase-analytics:21.2.2")
-    implementation("com.google.firebase:firebase-config-ktx:21.3.0")
-    implementation("com.google.firebase:firebase-messaging:23.1.2")
-    implementation("com.google.firebase:firebase-perf:20.3.1")
-    implementation("com.google.firebase:firebase-inappmessaging-display:20.3.1")
-    implementation("com.google.firebase:firebase-ads:22.0.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.4.0")
+    implementation("com.google.firebase:firebase-analytics:21.3.0")
+    implementation("com.google.firebase:firebase-config-ktx:21.4.1")
+    implementation("com.google.firebase:firebase-messaging:23.2.0")
+    implementation("com.google.firebase:firebase-perf:20.4.0")
+    implementation("com.google.firebase:firebase-inappmessaging-display:20.3.2")
+    implementation("com.google.firebase:firebase-ads:22.2.0")
     implementation("com.google.firebase:firebase-dynamic-links-ktx:21.1.0")
 
-    implementation("com.github.beksomega:loopinglayout:0.4.1")
+    implementation("com.github.beksomega:loopinglayout:0.5.0")
 
     /* Test dependencies */
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -168,5 +180,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     /* Debug */
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 }

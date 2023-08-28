@@ -24,6 +24,12 @@ class WeaponsFragment : BaseCompanionFragment() {
         return fragmentWeaponsBinding?.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        fragmentWeaponsBinding = null
+    }
+
     override fun logScreenView() {
         super.logScreenView(this::class.java.simpleName, SCREEN_NAME)
     }

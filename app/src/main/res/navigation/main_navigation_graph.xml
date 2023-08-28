@@ -14,6 +14,8 @@
 
         <action
             android:id="@+id/action_homeFragment_to_newsDetailsFragment"
+            app:restoreState="true"
+            app:popUpToSaveState="true"
             app:destination="@id/newsDetailsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
@@ -30,6 +32,9 @@
 
         <action
             android:id="@+id/action_rouletteFragment_to_rouletteResultFragment"
+            app:restoreState="true"
+            app:launchSingleTop="true"
+            app:popUpToSaveState="true"
             app:destination="@id/rouletteResultFragment" />
 
         <argument
@@ -84,6 +89,23 @@
         <argument
             android:name="selected_news"
             app:argType="eamato.funn.r6companion.entities.dto.UpdateDTO" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/OperatorDetailsFragment"
+        android:name="eamato.funn.r6companion.ui.fragments.OperatorDetailsFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_operator_details">
+
+        <argument
+            android:name="operator"
+            app:argType="eamato.funn.r6companion.entities.CompanionOperator" />
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
 
     </fragment>
 
